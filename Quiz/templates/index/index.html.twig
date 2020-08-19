@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Welcome to Quiz!</title>
+		{# the CSS file lives at "public/css/index.css" #}
+		<link href="{{ asset('css/index.css') }}" rel="stylesheet"/>
+
+		{# the JS file lives at "public/js/index.js" #}
+		<script src="{{ asset('public/js/index.js') }}"></script>
+    </head>
+    <body>
+		{{include('header/header.html.twig')}}
+		
+		<div class='container'>
+		<h1>Welcome to Quiz!</h1>
+        <h1>Your ip:{{ ip }}</h1>
+		</div>
+    </body>
+</html>

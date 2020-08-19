@@ -1,0 +1,29 @@
+body{
+	margin: 0 0;
+	box-sizing:border-box;
+}
+.container{
+	text-align:center;
+	padding:15px 10px;
+	border:1px solid black;
+	background:#FFF999;
+	box-shadow:0 0 5px black;
+}
+header{
+	width:100%;
+	height:50px;
+	background:brown;
+	display:flex;
+	justify-content:right;
+	padding-top:15px;
+}
+header a{
+	width:100px;
+	margin-right:20px;
+	text-decoration:none;
+	color:white;
+	font-size:25px;
+}
+header a:hover{
+	text-decoration:underline;
+}
