@@ -13,7 +13,9 @@
 		
 		<div class='container'>
 		<h1>Welcome to Quiz!</h1>
-        <h1>Your ip:{{ ip }}</h1>
+        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+            <h1> hello,{{ user.getName }}!!</h1>
+            {% endif %}
 		</div>
     </body>
 </html>

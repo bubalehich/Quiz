@@ -1,17 +1,21 @@
-<?php // src/Controller/IndexController.php
+<?php
+
+
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Entity\QuizUser;
 
 class IndexController extends AbstractController
 {
-	/**
+    /**
      * @Route("/", name="index")
      */
-	public function list()
-    {
-        return $this->render('index/index.html.twig',['ip'=>$_SERVER['REMOTE_ADDR']]);
+    public function show(){
+        /** @var \App\Entity\QuizUser $user */
+        $user = $this->getUser();
+        return $this->render('index/index.html.twig',["user"=>$user]);
     }
 }
-?>

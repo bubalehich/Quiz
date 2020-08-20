@@ -1,6 +1,7 @@
 body{
 	margin: 0 0;
 	box-sizing:border-box;
+	overflow-X:hidden;
 }
 .container{
 	text-align:center;
@@ -15,12 +16,10 @@ header{
 	height:50px;
 	background:brown;
 	display:flex;
-	justify-content:right;
-	padding-top:15px;
+	justify-content:space-around;
 }
 header a{
-	width:100px;
-	margin-right:20px;
+	margin-top:20px;
 	text-decoration:none;
 	color:white;
 	font-size:25px;

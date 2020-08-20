@@ -1,4 +1,13 @@
 <header>
+    {% if is_granted('IS_ANONYMOUS') %}
 <a href="/login">Login</a>
+<a href="/reg">Register</a>
+        {% endif %}
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        <a href="/logout">Logout</a>
+    {% endif %}
 <a href="#">Play Quiz</a>
+    {% if is_granted('ROLE_ADMIN') %}
+        <a href="#">Administrate</a>
+    {% endif %}
 </header>
