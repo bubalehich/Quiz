@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Entity;
 
@@ -38,6 +39,11 @@ class QuizUser implements UserInterface
      * @ORM\Column(type="string", length=255)
      */
     private $name;
+
+    /**
+     * @ORM\Column(type="smallint")
+     */
+    private $isActive;
 
     public function getId(): ?int
     {
@@ -125,6 +131,18 @@ class QuizUser implements UserInterface
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getIsActive(): ?int
+    {
+        return $this->isActive;
+    }
+
+    public function setIsActive(int $isActive): self
+    {
+        $this->isActive = $isActive;
 
         return $this;
     }

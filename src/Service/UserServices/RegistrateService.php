@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 
 namespace App\Service\UserServices;
@@ -25,6 +26,7 @@ class RegistrateService
     public function registrateUser(QuizUser $user,EntityManagerInterface $entityManager){
         if(!$this->checkForExistance($user->getEmail(),$entityManager)){
               $user->setRoles(['ROLE_USER']);
+              $user->setIsActive(1);
             $user->setPassword($this->passwordEncoder->encodePassword(
                 $user,
                 $user->getPassword()));
