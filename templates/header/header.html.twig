@@ -1,14 +1,14 @@
 <header>
 <a href="/">Home</a>
     {% if is_granted('IS_ANONYMOUS') %}
-<a href="/login">Login</a>
-<a href="/reg">Register</a>
+<a href="{{ url('app_login') }}">Login</a>
+<a href="{{ url('register') }}">Register</a>
         {% endif %}
     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-        <a href="/logout">Logout</a>
+        <a href="{{ url('app_logout') }}">Logout</a>
     {% endif %}
 <a href="#">Play Quiz</a>
     {% if is_granted('ROLE_ADMIN') %}
-        <a href="/admin">Administrate</a>
+        <a href="{{ url('index')}}">Administrate</a>
     {% endif %}
 </header>
