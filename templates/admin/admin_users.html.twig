@@ -1,0 +1,31 @@
+<center><h1>Total users :{{ users.getTotalItemCount }}</h1></center>
+<table class="user_table" cellspacing="25px" cellpadding="5px">
+    <thead>
+    <tr> {# sorting of properties based on query components #}
+        <th>{{ knp_pagination_sortable(users , 'id', 'i.id') }}</th>
+        <th>{{ knp_pagination_sortable(users , 'name', 'i.name') }}</th>
+        <th>{{ knp_pagination_sortable(users , 'email', 'i.email') }}</th>
+        <th>{{ knp_pagination_sortable(users , 'active', 'i.isActive') }}</th>
+        <th>Toolbar</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for user in users %}
+        <tr>
+            <td>{{ user.getId }}</td>
+            <td>{{ user.getName }}</td>
+            <td>{{ user.getEmail }}</td>
+            <td>{{ user.getIsActive }}</td>
+            <td class="tools" id="{{ user.getId }}">
+                <span>delete</span>
+                <span>lock</span>
+                <span>unlock</span>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{# display navigation #}
+<div class="pagination">
+    {{ knp_pagination_render(users) }}
+</div>
