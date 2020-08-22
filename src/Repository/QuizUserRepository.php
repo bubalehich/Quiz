@@ -64,13 +64,37 @@ class QuizUserRepository extends ServiceEntityRepository implements PasswordUpgr
         ;
     }
     */
+    public function registerUser(QuizUser $user)
+    {
+        $this->_em->persist($user);
+        $this->_em->flush();
+    }
+
+    public function deleteUser(int $id)
+    {
+        $this->_em->remove($this->_em->getRepository(QuizUser::class)->find($id));
+        $this->_em->flush();
+    }
+
+    public function changeUserActive(int $id, int $value)
+    {
+        $user = $this->_em->getRepository(QuizUser::class)->find($id);
+        $user->setIsActive($value);
+        $this->_em->persist($user);
+        $this->_em->flush();
+        return true;
+    }
+
     public function findUserByEmail($email): ?QuizUser
     {
         return $this->createQueryBuilder('u')
             ->andWhere('u.email = :val')
             ->setParameter('val', $email)
             ->getQuery()
-            ->getOneOrNullResult()
-            ;
+            ->getOneOrNullResult();
+    }
+    public function getPaginatorQuery(){
+        $dql = "SELECT i FROM App\Entity\QuizUser i";
+        return $this->_em->createQuery($dql);
     }
 }

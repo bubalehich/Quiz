@@ -14,7 +14,7 @@ class IndexController extends AbstractController
      * @Route("/", name="index")
      */
     public function show(){
-        /** @var \App\Entity\QuizUser $user */
+        /** @var QuizUser $user */
         $user = $this->getUser();
         return $this->render('index/index.html.twig',["user"=>$user]);
     }

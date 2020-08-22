@@ -1,19 +1,8 @@
-{# templates/login/login.html.twig #}
-<html>
-<head>
-    <link rel="stylesheet" href="{{ asset('css/index.css') }}" />
-    <link rel="stylesheet" href="{{ asset('css/header/header.css') }}" />
-
-</head>
-<body>
-{{ include('header/header.html.twig') }}
+{%  extends("base.html.twig") %}
+{% block body %}
 <div class="container">
-
     <div class="regform_container" >
         {{ form(regform) }}
     </div>
-
-
 </div>
-</body>
-</html>
+{% endblock %}

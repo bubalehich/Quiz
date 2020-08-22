@@ -1,19 +1,22 @@
-.user_table{
-    margin:0 auto;
-    font-size:25px;
-    overflow-Y:scroll;
+.user_table {
+    margin: 0 auto;
+    font-size: 25px;
+    overflow-Y: scroll;
 }
-.user_table thead td{
-    border:1px solid darkolivegreen;
-    background:lightgreen;
+
+.user_table thead td {
+    border: 1px solid darkolivegreen;
+    background: lightgreen;
 }
-.user_table .user_tools span{
-    border:1px inset black;
+
+.user_table .user_tools span {
+    border: 1px inset black;
     background: lightslategrey;
-    padding:5px 5px;
+    padding: 5px 5px;
     cursor: pointer;
 }
-.pagination{
-    text-align:center;
-    font-size:30px;
+
+.pagination {
+    text-align: center;
+    font-size: 30px;
 }
