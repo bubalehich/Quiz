@@ -7,6 +7,8 @@ namespace App\Service\AdminServices;
 use App\Repository\QuizRepository;
 use App\Repository\QuizUserRepository;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\Form\FormInterface;
+use App\Entity\Quiz;
 
 class AdminService
 {
@@ -34,5 +36,17 @@ class AdminService
             $page,
             5
         );
+    }
+
+    public function addQuizFromForm(FormInterface $quizForm)
+    {
+        $quiz = $quizForm->getData();
+        $quiz->setIsActive(1)
+            ->setCreateDate(new \DateTime("now"))
+            ->setUsersCount(0);
+        $this->addQuiz($quiz);
+    }
+    public function addQuiz(Quiz $quiz){
+        $this->quizRepository->addNewQuiz($quiz);
     }
 }

@@ -51,4 +51,8 @@ class QuizRepository extends ServiceEntityRepository
         $dql = "SELECT i FROM App\Entity\Quiz i";
         return $this->_em->createQuery($dql);
     }
+    public function addNewQuiz(Quiz $quiz){
+        $this->_em->persist($quiz);
+        $this->_em->flush();
+    }
 }

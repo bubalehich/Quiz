@@ -42,6 +42,7 @@ class Quiz
      */
     private $users_count;
 
+
     public function getId(): ?int
     {
         return $this->id;

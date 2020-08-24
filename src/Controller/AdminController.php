@@ -3,12 +3,14 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Form\Type\CreateQuizType;
 use Knp\Component\Pager\PaginatorInterface;
 use App\Service\AdminServices\AdminService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Entity\Quiz;
 
 class AdminController extends AbstractController
 {
@@ -54,7 +56,7 @@ class AdminController extends AbstractController
         $quizes = $this->adminService
             ->getQuizesPage($paginator,
                 (int)$request->query->get("page", 1));
-        return $this->render('admin/admin.html.twig',["quizes"=>$quizes]);
+        return $this->render('admin/admin.html.twig', ["quizes" => $quizes]);
     }
 
     /**
@@ -62,7 +64,16 @@ class AdminController extends AbstractController
      */
     public function show(Request $request)
     {
-        return $this->render('admin/admin.html.twig');
+        $quiz = new Quiz();
+        $quizForm = $this->createForm(CreateQuizType::class, $quiz);
+        $quizForm->handleRequest($request);
+
+        if ($quizForm->isSubmitted() && $quizForm->isValid()) {
+            $message = $this->adminService->addQuizFromForm($quizForm);
+           return $this->redirectToRoute("admin_quizes");// return $this->render('register/message.html.twig', ["message" => $message]);
+
+        }
+        return $this->render('admin/admin_create_quiz.html.twig', ["quizform" => $quizForm->createView()]);
 
     }
 
