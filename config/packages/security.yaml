@@ -1,17 +1,13 @@
 security:
-    encoders:
-        App\Entity\QuizUser:
-            algorithm: auto
-
-
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
+    encoders:
+        App\Entity\User:
+            algorithm: auto
     providers:
-        # used to reload user from session & other features (e.g. switch_user)
         app_user_provider:
             entity:
-                class: App\Entity\QuizUser
+                class: App\Entity\User
                 property: email
-        # used to reload user from session & other features (e.g. switch_user)
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
@@ -22,12 +18,11 @@ security:
             provider: app_user_provider
             guard:
                 authenticators:
-                    - App\Security\QuizAuthenticator
+                    - App\Security\AppAuthenticator
             logout:
                 path: app_logout
-                target: index
                 # where to redirect after logout
-                # target: app_any_route
+                target: index
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
@@ -38,5 +33,5 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        - { path: ^/admin, roles: ROLE_ADMIN }
+        # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }

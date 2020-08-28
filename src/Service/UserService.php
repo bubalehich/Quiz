@@ -2,26 +2,26 @@
 declare(strict_types=1);
 
 
-namespace App\Service\UserServices;
+namespace App\Service;
 
-use App\Repository\QuizUserRepository;
-use App\Entity\QuizUser;
+use App\Repository\UserRepository;
+use App\Entity\User;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class UserService
 {
     private $passwordEncoder;
-    private $quizUserRepository;
+    private $userRepository;
 
-    public function __construct(UserPasswordEncoderInterface $passwordEncoder, QuizUserRepository $quizUserRepository)
+    public function __construct(UserPasswordEncoderInterface $passwordEncoder, UserRepository $userRepository)
     {
         $this->passwordEncoder = $passwordEncoder;
-        $this->quizUserRepository = $quizUserRepository;
+        $this->userRepository = $userRepository;
     }
 
     public function checkForExistance(string $email)
     {
-        $user = $this->quizUserRepository->findUserByEmail($email);
+        $user = $this->userRepository->findUserByEmail($email);
         return $user;
     }
 
@@ -35,15 +35,16 @@ class UserService
         return $message;
     }
 
-    public function registerUser(QuizUser $user)
+    public function registerUser(User $user)
     {
         if (!$this->checkForExistance($user->getEmail())) {
             $user->setRoles(['ROLE_USER'])
-                ->setIsActive(1)
+                ->setIsActive(true)
+                ->setIsConfirmed(false)
                 ->setPassword($this->passwordEncoder->encodePassword(
                     $user,
                     $user->getPassword()));
-            $this->quizUserRepository->registerUser($user);
+            $this->userRepository->registerUser($user);
             return true;
         }
         return false;
@@ -64,11 +65,11 @@ class UserService
 
     public function changeActiveField(int $id, int $field)
     {
-        return $this->quizUserRepository->changeUserActive($id, $field);
+        return $this->userRepository->changeUserActive($id, $field);
     }
 
     public function deleteUser(int $id)
     {
-        $this->quizUserRepository->deleteUser($id);
+        $this->userRepository->deleteUser($id);
     }
 }

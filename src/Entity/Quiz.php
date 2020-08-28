@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\QuizRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -15,40 +17,45 @@ class Quiz
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
-     * @ORM\Column(type="string", length=200)
+     * @ORM\Column(type="string", length=60)
      */
-    private $name;
+    private string $name;
 
     /**
-     * @ORM\Column(type="smallint")
+     * @ORM\Column(type="boolean")
      */
-    private $is_active;
+    private bool $isActive;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $create_date;
+    private \DateTimeInterface $createDate;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\OneToMany(targetEntity=Result::class, mappedBy="quiz")
      */
-    private $leader;
+    private Collection $results;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToMany(targetEntity=Question::class)
      */
-    private $users_count;
+    private $questions;
 
+    public function __construct()
+    {
+        $this->results = new ArrayCollection();
+        $this->questions = new ArrayCollection();
+    }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -56,55 +63,80 @@ class Quiz
     public function setName(string $name): self
     {
         $this->name = $name;
-
         return $this;
     }
 
-    public function getIsActive(): ?int
+    public function getIsActive(): bool
     {
-        return $this->is_active;
+        return $this->isActive;
     }
 
-    public function setIsActive(int $is_active): self
+    public function setIsActive(bool $isActive): self
     {
-        $this->is_active = $is_active;
-
+        $this->isActive = $isActive;
         return $this;
     }
 
-    public function getCreateDate(): ?\DateTimeInterface
+    public function getCreateDate(): \DateTimeInterface
     {
-        return $this->create_date;
+        return $this->createDate;
     }
 
-    public function setCreateDate(\DateTimeInterface $create_date): self
+    public function setCreateDate(\DateTimeInterface $createDate): self
     {
-        $this->create_date = $create_date;
-
+        $this->createDate = $createDate;
         return $this;
     }
 
-    public function getLeader(): ?int
+    /**
+     * @return Collection|Result[]
+     */
+    public function getResults(): Collection
     {
-        return $this->leader;
+        return $this->results;
     }
 
-    public function setLeader(?int $leader): self
+    public function addResult(Result $result): self
     {
-        $this->leader = $leader;
-
+        if (!$this->results->contains($result)) {
+            $this->results[] = $result;
+            $result->setQuiz($this);
+        }
         return $this;
     }
 
-    public function getUsersCount(): ?int
+    public function removeResult(Result $result): self
     {
-        return $this->users_count;
+        if ($this->results->contains($result)) {
+            $this->results->removeElement($result);
+            if ($result->getQuiz() === $this) {
+                $result->setQuiz(null);
+            }
+        }
+        return $this;
     }
 
-    public function setUsersCount(int $users_count): self
+    /**
+     * @return Collection|Question[]
+     */
+    public function getQuestions(): Collection
     {
-        $this->users_count = $users_count;
+        return $this->questions;
+    }
 
+    public function addQuestion(Question $question): self
+    {
+        if (!$this->questions->contains($question)) {
+            $this->questions[] = $question;
+        }
+        return $this;
+    }
+
+    public function removeQuestion(Question $question): self
+    {
+        if ($this->questions->contains($question)) {
+            $this->questions->removeElement($question);
+        }
         return $this;
     }
 }

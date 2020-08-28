@@ -1,7 +1,7 @@
-{% extends "base.html.twig" %}
+{% extends('base.html.twig') %}
+
 {% block body %}
-    <div class="container">
-        <h1>{{ message }}!</h1>
-        <a href="{{ url('index') }}">Go home</a>
-    </div>
-{% endblock %}
+    {% if message is defined %}
+        <h1>{{ message }}</h1>
+    {% endif %}
+{%  endblock %}

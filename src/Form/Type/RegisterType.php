@@ -11,7 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\FormBuilderInterface;
-use App\Entity\QuizUser;
+use App\Entity\User;
 
 class RegisterType extends AbstractType
 {
@@ -31,7 +31,7 @@ class RegisterType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => QuizUser::class,
+            'data_class' => User::class,
         ));
     }
 }

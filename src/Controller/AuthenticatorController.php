@@ -2,13 +2,24 @@
 
 namespace App\Controller;
 
+
+use App\Form\Type\RegisterType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use App\Entity\User;
+use App\Service\UserService;
 
-class AuthController extends AbstractController
+class AuthenticatorController extends AbstractController
 {
+    private $userService;
+
+    public function __construct(UserService $userService){
+        $this->userService = $userService;
+        $this->userService = $userService;
+    }
     /**
      * @Route("/login", name="app_login")
      */
@@ -32,5 +43,24 @@ class AuthController extends AbstractController
     public function logout()
     {
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
+    }
+
+    /**
+     * @Route("/register", name="app_register")
+     * @param Request $request
+     * @return Response
+     */
+    public function register(Request $request)
+    {
+        $user = new User();
+        $registerForm = $this->createForm(RegisterType::class, $user);
+        $registerForm->handleRequest($request);
+
+        if ($registerForm->isSubmitted() && $registerForm->isValid()) {
+            $message = $this->userService->registerUserFromForm($registerForm);
+            return $this->render('register/message.html.twig', ["message" => $message]);
+
+        }
+        return $this->render('register/register.html.twig', ['regform' => $registerForm->createView()]);
     }
 }

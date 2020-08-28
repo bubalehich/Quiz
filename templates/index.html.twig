@@ -1,0 +1,13 @@
+{% extends('base.html.twig') %}
+
+{% block body %}
+<div class='container'>
+    <h1>Welcome to Quiz!</h1>
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        <h1> You are in system,{{ app.user.username }}!</h1>
+    {% else %}
+        <h1>You are guest</h1>
+    {% endif %}
+</div>
+
+{%  endblock %}
