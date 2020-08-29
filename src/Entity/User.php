@@ -6,10 +6,12 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository", repositoryClass=UserRepository::class)
+ * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
  */
 class User implements UserInterface
 {
@@ -41,11 +43,6 @@ class User implements UserInterface
     private bool $isActive;
 
     /**
-     * @ORM\Column(type="boolean")
-     */
-    private bool $isConfirmed;
-
-    /**
      * @ORM\OneToMany(targetEntity=Result::class, mappedBy="user")
      */
     private Collection $results;
@@ -54,6 +51,11 @@ class User implements UserInterface
      * @ORM\ManyToMany(targetEntity=Role::class)
      */
     private Collection $roles;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private bool $isVerified = false;
 
     public function __construct()
     {
@@ -110,17 +112,6 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getIsConfirmed(): bool
-    {
-        return $this->isConfirmed;
-    }
-
-    public function setIsConfirmed(bool $isConfirmed): self
-    {
-        $this->isConfirmed = $isConfirmed;
-        return $this;
-    }
-
     /**
      * @return Collection|Result[]
      */
@@ -152,11 +143,11 @@ class User implements UserInterface
     /**
      * @return array []
      */
-    public function getRoles(): array
+    public function getRoles(): Collection
     {
-        $roleNames = [];
+        $roleNames = new ArrayCollection();
         foreach ($this->roles as $role) {
-            array_push($roleNames, $role->getName());
+            $roleNames->add($role->getName());
         }
         return $roleNames;
     }
@@ -188,5 +179,16 @@ class User implements UserInterface
 
     public function eraseCredentials()
     {
+    }
+
+    public function isVerified(): bool
+    {
+        return $this->isVerified;
+    }
+
+    public function setIsVerified(bool $isVerified): self
+    {
+        $this->isVerified = $isVerified;
+        return $this;
     }
 }
