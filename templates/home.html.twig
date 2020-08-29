@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    {% if user %}
+        Hello, {{ user.name }}!
+        {% if is_granted('ROLE_USER') %}
+            <a href="{{ path('app_logout') }}">Logout</a>
+        {% endif %}
+    {% endif %}
+    {% if not user %}
+        <a href="{{ path('app_login') }}">Log in</a>
+    {% endif %}
+{% endblock %}
