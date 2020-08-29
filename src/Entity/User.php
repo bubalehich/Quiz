@@ -6,11 +6,14 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @ORM\Entity(repositoryClass="App\Repository\UserRepository", repositoryClass=UserRepository::class)
+ * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
  */
-class User
+class User implements UserInterface
 {
     /**
      * @ORM\Id()
@@ -30,7 +33,7 @@ class User
     private string $email;
 
     /**
-     * @ORM\Column(type="string", length=40)
+     * @ORM\Column(type="string")
      */
     private string $password;
 
@@ -40,24 +43,24 @@ class User
     private bool $isActive;
 
     /**
-     * @ORM\Column(type="boolean")
-     */
-    private bool $isConfirmed;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Role::class)
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private Role $role;
-
-    /**
      * @ORM\OneToMany(targetEntity=Result::class, mappedBy="user")
      */
     private Collection $results;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Role::class)
+     */
+    private Collection $roles;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private bool $isVerified = false;
+
     public function __construct()
     {
         $this->results = new ArrayCollection();
+        $this->roles = new ArrayCollection();
     }
 
     public function getId(): int
@@ -109,28 +112,6 @@ class User
         return $this;
     }
 
-    public function getIsConfirmed(): bool
-    {
-        return $this->isConfirmed;
-    }
-
-    public function setIsConfirmed(bool $isConfirmed): self
-    {
-        $this->isConfirmed = $isConfirmed;
-        return $this;
-    }
-
-    public function getRole(): Role
-    {
-        return $this->role;
-    }
-
-    public function setRole(Role $role): self
-    {
-        $this->role = $role;
-        return $this;
-    }
-
     /**
      * @return Collection|Result[]
      */
@@ -156,6 +137,62 @@ class User
                 $result->setUser(null);
             }
         }
+        return $this;
+    }
+
+    /**
+     * @return array []
+     */
+    public function getRoles(): array
+    {
+//        $roleNames = new ArrayCollection();
+//        foreach ($this->roles as $role) {
+//            $roleNames->add($role->getName());
+//        }
+        $roleNames =[];
+        foreach ($this->roles as $role){
+            array_push($roleNames, $role->getName());
+        }
+        return $roleNames;
+    }
+
+    public function addRole(Role $role): self
+    {
+        if (!$this->roles->contains($role)) {
+            $this->roles[] = $role;
+        }
+        return $this;
+    }
+
+    public function removeRole(Role $role): self
+    {
+        if ($this->roles->contains($role)) {
+            $this->roles->removeElement($role);
+        }
+        return $this;
+    }
+
+    public function getSalt()
+    {
+    }
+
+    public function getUsername(): string
+    {
+        return $this->name;
+    }
+
+    public function eraseCredentials()
+    {
+    }
+
+    public function isVerified(): bool
+    {
+        return $this->isVerified;
+    }
+
+    public function setIsVerified(bool $isVerified): self
+    {
+        $this->isVerified = $isVerified;
         return $this;
     }
 }
