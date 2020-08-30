@@ -9,7 +9,7 @@
        {# <a href="/play">Play Quiz</a>#}
     {% endif %}
 
-    {#{% if is_granted('ROLE_ADMIN') %}
-        <a href="{{ url('admin') }}">Administrate</a>
-    {% endif %}#}
+    {% if is_granted('ROLE_ADMIN') %}
+        <a href="{{ url('app_admin') }}">Administrate</a>
+    {% endif %}
 </header>
