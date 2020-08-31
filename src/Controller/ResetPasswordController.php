@@ -100,7 +100,6 @@ class ResetPasswordController extends AbstractController
                 'There was a problem validating your reset request - %s',
                 $e->getReason()
             ));
-
             return $this->redirectToRoute('app_forgot_password_request');
         }
 
@@ -109,10 +108,8 @@ class ResetPasswordController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // A password reset token should be used only once, remove it.
             $this->resetPasswordHelper->removeResetRequest($token);
 
-            // Encode the plain password, and set it.
             $encodedPassword = $passwordEncoder->encodePassword(
                 $user,
                 $form->get('plainPassword')->getData()
@@ -149,10 +146,6 @@ class ResetPasswordController extends AbstractController
         try {
             $resetToken = $this->resetPasswordHelper->generateResetToken($user);
         } catch (ResetPasswordExceptionInterface $e) {
-            // If you want to tell the user why a reset email was not sent, uncomment
-            // the lines below and change the redirect to 'app_forgot_password_request'.
-            // Caution: This may reveal if a user is registered or not.
-            //
             // $this->addFlash('reset_password_error', sprintf(
             //     'There was a problem handling your password reset request - %s',
             //     $e->getReason()
@@ -162,15 +155,14 @@ class ResetPasswordController extends AbstractController
         }
 
         $email = (new TemplatedEmail())
-            ->from(new Address('quiz_reqistration_sender@mail.ru', 'Reset Password Bot'))
+            ->from(new Address('quiz.sender.bot@gmail.com', 'Reset Password Bot'))
             ->to($user->getEmail())
             ->subject('Your password reset request')
             ->htmlTemplate('reset_password/email.html.twig')
             ->context([
                 'resetToken' => $resetToken,
                 'tokenLifetime' => $this->resetPasswordHelper->getTokenLifetime(),
-            ])
-        ;
+            ]);
 
         $mailer->send($email);
 

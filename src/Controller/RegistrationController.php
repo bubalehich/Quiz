@@ -67,7 +67,7 @@ class RegistrationController extends AbstractController
             $entityManager->flush();
             $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
                 (new TemplatedEmail())
-                    ->from(new Address('quiz_reqistration_sender@mail.ru', 'Quiz Account Registration Bot'))
+                    ->from(new Address('quiz.sender.bot@gmail.com', 'Quiz Account Registration Bot'))
                     ->to($user->getEmail())
                     ->subject('Please Confirm your Email')
                     ->htmlTemplate('registration/confirmation_email.html.twig')
