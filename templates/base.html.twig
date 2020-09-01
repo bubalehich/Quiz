@@ -1,12 +1,46 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
-    </body>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    {% block stylesheets %}
+        {{ encore_entry_link_tags('app') }}
+    {% endblock %}
+</head>
+<body>
+<div class="container-fluid">
+    <header>
+        {% block header %}
+            <div class="row">
+                <div class="col-sm-1"><a href="{{ path('home') }}">Home</a></div>
+                <div class="col-sm-1"><a href="{{ path('app_quizes') }}">Quizes</a></div>
+                <div class="col-sm-1">lang</div>
+                <div class="col-sm-6"></div>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <div class="col-sm-1">
+                        <a href="{{ path('app_admin') }}">Admin</a>
+                    </div>
+                {% endif %}
+                {% if is_granted('ROLE_USER') %}
+                    <div class="col-sm-1">
+                        <a href="{{ path('app_profile') }}">{{ app.user.name }}</a>
+                    </div>
+                {% endif %}
+
+                {% if is_granted('ROLE_USER') %}
+                    <div class="col-sm-1"><a href="{{ path('app_logout') }}">Logout</a></div>
+                {% endif %}
+                {% if not is_granted('ROLE_USER') %}
+                    <div class="col-sm-1"><a href="{{ path('app_login') }}">Login</a></div>
+                {% endif %}
+            </div>
+        {% endblock %}
+    </header>
+    {% block body %}
+    {% endblock %}
+    {% block javascripts %}
+        {{ encore_entry_script_tags('app') }}
+    {% endblock %}
+</div>
+</body>
 </html>
