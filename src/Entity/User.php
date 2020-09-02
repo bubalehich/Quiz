@@ -145,10 +145,6 @@ class User implements UserInterface
      */
     public function getRoles(): array
     {
-//        $roleNames = new ArrayCollection();
-//        foreach ($this->roles as $role) {
-//            $roleNames->add($role->getName());
-//        }
         $roleNames =[];
         foreach ($this->roles as $role){
             array_push($roleNames, $role->getName());

@@ -27,7 +27,7 @@ class Question
     /**
      * @ORM\OneToMany(targetEntity=Answer::class, mappedBy="question", orphanRemoval=true)
      */
-    private ArrayCollection $answers;
+    private Collection $answers;
 
     public function __construct()
     {
