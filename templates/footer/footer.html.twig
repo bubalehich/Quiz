@@ -1,0 +1,9 @@
+<footer>
+    <a href="{{ url('home') }}">Home</a>
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        <a href="{{ path('app_logout') }}">Logout</a>
+    {% else %}
+        <a href="{{ url('app_login') }}">Login</a>
+        <a href="{{ url('app_register') }}">Register</a>
+    {% endif %}
+</footer>
