@@ -35,7 +35,7 @@ class Quiz
     private \DateTimeInterface $createDate;
 
     /**
-     * @ORM\OneToMany(targetEntity=Result::class, mappedBy="quiz")
+     * @ORM\OneToMany(targetEntity=Result::class, mappedBy="quiz", fetch="EAGER")
      */
     private Collection $results;
 

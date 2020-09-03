@@ -42,7 +42,7 @@ class Result
     /**
      * @ORM\Column(type="decimal", precision=4, scale=2, nullable=true)
      */
-    private float $result;
+    private float $result=0;
 
     /**
      * @ORM\Column(type="integer")
@@ -98,12 +98,12 @@ class Result
         return $this;
     }
 
-    public function getResult(): ?string
+    public function getResult(): ?float
     {
         return $this->result;
     }
 
-    public function setResult(string $result): self
+    public function setResult(float $result): self
     {
         $this->result = $result;
         return $this;
