@@ -8,6 +8,7 @@ use App\Entity\Quiz;
 use App\Repository\QuizRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -18,14 +19,23 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class QuizController extends AbstractController
 {
+    private QuizRepository $quizRepository;
+
+    /**
+     * QuizController constructor.
+     * @param QuizRepository $quizRepository
+     */
+    public function __construct(QuizRepository $quizRepository)
+    {
+        $this->quizRepository = $quizRepository;
+    }
+
     /**
      * @Route("/", name="app_quizes")
      */
-    public function showQuizes(): Response
+    public function listAction(Request $request): Response
     {
-        //TODO add loadinq quizes
-//        /** @var Quiz[] $quizes */
-//        $quizes = $this->getDoctrine()->getManager()->getRepository(QuizRepository::class)->findAll();
-        return $this->render('quiz/all_quizes.html.twig');
+        $pagination = $this->quizRepository->findNext($request->query->getInt('page', 1));
+        return $this->render('quiz/all_quizes.html.twig', ['pagination' => $pagination]);
     }
 }

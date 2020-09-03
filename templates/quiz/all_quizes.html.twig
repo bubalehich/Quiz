@@ -1,8 +1,41 @@
 {% extends 'base.html.twig' %}
 {% block body %}
+    <div class="d-flex justify-content-center">
+        <h3>Total count of quizes: {{ pagination.getTotalItemCount }}</h3>
+    </div>
+    <table class="table table-dark">
+        <thead>
+        <tr>
+            <th{% if pagination.isSorted('q.name') %} class="sorted"{% endif %}>
+                {{ knp_pagination_sortable(pagination, 'name','q.name') }}
+            </th>
 
-    Displaying all quizes
-    <br>
-    In progress...
+            <th{% if pagination.isSorted('q.isActive') %} class="sorted"{% endif %}>
+                {{ knp_pagination_sortable(pagination, 'status','q.isActive') }}
+            </th>
 
-{%endblock%}
+            <th{% if pagination.isSorted('q.createDate') %} class="sorted"{% endif %}>
+                {{ knp_pagination_sortable(pagination, 'create date','q.createDate') }}
+            </th>
+            <th>Leader</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for quiz in pagination %}
+            <tr>
+                <th>{{ quiz.name }}</th>
+                <th{% if not  quiz.isActive %} style="color: #db7778" {% endif %}
+                        {% if  quiz.isActive %} style="color: #3ac31a" {% endif %} >
+                    {% if  quiz.isActive %}active{% endif %}
+                    {% if not  quiz.isActive %}closed{% endif %}
+                </th>
+                <th>{{ quiz.createDate.format("d.m.Y; H:i:s") }}</th>
+                <th>some leader</th>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <div class="d-flex justify-content-center">
+        {{ knp_pagination_render(pagination) }}
+    </div>
+{% endblock %}
