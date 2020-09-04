@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route ("/admin", name="app_admin")
+ * @Route ("/admin")
  * @IsGranted("ROLE_ADMIN")
  */
 class AdminController extends AbstractController
