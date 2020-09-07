@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Entity;
 
@@ -47,6 +48,7 @@ class Question
     public function setName(string $name): self
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -64,6 +66,7 @@ class Question
             $this->answers[] = $answer;
             $answer->setQuestion($this);
         }
+
         return $this;
     }
 
@@ -75,6 +78,7 @@ class Question
                 $answer->setQuestion(null);
             }
         }
+
         return $this;
     }
 }

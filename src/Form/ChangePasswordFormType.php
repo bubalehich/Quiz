@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Form;
 
@@ -14,32 +15,27 @@ class ChangePasswordFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder
-            ->add('plainPassword', RepeatedType::class, [
-                'type' => PasswordType::class,
-                'first_options' => [
-                    'constraints' => [
-                        new NotBlank([
-                            'message' => 'Please enter a password',
-                        ]),
-                        new Length([
-                            'min' => 6,
-                            'minMessage' => 'Your password should be at least {{ limit }} characters',
-                            // max length allowed by Symfony for security reasons
-                            'max' => 4096,
-                        ]),
-                    ],
-                    'label' => 'New password',
+        $builder->add('plainPassword', RepeatedType::class, [
+            'type' => PasswordType::class,
+            'first_options' => [
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Please enter a password',
+                    ]),
+                    new Length([
+                        'min' => 6,
+                        'minMessage' => 'Your password should be at least {{ limit }} characters',
+                        'max' => 4096,
+                    ]),
                 ],
-                'second_options' => [
-                    'label' => 'Repeat Password',
-                ],
-                'invalid_message' => 'The password fields must match.',
-                // Instead of being set onto the object directly,
-                // this is read and encoded in the controller
-                'mapped' => false,
-            ])
-        ;
+                'label' => 'New password',
+            ],
+            'second_options' => [
+                'label' => 'Repeat Password',
+            ],
+            'invalid_message' => 'The password fields must match.',
+            'mapped' => false,
+        ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

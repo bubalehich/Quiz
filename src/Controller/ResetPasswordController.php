@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Controller;
 
@@ -51,6 +52,7 @@ class ResetPasswordController extends AbstractController
                 $mailer
             );
         }
+
         return $this->render('reset_password/request.html.twig', [
             'requestForm' => $form->createView(),
         ]);
@@ -77,6 +79,10 @@ class ResetPasswordController extends AbstractController
      * Validates and process the reset URL that the user clicked in their email.
      *
      * @Route("/reset/{token}", name="app_reset_password")
+     * @param Request $request
+     * @param UserPasswordEncoderInterface $passwordEncoder
+     * @param string|null $token
+     * @return Response
      */
     public function reset(Request $request, UserPasswordEncoderInterface $passwordEncoder, string $token = null): Response
     {
@@ -103,7 +109,6 @@ class ResetPasswordController extends AbstractController
             return $this->redirectToRoute('app_forgot_password_request');
         }
 
-        // The token is valid; allow the user to change their password.
         $form = $this->createForm(ChangePasswordFormType::class);
         $form->handleRequest($request);
 
@@ -117,8 +122,6 @@ class ResetPasswordController extends AbstractController
 
             $user->setPassword($encodedPassword);
             $this->getDoctrine()->getManager()->flush();
-
-            // The session is cleaned up after the password has been changed.
             $this->cleanSessionAfterReset();
 
             return $this->redirectToRoute('app_home');
@@ -135,10 +138,8 @@ class ResetPasswordController extends AbstractController
             'email' => $emailFormData,
         ]);
 
-        // Marks that you are allowed to see the app_check_email page.
         $this->setCanCheckEmailInSession();
 
-        // Do not reveal whether a user account was found or not.
         if (!$user) {
             return $this->redirectToRoute('app_check_email');
         }
@@ -163,7 +164,6 @@ class ResetPasswordController extends AbstractController
                 'resetToken' => $resetToken,
                 'tokenLifetime' => $this->resetPasswordHelper->getTokenLifetime(),
             ]);
-
         $mailer->send($email);
 
         return $this->redirectToRoute('app_check_email');

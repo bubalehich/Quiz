@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Service;
 
@@ -67,6 +68,7 @@ class QuizService
             }
             $resultArray[$quiz->getId()]= $userName;
         }
+
         return $resultArray;
     }
 
@@ -81,6 +83,7 @@ class QuizService
             return $min;
         }
         $duration = $r->getEndDate()->getTimestamp() - $r->getStartDate()->getTimestamp();
+
         return $min <= $duration ? $min : $duration;
     }
 }

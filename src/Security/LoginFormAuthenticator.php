@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Security;
 
@@ -12,7 +13,6 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 use Symfony\Component\Security\Core\Exception\InvalidCsrfTokenException;
 use Symfony\Component\Security\Core\Security;
-use Symfony\Component\Security\Core\User\InMemoryUserProvider;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Csrf\CsrfToken;
@@ -24,7 +24,6 @@ use Symfony\Component\Security\Http\Util\TargetPathTrait;
 class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements PasswordAuthenticatedInterface
 {
     use TargetPathTrait;
-
     public const LOGIN_ROUTE = 'app_login';
 
     private EntityManagerInterface $entityManager;
@@ -57,6 +56,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
             Security::LAST_USERNAME,
             $credentials['email']
         );
+
         return $credentials;
     }
 
@@ -72,6 +72,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
         if (!$user) {
             throw new CustomUserMessageAuthenticationException('Email could not be found.');
         }
+
         return $user;
     }
 
@@ -98,6 +99,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
         if ($this->getTargetPath()){
             return new RedirectResponse($this->urlGenerator->generate($this->getTargetPath($request->getSession(), 'main')));
         }
+
         return new RedirectResponse($this->urlGenerator->generate('app_profile'));
     }
 

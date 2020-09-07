@@ -1,8 +1,10 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Entity;
 
 use App\Repository\QuizRepository;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -32,7 +34,7 @@ class Quiz
     /**
      * @ORM\Column(type="datetime")
      */
-    private \DateTimeInterface $createDate;
+    private DateTimeInterface $createDate;
 
     /**
      * @ORM\OneToMany(targetEntity=Result::class, mappedBy="quiz", fetch="EAGER")
@@ -42,7 +44,7 @@ class Quiz
     /**
      * @ORM\ManyToMany(targetEntity=Question::class)
      */
-    private $questions;
+    private ArrayCollection $questions;
 
     public function __construct()
     {
@@ -63,6 +65,7 @@ class Quiz
     public function setName(string $name): self
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -74,17 +77,19 @@ class Quiz
     public function setIsActive(bool $isActive): self
     {
         $this->isActive = $isActive;
+
         return $this;
     }
 
-    public function getCreateDate(): \DateTimeInterface
+    public function getCreateDate(): DateTimeInterface
     {
         return $this->createDate;
     }
 
-    public function setCreateDate(\DateTimeInterface $createDate): self
+    public function setCreateDate(DateTimeInterface $createDate): self
     {
         $this->createDate = $createDate;
+
         return $this;
     }
 
@@ -102,6 +107,7 @@ class Quiz
             $this->results[] = $result;
             $result->setQuiz($this);
         }
+
         return $this;
     }
 
@@ -113,6 +119,7 @@ class Quiz
                 $result->setQuiz(null);
             }
         }
+
         return $this;
     }
 
@@ -129,6 +136,7 @@ class Quiz
         if (!$this->questions->contains($question)) {
             $this->questions[] = $question;
         }
+
         return $this;
     }
 
@@ -137,6 +145,7 @@ class Quiz
         if ($this->questions->contains($question)) {
             $this->questions->removeElement($question);
         }
+
         return $this;
     }
 }
