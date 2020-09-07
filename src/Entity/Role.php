@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Entity;
 
@@ -35,6 +36,7 @@ class Role
     public function setName(string $name): self
     {
         $this->name = $name;
+
         return $this;
     }
 }

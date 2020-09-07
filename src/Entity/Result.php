@@ -1,8 +1,10 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Entity;
 
 use App\Repository\ResultRepository;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -32,12 +34,12 @@ class Result
     /**
      * @ORM\Column(type="datetime")
      */
-    private \DateTimeInterface $startDate;
+    private DateTimeInterface $startDate;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private ? \DateTimeInterface $endDate;
+    private ? DateTimeInterface $endDate;
 
     /**
      * @ORM\Column(type="decimal", precision=4, scale=2, nullable=true)
@@ -62,6 +64,7 @@ class Result
     public function setUser(User $user): self
     {
         $this->user = $user;
+
         return $this;
     }
 
@@ -73,28 +76,31 @@ class Result
     public function setQuiz(Quiz $quiz): self
     {
         $this->quiz = $quiz;
+
         return $this;
     }
 
-    public function getStartDate(): \DateTimeInterface
+    public function getStartDate(): DateTimeInterface
     {
         return $this->startDate;
     }
 
-    public function setStartDate(\DateTimeInterface $startDate): self
+    public function setStartDate(DateTimeInterface $startDate): self
     {
         $this->startDate = $startDate;
+
         return $this;
     }
 
-    public function getEndDate(): ?\DateTimeInterface
+    public function getEndDate(): ?DateTimeInterface
     {
         return $this->endDate;
     }
 
-    public function setEndDate(? \DateTimeInterface $endDate): self
+    public function setEndDate(? DateTimeInterface $endDate): self
     {
         $this->endDate = $endDate;
+
         return $this;
     }
 
@@ -106,6 +112,7 @@ class Result
     public function setResult(float $result): self
     {
         $this->result = $result;
+
         return $this;
     }
 
@@ -117,6 +124,7 @@ class Result
     public function setProgress(int $progress): self
     {
         $this->progress = $progress;
+
         return $this;
     }
 }

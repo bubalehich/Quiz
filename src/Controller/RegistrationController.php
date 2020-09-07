@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Controller;
 
@@ -6,8 +7,9 @@ use App\Entity\Role;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Repository\RoleRepository;
-use App\Security\EmailVerifier;
+use App\Security\EmailConfirmationManager;
 use App\Security\LoginFormAuthenticator;
+use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,9 +22,9 @@ use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
 class RegistrationController extends AbstractController
 {
-    private EmailVerifier $emailVerifier;
+    private EmailConfirmationManager $emailVerifier;
 
-    public function __construct(EmailVerifier $emailVerifier)
+    public function __construct(EmailConfirmationManager $emailVerifier)
     {
         $this->emailVerifier = $emailVerifier;
     }
@@ -34,6 +36,7 @@ class RegistrationController extends AbstractController
      * @param GuardAuthenticatorHandler $guardHandler
      * @param LoginFormAuthenticator $authenticator
      * @return Response
+     * @throws NonUniqueResultException
      */
     public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, LoginFormAuthenticator $authenticator): Response
     {
@@ -97,8 +100,6 @@ class RegistrationController extends AbstractController
     public function verifyUserEmail(Request $request): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-
-        // validate email confirmation link, sets User::isVerified=true and persists
         try {
             $this->emailVerifier->handleEmailConfirmation($request, $this->getUser());
         } catch (VerifyEmailExceptionInterface $exception) {

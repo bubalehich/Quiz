@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Controller;
 
@@ -7,13 +8,11 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class HomeController extends AbstractController
 {
-
     /**
      * @Route("/", name="home")
      */
-    public function logout()
+    public function onHomePage()
     {
-        $user = $this->getUser();
-        return $this->render('home.html.twig', ['user'=>$user]);
+        return $this->render('home.html.twig');
     }
 }

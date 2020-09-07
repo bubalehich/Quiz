@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\DataFixtures;
 
@@ -10,7 +11,6 @@ use App\Entity\Role;
 use App\Entity\User;
 use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
@@ -88,10 +88,10 @@ class AppFixtures extends Fixture
         for ($i = 0; $i < self::QUIZ_COUNT; $i++) {
             $quiz = new Quiz();
             $quiz->setName('quizNo' . $i)
-                ->setIsActive(rand(0, 5))
+                ->setIsActive((bool)rand(0, 5))
                 ->setCreateDate(new DateTime());
             for ($k = 0; $k < self::QUESTIONS_PER_QUIZ_COUNT; $k++) {
-                $quiz->addQuestion($questions[rand(0, self::QUESTIONS_COUNT)]);
+                $quiz->addQuestion($questions[rand(0, self::QUESTIONS_COUNT - 1)]);
             }
             $count = rand(5, 15);
             $usersCopy = $users;

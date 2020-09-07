@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Entity;
 
@@ -76,6 +77,7 @@ class User implements UserInterface
     public function setName(string $name): self
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -87,6 +89,7 @@ class User implements UserInterface
     public function setEmail(string $email): self
     {
         $this->email = $email;
+
         return $this;
     }
 
@@ -98,6 +101,7 @@ class User implements UserInterface
     public function setPassword(string $password): self
     {
         $this->password = $password;
+
         return $this;
     }
 
@@ -109,6 +113,7 @@ class User implements UserInterface
     public function setIsActive(bool $isActive): self
     {
         $this->isActive = $isActive;
+
         return $this;
     }
 
@@ -126,6 +131,7 @@ class User implements UserInterface
             $this->results[] = $result;
             $result->setUser($this);
         }
+
         return $this;
     }
 
@@ -137,6 +143,7 @@ class User implements UserInterface
                 $result->setUser(null);
             }
         }
+
         return $this;
     }
 
@@ -149,6 +156,7 @@ class User implements UserInterface
         foreach ($this->roles as $role){
             array_push($roleNames, $role->getName());
         }
+
         return $roleNames;
     }
 
@@ -157,6 +165,7 @@ class User implements UserInterface
         if (!$this->roles->contains($role)) {
             $this->roles[] = $role;
         }
+
         return $this;
     }
 
@@ -165,6 +174,7 @@ class User implements UserInterface
         if ($this->roles->contains($role)) {
             $this->roles->removeElement($role);
         }
+
         return $this;
     }
 
@@ -189,6 +199,7 @@ class User implements UserInterface
     public function setIsVerified(bool $isVerified): self
     {
         $this->isVerified = $isVerified;
+
         return $this;
     }
 }

@@ -1,9 +1,11 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Repository;
 
 use App\Entity\Role;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -20,7 +22,9 @@ class RoleRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return Role[] Returns an array of Role objects
+     * @param string $name
+     * @return Role|null Returns an array of Role objects
+     * @throws NonUniqueResultException
      */
 
     public function findByName(string $name): ?Role
@@ -28,26 +32,6 @@ class RoleRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('r')
             ->where('r.name = :val')
             ->setParameter('val', $name)
-            ->getQuery()
-            ->getOneOrNullResult();
-    }
-
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('r')
-            ->andWhere('r.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('r.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult();
-    }
-
-    public function findOneBySomeField($value): ?Role
-    {
-        return $this->createQueryBuilder('r')
-            ->andWhere('r.exampleField = :val')
-            ->setParameter('val', $value)
             ->getQuery()
             ->getOneOrNullResult();
     }

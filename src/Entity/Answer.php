@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Entity;
 
@@ -46,6 +47,7 @@ class Answer
     public function setName(string $name): self
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -57,6 +59,7 @@ class Answer
     public function setIsRight(bool $isRight): self
     {
         $this->isRight = $isRight;
+
         return $this;
     }
 
@@ -68,6 +71,7 @@ class Answer
     public function setQuestion(Question $question): self
     {
         $this->question = $question;
+
         return $this;
     }
 }

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Controller;
 
@@ -14,7 +15,7 @@ class UserController extends AbstractController
      * @return Response
      * @IsGranted("ROLE_USER")
      */
-    public function onLogin()
+    public function onUserPage()
     {
         return $this->render('user/profile.html.twig');
     }

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Repository;
 
@@ -25,39 +26,10 @@ class QuizRepository extends ServiceEntityRepository
         $this->paginator = $paginator;
     }
 
-    /**
-     * @return Quiz[] Returns an array of Quiz objects
-     */
-
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('q')
-            ->andWhere('q.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('q.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult();
-    }
-
-
-    public function findOneBySomeField($value): ?Quiz
-    {
-        return $this->createQueryBuilder('q')
-            ->andWhere('q.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult();
-    }
-
-    public function findNext(int $page) : PaginationInterface
+    public function findNext(int $page): PaginationInterface
     {
         $query = $this->createQueryBuilder('q')
             ->select()->getQuery();
         return $this->paginator->paginate($query, $page, self::LIMIT);
-    }
-
-    public function findAllWithResults(){
-
     }
 }
