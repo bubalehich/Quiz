@@ -12,9 +12,13 @@
     <header>
         {% block header %}
             <div class="row flex-fill">
-                <div class="col-sm-1"><a href="{{ path('home') }}">Home</a></div>
-                <div class="col-sm-1"><a href="{{ path('app_quizes') }}">Quizes</a></div>
-                <div class="col-sm-1">lang</div>
+                <div class="col-sm-1"><a href="{{ path('home') }}">{% trans %}Home{% endtrans %}</a></div>
+                <div class="col-sm-1"><a href="{{ path('app_quizes') }}">{% trans %}Quizes{% endtrans %}</a></div>
+                {% if app.request.locale == "en" %}
+                <div class="col-sm-1"><a href="{{ path('app_locale',{_locale:"ru"}) }}"><img src="{{ asset('build/russia.png') }}"/></a></div>
+                {%  elseif app.request.locale == "ru" %}
+                <div class="col-sm-1"><a href="{{ path('app_locale',{_locale:"en"}) }}"><img src="{{ asset('build/uk.png') }}"/></a></a></div>
+                {% endif %}
                 <div class="col-sm-6"></div>
                 {% if is_granted('ROLE_ADMIN') %}
                     <div class="col-sm-1">
@@ -28,10 +32,10 @@
                 {% endif %}
 
                 {% if is_granted('ROLE_USER') %}
-                    <div class="col-sm-1 float-left"><a href="{{ path('app_logout') }}">Logout</a></div>
+                    <div class="col-sm-1 float-left"><a href="{{ path('app_logout') }}">{% trans %}Logout{% endtrans %}</a></div>
                 {% endif %}
                 {% if not is_granted('ROLE_USER') %}
-                    <div class="col-sm-1 float-left"><a href="{{ path('app_login') }}">Login</a></div>
+                    <div class="col-sm-1 float-left"><a href="{{ path('app_login') }}">{% trans %}Login{% endtrans %}</a></div>
                 {% endif %}
             </div>
         {% endblock %}
