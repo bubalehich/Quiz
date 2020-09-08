@@ -10,13 +10,9 @@
     <h1>Register</h1>
 
     {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.name) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-
-        <button type="submit" class="btn">Register</button>
-    <br><a href="{{ path('app_login')}}">Already have an account?</a>
+    {{ form_widget(registrationForm) }}
+    <button type="submit" class="btn btn-lg btn-primary">Register</button>
     {{ form_end(registrationForm) }}
+
+    <br><a href="{{ path('app_login') }}">Already have an account? Log in</a>
 {% endblock %}

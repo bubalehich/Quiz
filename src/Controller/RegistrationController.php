@@ -8,7 +8,9 @@ use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Repository\RoleRepository;
 use App\Security\EmailConfirmationManager;
+use App\Security\EmailManager;
 use App\Security\LoginFormAuthenticator;
+use App\Service\UserService;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -22,71 +24,73 @@ use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
 class RegistrationController extends AbstractController
 {
-    private EmailConfirmationManager $emailVerifier;
+    private EmailManager $emailVerifier;
 
-    public function __construct(EmailConfirmationManager $emailVerifier)
+    public function __construct(EmailManager $emailVerifier)
     {
         $this->emailVerifier = $emailVerifier;
     }
 
     /**
      * @Route("/register", name="app_register")
+     * @param UserService $service
      * @param Request $request
-     * @param UserPasswordEncoderInterface $passwordEncoder
      * @param GuardAuthenticatorHandler $guardHandler
      * @param LoginFormAuthenticator $authenticator
      * @return Response
-     * @throws NonUniqueResultException
      */
-    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, LoginFormAuthenticator $authenticator): Response
+    public function register(UserService $service, Request $request, GuardAuthenticatorHandler $guardHandler, LoginFormAuthenticator $authenticator): Response
     {
         if ($this->getUser()) {
             return $this->redirectToRoute('home');
         }
-        $user = new User();
-        $form = $this->createForm(RegistrationFormType::class, $user);
+        $form = $this->createForm(RegistrationFormType::class);
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $user->setPassword(
-                $passwordEncoder->encodePassword(
-                    $user,
-                    $form->get('plainPassword')->getData()
-                )
+            $result = $service->register(
+                $user = $form->getData()
             );
 
-            $role = new Role();
-            $role->setName('ROLE_USER');
-            $user->setIsActive(true);
-            $entityManager = $this->getDoctrine()->getManager();
 
-            /** @var RoleRepository $roleRepository */
-            $roleRepository = $entityManager->getRepository(Role::class);
-            if (!$roleRepository->findByName($role->getName())) {
-                $entityManager->persist($role);
-                $user->addRole($role);
-            } else {
-                $user->addRole($roleRepository->findByName($role->getName()));
+//            $user->setPassword(
+//                $passwordEncoder->encodePassword(
+//                    $user,
+//                    $form->get('plainPassword')->getData()
+//                )
+//            );
+
+//            $role = new Role();
+//            $role->setName('ROLE_USER');
+//            $user->setIsActive(true);
+//            $entityManager = $this->getDoctrine()->getManager();
+//
+//            /** @var RoleRepository $roleRepository */
+//            $roleRepository = $entityManager->getRepository(Role::class);
+//            if (!$roleRepository->findByName($role->getName())) {
+//                $entityManager->persist($role);
+//                $user->addRole($role);
+//            } else {
+//                $user->addRole($roleRepository->findByName($role->getName()));
+//            }
+
+//            $entityManager->persist($user);
+//            $entityManager->flush();
+//            $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
+//                (new TemplatedEmail())
+//                    ->from(new Address('quiz.sender.bot@gmail.com', 'Quiz Account Registration Bot'))
+//                    ->to($user->getEmail())
+//                    ->subject('Please Confirm your Email')
+//                    ->htmlTemplate('registration/confirmation_email.html.twig')
+//            );
+            if ($result['success']) {
+                $this->emailVerifier->sendEmailConfirmation($user);
+
+                $this->addFlash('success', $result['message']);
+                return $this->redirectToRoute('app_login');
             }
-
-            $entityManager->persist($user);
-            $entityManager->flush();
-            $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
-                (new TemplatedEmail())
-                    ->from(new Address('quiz.sender.bot@gmail.com', 'Quiz Account Registration Bot'))
-                    ->to($user->getEmail())
-                    ->subject('Please Confirm your Email')
-                    ->htmlTemplate('registration/confirmation_email.html.twig')
-            );
-
-            return $guardHandler->authenticateUserAndHandleSuccess(
-                $user,
-                $request,
-                $authenticator,
-                'main'
-            );
         }
-
         return $this->render('registration/register.html.twig', [
             'registrationForm' => $form->createView(),
         ]);
@@ -99,7 +103,6 @@ class RegistrationController extends AbstractController
      */
     public function verifyUserEmail(Request $request): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         try {
             $this->emailVerifier->handleEmailConfirmation($request, $this->getUser());
         } catch (VerifyEmailExceptionInterface $exception) {
@@ -108,11 +111,11 @@ class RegistrationController extends AbstractController
             return $this->redirectToRoute('app_register');
         }
         /**@var User $user */
-        $user = $this->getUser();
-        $user->setIsVerified(true);
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($user);
-        $em->flush();
+//        $user = $this->getUser();
+//        $user->setIsVerified(true);
+//        $em = $this->getDoctrine()->getManager();
+//        $em->persist($user);
+//        $em->flush();
         // @TODO Change the redirect on success and handle or remove the flash message in your templates
         $this->addFlash('success', 'Your email address has been verified.');
 
