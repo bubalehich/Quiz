@@ -26,6 +26,7 @@ class RegistrationController extends AbstractController
      * @param UserService $service
      * @param Request $request
      * @return Response
+     * @throws NonUniqueResultException
      */
     public function register(UserService $service, Request $request): Response
     {
