@@ -30,7 +30,7 @@ class RegistrationController extends AbstractController
     public function register(UserService $service, Request $request): Response
     {
         if ($this->getUser()) {
-            return $this->redirectToRoute('home');
+            return $this->redirectToRoute('app_home');
         }
         $form = $this->createForm(RegistrationFormType::class);
         $form->handleRequest($request);

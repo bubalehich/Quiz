@@ -51,4 +51,12 @@ class UserService
 
         return ['message' => 'Account with this email already exist.', 'success' => false];
     }
+
+    public function updatePassword(User $user, string $plainPassword){
+        $user->setPassword($this->passwordEncoder->encodePassword(
+            $user,
+            $plainPassword
+        ));
+        $this->manager->flush();
+    }
 }

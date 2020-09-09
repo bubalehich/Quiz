@@ -37,7 +37,7 @@ security:
                     - App\Security\LoginFormAuthenticator
             logout:
                 path: app_logout
-                target: home
+                target: app_home
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
