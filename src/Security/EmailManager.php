@@ -8,14 +8,12 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 use SymfonyCasts\Bundle\VerifyEmail\VerifyEmailHelperInterface;
 use Symfony\Component\Mime\Address;
 
 class EmailManager
 {
-    //TODO: remove it to config files
     private const EMAIL = 'quiz.sender.bot@gmail.com';
     private const MSG_CONFIRM_EMAIL = 'Hello! You created an account on Quiz. Please confirm your email.';
     private const MSG_RESTORE_PASSWORD = 'Hello! You send request for restoring password. Here is your link.';
@@ -48,7 +46,6 @@ class EmailManager
             ->subject(self::MSG_CONFIRM_EMAIL)
             ->htmlTemplate(self::CONFIRMATION_TEMPLATE);
 
-
         $signatureComponents = $this->verifyEmailHelper->generateSignature(
             self::VERIFY_EMAIL_ROUTE_NAME,
             (string)$user->getId(),
@@ -56,28 +53,31 @@ class EmailManager
         );
 
         $context = $templatedEmail->getContext();
-        $context['signedUrl'] = $signatureComponents->getSignedUrl();
+        $context['signedUrl'] = $signatureComponents->getSignedUrl() . '&id=' . $user->getId();
         $context['expiresAt'] = $signatureComponents->getExpiresAt();
-
         $templatedEmail->context($context);
-
         $this->mailer->send($templatedEmail);
     }
 
     /**
      * @param Request $request
-     * @param User $user
      * @throws VerifyEmailExceptionInterface
      */
-    public function handleEmailConfirmation(Request $request, User $user): void
+    public function handleEmailConfirmation(Request $request): void
     {
-        $this->verifyEmailHelper->validateEmailConfirmation($request->getUri(), (string)$user->getId(), $user->getEmail());
-
+        $user = $this->entityManager->getRepository(User::class)
+            ->find($request->get('id'));
+        $uri = str_replace
+        (
+            '&id=' . (string)$user->getId(),
+            '',
+            $request->getUri()
+        );
+        $this->verifyEmailHelper->validateEmailConfirmation($uri, (string)$user->getId(),
+            $user->getEmail());
         $user->setIsVerified(true);
 
         $this->entityManager->persist($user);
         $this->entityManager->flush();
     }
-
-
 }

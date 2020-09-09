@@ -3,7 +3,7 @@
 {% block title %}Log in!{% endblock %}
 
 {% block body %}
-    {% for message in app.flashes('msg') %}
+    {% for message in app.flashes('success') %}
         <div class="alert alert-success">
             {{ message }}
         </div>
