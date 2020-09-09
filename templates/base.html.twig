@@ -12,7 +12,7 @@
     <header>
         {% block header %}
             <div class="row flex-fill">
-                <div class="col-sm-1"><a href="{{ path('home') }}">{% trans %}Home{% endtrans %}</a></div>
+                <div class="col-sm-1"><a href="{{ path('app_home') }}">{% trans %}Home{% endtrans %}</a></div>
                 <div class="col-sm-1"><a href="{{ path('app_quizes') }}">{% trans %}Quizes{% endtrans %}</a></div>
                 {% if app.request.locale == "en" %}
                 <div class="col-sm-1"><a href="{{ path('app_locale',{_locale:"ru"}) }}"><img src="{{ asset('build/russia.png') }}"/></a></div>
@@ -36,14 +36,17 @@
                 {% endif %}
                 {% if not is_granted('ROLE_USER') %}
                     <div class="col-sm-1 float-left"><a href="{{ path('app_login') }}">{% trans %}Login{% endtrans %}</a></div>
+                    <div class="col-sm-1 float-left"><a href="{{ path('app_register') }}">{% trans %}Register{% endtrans %}</a></div>
                 {% endif %}
             </div>
         {% endblock %}
     </header>
     {% block body %}
     {% endblock %}
+
+    {{ encore_entry_script_tags('app') }}
     {% block javascripts %}
-        {{ encore_entry_script_tags('app') }}
+
     {% endblock %}
 </div>
 </body>

@@ -14,6 +14,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class LocaleController extends AbstractController
 {
+    private const COOCKIE_LIFETIME = 3600*3600*2;
+
     /**
      * @Route ("/locale/{_locale}", name="app_locale")
      * @param Request $request
@@ -24,8 +26,9 @@ class LocaleController extends AbstractController
     {
         $request->getSession()->set('_locale', $_locale);
         $response = new RedirectResponse('/');
-        $cookie = new Cookie('_locale',$_locale,time()+3600*3600*2);
+        $cookie = new Cookie('_locale',$_locale,time()+self::COOCKIE_LIFETIME);
         $response->headers->setCookie($cookie);
+
         return $response;
     }
 }
