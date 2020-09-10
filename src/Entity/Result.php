@@ -44,7 +44,7 @@ class Result
     /**
      * @ORM\Column(type="decimal", precision=4, scale=2, nullable=true)
      */
-    private float $result=0;
+    private float $result;
 
     /**
      * @ORM\Column(type="integer")

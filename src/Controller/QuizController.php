@@ -46,7 +46,7 @@ class QuizController extends AbstractController
     }
 
     /**
-     * @Route ("/quiz/{id}")
+     * @Route ("/quiz_info/{id}", name="app_quiz_info")
      * @param Quiz $quiz
      * @return Response
      */

@@ -61,27 +61,25 @@
                         <h2>Your progress</h2>
                     </div>
                     <p style="text-align: center; margin: 0">
-                        {% if not result.progress is same as (0) %}
-                            Score: {{ result.result }}
+                        {% if result is null %}Not participating{% endif %}
+                        {% if result is not null %}
+                        {% if result.endDate is null %}In progress{% endif %}
+                        {% if result.endDate is not null %}Passed
+                    </p>
+                    <p>Score: {{ result.result }}
                         {% endif %}
-                        {% if result.progress is same as (0) %}
-                            You are not join this quiz yet!
                         {% endif %}
                     </p>
                     <div class="d-flex justify-content-center ">
-                        {% if result.progress is same as (0) %}
-                            <button type="button" class="btn btn-success">Start</button>
-                        {% endif %}
-                        {% if not result.progress is same as (0) %}
-                            <button type="button" {% if result.endDate is null %}disabled{% endif %}
-                                    class="btn btn-success">Continue
-                            </button>
-                        {% endif %}
+                        <button type="button"
+                                {% if result is null %}class="btn btn-success">Start{% endif %}
+                            {% if result is not null and  result.endDate is null %}class="btn btn-warning">Continue{% endif %}
+                            {% if result is not null and  result.endDate is not null %}class="btn btn-secondary" disabled>Ended {% endif %}
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
     </div>
 {% endblock %}
 
