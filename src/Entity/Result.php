@@ -20,7 +20,7 @@ class Result
     private int $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="results")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="results", fetch="EAGER")
      * @ORM\JoinColumn(nullable=false)
      */
     private User $user;

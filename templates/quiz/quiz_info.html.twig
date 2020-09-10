@@ -1,0 +1,87 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <div class="d-flex justify-content-center">
+            <h1>{{ quiz.name }}</h1>
+        </div>
+        <div class="row flex-fill">
+            <div class="col-sm-6" style="background-color: #e08742;margin:5px">
+                <div class="d-flex justify-content-center">
+                    <h2>Quiz info</h2>
+                </div>
+                <table width="100%">
+                    <tr>
+                        <td>Created:</td>
+                        <td>{{ quiz.createDate.format("d.m.Y; H:i:s") }}</td>
+                    </tr>
+                    <tr>
+                        <td>Quiz status:</td>
+                        <td{% if not  quiz.isActive %} style="color: #db7778" {% endif %}
+                                {% if  quiz.isActive %} style="color: #3ac31a" {% endif %} >
+                            {% if  quiz.isActive %}active{% endif %}
+                            {% if not  quiz.isActive %}closed{% endif %}</td>
+                    </tr>
+                    <tr>
+                        <td>Count of questions:</td>
+                        <td>{{ quiz.questions.count }}</td>
+                    </tr>
+                    <tr>
+                        <td>Count of participant:</td>
+                        <td>{{ quiz.results.count }}</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="col-sm-5" style=" margin:5px">
+                <div style="background-color: #23bf5d">
+                    <table width="100%" style="text-align: center">
+                        <tr>
+                            <th colspan="4"><a href="#">Leaders</a></th>
+                        </tr>
+                        <tr>
+                            <th>No</th>
+                            <th>name</th>
+                            <th>result</th>
+                            <th>time</th>
+                        </tr>
+                        {% for tr in topResults %}
+                            <tr>
+                                <td>{{ loop.index }}</td>
+                                <td>{{ tr.user.name }}</td>
+                                <td>{{ tr.result }}</td>
+                                <td>{{ (tr.endDate.diff(tr.startDate)).s }}</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+
+                </div>
+                <div style="background-color: darkcyan;margin-top:5px">
+                    <div class="d-flex justify-content-center">
+                        <h2>Your progress</h2>
+                    </div>
+                    <p style="text-align: center; margin: 0">
+                        {% if not result.progress is same as (0) %}
+                            Score: {{ result.result }}
+                        {% endif %}
+                        {% if result.progress is same as (0) %}
+                            You are not join this quiz yet!
+                        {% endif %}
+                    </p>
+                    <div class="d-flex justify-content-center ">
+                        {% if result.progress is same as (0) %}
+                            <button type="button" class="btn btn-success">Start</button>
+                        {% endif %}
+                        {% if not result.progress is same as (0) %}
+                            <button type="button" {% if result.endDate is null %}disabled{% endif %}
+                                    class="btn btn-success">Continue
+                            </button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+{% endblock %}
+
