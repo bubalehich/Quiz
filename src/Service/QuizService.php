@@ -40,44 +40,20 @@ class QuizService
             ->paginate($this->quizRepository->findNext($page), $page, self::PAGINATION_QUIZES_LIMIT);
     }
 
-    public function getLeadersForPage(int $page): array
+    public function getLeadersForPage(PaginationInterface $pagination): array
     {
-        $resultArray = [];
+        $result = [];
         /** @var Quiz $quiz */
-        foreach ($this->getPaginateQuizes($page)->getItems() as $quiz) {
-            $maxResult = array_reduce
-            (
-                $quiz->getResults()->toArray(),
-                "self::maxResult",
-                0
-            );
-            $resultsWithGivenResult = [];
-            foreach ($quiz->getResults() as $result) {
-                if ($result->getResult() === $maxResult) {
-                    array_push($resultsWithGivenResult, $result);
-                }
-            }
-            $minDuration = array_reduce($resultsWithGivenResult, "self::minDuration", -1);
-            if ($minDuration === -1) {
-                foreach ($quiz->getResults() as $result) {
-                    if ($result->getResult() === $maxResult) {
-                        $userName = $result->getUser()->getName();
-                        break;
-                    }
-                }
-            } else {
-                /** @var Result $result */
-                foreach ($resultsWithGivenResult as $result) {
-                    if ($result->getEndDate()->getTimestamp() - $result->getStartDate()->getTimestamp() === $minDuration) {
-                        $userName = $result->getUser()->getName();
-                        break;
-                    }
-                }
-            }
-            $resultArray[$quiz->getId()] = $userName;
+        foreach ($pagination->getItems() as $quiz) {
+            $result[$quiz->getId()] = $this
+                ->resultRepository
+                ->getLeaders($quiz)
+                ->setMaxResults(1)
+                ->getQuery()
+                ->getOneOrNullResult();
         }
 
-        return $resultArray;
+        return $result;
     }
 
     function maxResult(float $max, Result $r): float

@@ -37,7 +37,7 @@ class QuizController extends AbstractController
     {
         $page = $request->query->getInt('page', 1);
         $pagination = $this->service->getPaginateQuizes($page);
-        $leaders = $this->service->getLeadersForPage($page);
+        $leaders = $this->service->getLeadersForPage($pagination);
         return $this->render
         (
             'quiz/all_quizes.html.twig',
