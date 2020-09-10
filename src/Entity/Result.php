@@ -26,7 +26,7 @@ class Result
     private User $user;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Quiz::class, inversedBy="results")
+     * @ORM\ManyToOne(targetEntity=Quiz::class, inversedBy="results", fetch="EAGER")
      * @ORM\JoinColumn(nullable=false)
      */
     private Quiz $quiz;

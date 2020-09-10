@@ -15,7 +15,7 @@ class QuizService
 
     /**
      * QuizService constructor.
-     * @param QuizRepository $quizRepositor
+     * @param QuizRepository $quizRepository
      */
     public function __construct(QuizRepository $quizRepository)
     {

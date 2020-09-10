@@ -45,7 +45,6 @@
     "symfony/validator": "5.1.*",
     "symfony/var-dumper": "^5.1",
     "symfony/web-link": "5.1.*",
-    "symfony/web-profiler-bundle": "5.1.*",
     "symfony/webpack-encore-bundle": "^1.7",
     "symfony/yaml": "5.1.*",
     "symfonycasts/reset-password-bundle": "^1.1",
@@ -54,6 +53,7 @@
     "twig/twig": "^2.12|^3.0"
   },
   "require-dev": {
+    "symfony/web-profiler-bundle": "5.1.*"
   },
   "config": {
     "optimize-autoloader": true,
