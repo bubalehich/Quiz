@@ -32,12 +32,11 @@
                     </tr>
                 </table>
             </div>
-
             <div class="col-sm-5" style=" margin:5px">
                 <div style="background-color: #23bf5d">
                     <table width="100%" style="text-align: center">
                         <tr>
-                            <th colspan="4"><a href="#">Leaders</a></th>
+                            <th colspan="4"><a href="{{url('app_quiz_leaders', {id:quiz.id}) }}">Leaders</a></th>
                         </tr>
                         <tr>
                             <th>No</th>
@@ -54,7 +53,6 @@
                             </tr>
                         {% endfor %}
                     </table>
-
                 </div>
                 <div style="background-color: darkcyan;margin-top:5px">
                     <div class="d-flex justify-content-center">

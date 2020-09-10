@@ -9,44 +9,42 @@ use App\Entity\User;
 use App\Repository\QuizRepository;
 use App\Repository\ResultRepository;
 use Knp\Component\Pager\Pagination\PaginationInterface;
-use function Doctrine\ORM\QueryBuilder;
+use Knp\Component\Pager\PaginatorInterface;
 
 class QuizService
 {
     private const MAX_RESULT = 3;
+    private const PAGINATION_QUIZES_LIMIT = 7;
+    private const PAGINATION_LEADERS_LIMIT = 7;
     private QuizRepository $quizRepository;
-    private PaginationInterface $pagination;
-    /**
-     * @var ResultRepository
-     */
     private ResultRepository $resultRepository;
+    private PaginatorInterface $paginator;
 
     /**
      * QuizService constructor.
      * @param QuizRepository $quizRepository
      * @param ResultRepository $resultRepository
+     * @param PaginatorInterface $paginator
      */
-    public function __construct(QuizRepository $quizRepository, ResultRepository $resultRepository)
+    public function __construct(QuizRepository $quizRepository, ResultRepository $resultRepository, PaginatorInterface $paginator)
     {
         $this->quizRepository = $quizRepository;
         $this->resultRepository = $resultRepository;
+        $this->paginator = $paginator;
     }
 
-    public function getPagination(int $page)
+    public function getPaginateQuizes(int $page): PaginationInterface
     {
-        $this->pagination = $this->quizRepository->findNext($page);
-        return $this->pagination;
+        return $this
+            ->paginator
+            ->paginate($this->quizRepository->findNext($page), $page, self::PAGINATION_QUIZES_LIMIT);
     }
 
     public function getLeadersForPage(int $page): array
     {
         $resultArray = [];
-        if (!$this->pagination || $this->pagination->getCurrentPageNumber() !== $page) {
-            $this->pagination = $this->quizRepository->findNext($page);
-        }
-
         /** @var Quiz $quiz */
-        foreach ($this->pagination->getItems() as $quiz) {
+        foreach ($this->getPaginateQuizes($page)->getItems() as $quiz) {
             $maxResult = array_reduce
             (
                 $quiz->getResults()->toArray(),
@@ -109,15 +107,16 @@ class QuizService
 
     public function getTopLeaders(Quiz $quiz): array
     {
-        $qb = $this->resultRepository->createQueryBuilder('r');
+        $qb = $this->resultRepository->getLeaders($quiz);
         return $qb
-            ->where('r.quiz = :quiz')
-            ->andWhere($qb->expr()->isNotNull('r.endDate'))
-            ->addOrderBy('r.result', 'DESC')
-            ->addOrderBy($qb->expr()->diff('r.endDate', 'r.startDate'))
             ->setMaxResults(self::MAX_RESULT)
-            ->setParameter('quiz', $quiz)
             ->getQuery()
             ->getResult();
+    }
+
+    public function getPaginateLeaders(Quiz $quiz, int $page): PaginationInterface
+    {
+        $query = $this->resultRepository->getLeaders($quiz)->getQuery();
+        return $this->paginator->paginate($query, $page, self::PAGINATION_LEADERS_LIMIT);
     }
 }

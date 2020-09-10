@@ -36,7 +36,7 @@ class QuizController extends AbstractController
     public function listAction(Request $request): Response
     {
         $page = $request->query->getInt('page', 1);
-        $pagination = $this->service->getPagination($page);
+        $pagination = $this->service->getPaginateQuizes($page);
         $leaders = $this->service->getLeadersForPage($page);
         return $this->render
         (
@@ -58,6 +58,22 @@ class QuizController extends AbstractController
             'quiz' => $quiz,
             'topResults' => $topResults,
             'result' => $result,
+        ]);
+    }
+
+    /**
+     * @Route ("/quiz_info/{id}/leaders", name="app_quiz_leaders")
+     * @param Quiz $quiz
+     * @param Request $request
+     * @return Response
+     */
+    public function leaderBoard(Quiz $quiz, Request $request)
+    {
+        $page = $request->query->getInt('page', 1);
+        $pagination = $this->service->getPaginateLeaders($quiz, $page);
+        return $this->render('quiz/leaderboard.html.twig',[
+            'quiz'=>$quiz,
+            'pagination'=>$pagination
         ]);
     }
 }

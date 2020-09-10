@@ -39,7 +39,7 @@ class Result
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private ? DateTimeInterface $endDate;
+    private ?DateTimeInterface $endDate;
 
     /**
      * @ORM\Column(type="decimal", precision=4, scale=2, nullable=true)
@@ -97,11 +97,20 @@ class Result
         return $this->endDate;
     }
 
-    public function setEndDate(? DateTimeInterface $endDate): self
+    public function setEndDate(?DateTimeInterface $endDate): self
     {
         $this->endDate = $endDate;
 
         return $this;
+    }
+
+    public function getDuration(): ?int
+    {
+        if ($this->endDate) {
+            return $this->endDate->diff($this->startDate)->s;
+        }
+
+        return null;
     }
 
     public function getResult(): ?float
