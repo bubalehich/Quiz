@@ -97,6 +97,7 @@ class ResetPasswordController extends AbstractController
                 'There was a problem validating your reset request - %s',
                 $e->getReason()
             ));
+          
             return $this->redirectToRoute('app_forgot_password_request');
         }
 
@@ -107,8 +108,8 @@ class ResetPasswordController extends AbstractController
             $this->resetPasswordHelper->removeResetRequest($token);
             $this->userService->updatePassword($user, $form->get('plainPassword')->getData());
             $this->cleanSessionAfterReset();
-
             $this->addFlash('success', 'Password has been updated!');
+          
             return $this->redirectToRoute('app_login');
         }
 
