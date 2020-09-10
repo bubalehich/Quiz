@@ -12,6 +12,7 @@
     <header>
         {% block header %}
             <div class="row flex-fill">
+
                 <div class="col-sm-1"><a href="{{ path('app_home') }}">{% trans %}Home{% endtrans %}</a></div>
                 <div class="col-sm-1"><a href="{{ path('app_quizes') }}">{% trans %}Quizes{% endtrans %}</a></div>
                 {% if app.request.locale == "en" %}
@@ -19,6 +20,7 @@
                 {%  elseif app.request.locale == "ru" %}
                 <div class="col-sm-1"><a href="{{ path('app_locale',{_locale:"en"}) }}"><img src="{{ asset('build/uk.png') }}"/></a></a></div>
                 {% endif %}
+
                 <div class="col-sm-6"></div>
                 {% if is_granted('ROLE_ADMIN') %}
                     <div class="col-sm-1">
