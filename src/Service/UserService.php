@@ -33,23 +33,14 @@ class UserService
         $this->roleRepository = $roleRepository;
     }
 
-    public function register(User $user): array
+    public function register(User $user): void
     {
-        if (!$this->repository->findByEmail($user->getEmail())) {
-            $user->addRole(
-                $this->roleRepository->findByName('ROLE_USER')
-            )
+            $user->addRole($this->roleRepository->findByName('ROLE_USER'))
                 ->setIsActive(true)
-                ->setPassword(
-                    $this->passwordEncoder->encodePassword($user, $user->getPassword())
-                );
+                ->setPassword($this->passwordEncoder->encodePassword($user, $user->getPassword()))
+            ;
             $this->manager->persist($user);
             $this->manager->flush();
-
-            return ['message' => 'Account has been create. Check your email and confirm it.', 'success' => true];
-        }
-
-        return ['message' => 'Account with this email already exist.', 'success' => false];
     }
 
     public function updatePassword(User $user, string $plainPassword){

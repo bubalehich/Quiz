@@ -26,27 +26,25 @@ class RegistrationController extends AbstractController
      * @param UserService $service
      * @param Request $request
      * @return Response
-     * @throws NonUniqueResultException
      */
     public function register(UserService $service, Request $request): Response
     {
         if ($this->getUser()) {
             return $this->redirectToRoute('app_home');
         }
+
         $form = $this->createForm(RegistrationFormType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $result = $service->register(
-                $user = $form->getData()
-            );
+            $service->register($user = $form->getData());
+            $this->emailVerifier->sendEmailConfirmation($user);
+            $this->addFlash('success', 'Account has been create. Check your email and confirm it.');
 
-            if ($result['success']) {
-                $this->emailVerifier->sendEmailConfirmation($user);
-                $this->addFlash('success', $result['message']);
-
-                return $this->redirectToRoute('app_login');
-            }
+            return $this->redirectToRoute('app_login');
+        }
+        if ($form->isSubmitted()) {
+            $this->addFlash('verify_email_error', 'Account with this email already exist.');
         }
 
         return $this->render('registration/register.html.twig', [
