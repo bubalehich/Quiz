@@ -16,13 +16,23 @@
 
                     <div class="row flex-fill " style="background-color: #1b9448">
                         <div class="col-md-8">
-                            Quiz name:
-                            <a href="{{ url('app_quiz_info',{id:result.quiz.id}) }}"> {{ result.quiz.name }}</a>
-                            <br>
-                            Quiz status: {{ result.quiz.isActive }}<br>
-                            Quiz status: {% if result.endDate %}Completed{% endif %}
+                            <h3>Quiz name:
+                                <a href="{{ url('app_quiz_info',{id:result.quiz.id}) }}"> {{ result.quiz.name }}</a>
+                            </h3>
+
+                            Quiz status:
+                            <span{% if not  result.quiz.isActive %} style="color: #db7778" {% endif %}
+                                    {% if  result.quiz.isActive %} style="color: #3ac31a" {% endif %} >
+
+                                {% if  result.quiz.isActive %}active{% endif %}
+                                {% if not  result.quiz.isActive %}closed{% endif %}
+                            </span><br>
+
+
+
+                            Progress: {% if result.endDate %}Completed{% endif %}
                             {% if not result.endDate %}{{ result.progress }} {% endif %}<br>
-                            Quiz result: {{ result.result }}
+                            Result: {{ result.result }}
                         </div>
                         <div class="col-md-4">
                             <button class="btn btn-lg btn-primary">Leaderboard</button>
