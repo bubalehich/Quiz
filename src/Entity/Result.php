@@ -5,6 +5,8 @@ namespace App\Entity;
 
 use App\Repository\ResultRepository;
 use DateTimeInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -47,9 +49,14 @@ class Result
     private float $result;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\OneToMany(targetEntity=Progress::class, mappedBy="result", fetch="EAGER")
      */
-    private int $progress;
+    private Collection $progress;
+
+    public function __construct()
+    {
+        $this->progress = new ArrayCollection();
+    }
 
     public function getId(): int
     {
@@ -125,14 +132,32 @@ class Result
         return $this;
     }
 
-    public function getProgress(): int
+    /**
+     * @return Collection|Progress[]
+     */
+    public function getProgress(): Collection
     {
         return $this->progress;
     }
 
-    public function setProgress(int $progress): self
+    public function addProgress(Progress $progress): self
     {
-        $this->progress = $progress;
+        if (!$this->progress->contains($progress)) {
+            $this->progress[] = $progress;
+            $progress->setResult($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProgress(Progress $progress): self
+    {
+        if ($this->progress->contains($progress)) {
+            $this->progress->removeElement($progress);
+            if ($progress->getResult() === $this) {
+                $progress->setResult(null);
+            }
+        }
 
         return $this;
     }
