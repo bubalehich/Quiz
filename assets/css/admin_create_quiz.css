@@ -1,0 +1,35 @@
+.main_block{
+    width:100%;
+    height:400px;
+}
+.top_block{
+    position:relative;
+    height:10%;
+    display:flex;
+    justify-content: space-around;
+}
+.down_block{
+    position: relative;
+    height:80%;
+    display:flex;
+    justify-content: space-around;
+}
+.down_block .selected_questions, .available_questions{
+    width:calc(100% / 2.5);
+    height:100%;
+    border:3px solid orangered;
+    border-radius: 3px;
+    box-shadow: 0 0 2px black;
+    overflow-y:scroll;
+}
+.question{
+    padding-left:10px;
+    padding-top:5px;
+    width:100%;
+}
+.middle_block{
+    display:flex;
+    justify-content: space-around;
+}
+button #create_quiz{
+}

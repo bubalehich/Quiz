@@ -1,0 +1,41 @@
+{% extends('base.html.twig') %}
+
+{% block body %}
+    <div class="main_block">
+        <div class="top_block">
+            <div>
+                <input class="btn btn-success" type="submit" id="create_quiz" value="Create Quiz" />
+                <input type="text" name="quiz_name" placeholder="Quiz name" required />
+                <input type="checkbox" name="is_active"><span class="badge badge-success">active</span></input>
+            </div>
+
+        </div>
+        <div class="middle_block">
+            <h2><span class="badge badge-info">Selected Questions</span></h2>
+            <h2><span class="badge badge-warning">Available Questions</span></h2>
+        </div>
+        <div class="down_block">
+            <div class="selected_questions"></div>
+
+            <div class="available_questions">
+                {% for question in questions %}
+                    <div class="question">
+                        <input type="hidden" value="{{ question.id }}" />
+                        <h3><span class="badge badge-primary">{{ question.name }}</span></h3>
+                    </div>
+                {% endfor %}
+            </div>
+
+        </div>
+        <div style="text-align: center;">
+        <button class="btn btn-outline-secondary" id="clear">Clear</button>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('admin_create_quiz') }}
+
+{%  endblock %}

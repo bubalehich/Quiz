@@ -1,0 +1,15 @@
+.left_bar{
+    margin-top:50px;
+    width:10%;
+}
+.right_bar{
+    width:90%;
+}
+.link_block{
+    margin-top:10px;
+}
+.link_block span{
+    width:70%;
+    font-size:20px;
+    cursor:pointer;
+}

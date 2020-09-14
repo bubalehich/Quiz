@@ -44,9 +44,9 @@
     {% block body %}
     {% endblock %}
 
-    {{ encore_entry_script_tags('app') }}
-    {% block javascripts %}
 
+    {% block javascripts %}
+        {{ encore_entry_script_tags('app') }}
     {% endblock %}
 </div>
 </body>

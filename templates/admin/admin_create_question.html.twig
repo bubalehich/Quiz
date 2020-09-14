@@ -1,0 +1,28 @@
+
+{% extends 'admin/admin_page.html.twig' %}
+{% block rightbar %}
+    {{ form_start(createQuestionForm) }}
+    {{ form_row(createQuestionForm.name) }}
+    <button type="button"
+            class="add-another-collection-widget"
+            data-list-selector="#answers-fields-list">Add another answer</button>
+    <ul id="answers-fields-list"
+        data-prototype="{{ form_widget(createQuestionForm.answers.vars.prototype)|e }}"
+        data-widget-tags="{{ '<div><div>'|e }}"
+        data-widget-counter="{{ createQuestionForm.answers|length }}">
+        {% for answer in createQuestionForm.answers %}
+            <div>
+                {{ form_errors(answer) }}
+                {{ form_widget(answer) }}
+            </div>
+        {% endfor %}
+    </ul>
+
+    {{ form_end(createQuestionForm) }}
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('admin_create_question') }}
+{% endblock %}
