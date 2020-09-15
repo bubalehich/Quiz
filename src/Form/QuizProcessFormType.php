@@ -1,8 +1,7 @@
 <?php
-
+declare(strict_types=1);
 
 namespace App\Form;
-
 
 use App\Entity\Answer;
 use App\Entity\Question;
@@ -29,9 +28,7 @@ class QuizProcessFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-//            'data_class' => Answer::class,
             'question' => null
         ]);
     }
-
 }
