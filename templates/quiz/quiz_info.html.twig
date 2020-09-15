@@ -36,7 +36,7 @@
                 <div style="background-color: #23bf5d">
                     <table width="100%" style="text-align: center">
                         <tr>
-                            <th colspan="4"><a href="{{url('app_quiz_leaders', {id:quiz.id}) }}">Leaders</a></th>
+                            <th colspan="4"><a href="{{ url('app_quiz_leaders', {id:quiz.id}) }}">Leaders</a></th>
                         </tr>
                         <tr>
                             <th>No</th>
@@ -69,11 +69,13 @@
                         {% endif %}
                     </p>
                     <div class="d-flex justify-content-center ">
-                        <button type="button"
-                                {% if result is null %}class="btn btn-success">Start{% endif %}
-                            {% if result is not null and  result.endDate is null %}class="btn btn-warning">Continue{% endif %}
-                            {% if result is not null and  result.endDate is not null %}class="btn btn-secondary" disabled>Ended {% endif %}
-                        </button>
+                        <form action="{{ url('app_quiz',{id:quiz.id}) }}">
+                            <button type="submit"
+                                    {% if result is null %} class="btn btn-success">Start{% endif %}
+                                {% if result is not null and result.endDate is null %} class ="btn btn-success">Continue{% endif %}
+                                {% if result is not null and result.endDate is not null %} class="btn btn-secondary" disabled>Ended {% endif %}
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>

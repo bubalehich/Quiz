@@ -27,17 +27,20 @@
                                 {% if  result.quiz.isActive %}active{% endif %}
                                 {% if not  result.quiz.isActive %}closed{% endif %}
                             </span><br>
-
-
-
-                            Progress: {% if result.endDate %}Completed{% endif %}
-                            {% if not result.endDate %}{{ result.progress }} {% endif %}<br>
+                            Progress: {{ result.progress|length }}/{{ result.quiz.questions|length }}
+                            <br>
                             Result: {{ result.result }}
                         </div>
                         <div class="col-md-4">
-                            <button class="btn btn-lg btn-primary">Leaderboard</button>
+                            <form action="{{ url('app_quiz_leaders',{id:result.quiz.id}) }}">
+                                <button type="submit" class="btn btn-lg btn-primary">Leaderboard</button>
+                            </form>
                             {% if not result.endDate %}
-                                <button class="btn btn-lg btn-primary">Continue</button>
+                                <form action="{{ url('app_quiz',{id:result.quiz.id}) }}">
+                                    <button {% if not result.quiz.isActive %}disabled{% endif %}
+                                            class="btn btn-lg btn-primary" type="submit">Continue
+                                    </button>
+                                </form>
                             {% endif %}
                         </div>
                     </div>

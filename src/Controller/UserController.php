@@ -34,7 +34,6 @@ class UserController extends AbstractController
     public function onUserPage()
     {
         $results = $this->resultRepository->findByUser($this->getUser());
-//        dd($results);
-        return $this->render('user/profile.html.twig',['results'=>$results]);
+        return $this->render('user/profile.html.twig', ['results' => $results]);
     }
 }

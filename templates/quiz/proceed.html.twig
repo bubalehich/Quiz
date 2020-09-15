@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    Question #{{ result.progress|length }} of {{ quiz.questions|length }}<br>
+    {{ question.name }}
+
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button type="submit">Sub!</button>
+    {{ form_end(form) }}
+
+{% endblock %}
+

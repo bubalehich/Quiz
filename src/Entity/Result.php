@@ -56,6 +56,7 @@ class Result
     public function __construct()
     {
         $this->progress = new ArrayCollection();
+        $this->result=0;
     }
 
     public function getId(): int
