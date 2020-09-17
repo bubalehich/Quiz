@@ -5,9 +5,8 @@ namespace App\Repository;
 
 use App\Entity\Quiz;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
-use Knp\Component\Pager\Pagination\PaginationInterface;
-use Knp\Component\Pager\PaginatorInterface;
 
 /**
  * @method Quiz|null find($id, $lockMode = null, $lockVersion = null)
@@ -17,19 +16,15 @@ use Knp\Component\Pager\PaginatorInterface;
  */
 class QuizRepository extends ServiceEntityRepository
 {
-    const LIMIT = 5;
-    private PaginatorInterface $paginator;
 
-    public function __construct(ManagerRegistry $registry, PaginatorInterface $paginator)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Quiz::class);
-        $this->paginator = $paginator;
     }
 
-    public function findNext(int $page): PaginationInterface
+    public function findNext(int $page): Query
     {
-        $query = $this->createQueryBuilder('q')
+        return $this->createQueryBuilder('q')
             ->select()->getQuery();
-        return $this->paginator->paginate($query, $page, self::LIMIT);
     }
 }

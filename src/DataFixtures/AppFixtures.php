@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\DataFixtures;
 
 use App\Entity\Answer;
+use App\Entity\Progress;
 use App\Entity\Question;
 use App\Entity\Quiz;
 use App\Entity\Result;
@@ -16,10 +17,10 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class AppFixtures extends Fixture
 {
-    const USER_COUNT = 100;
+    const USER_COUNT = 1000;
     const ADMIN_COUNT = 10;
-    const QUIZ_COUNT = 10;
-    const QUESTIONS_COUNT = 100;
+    const QUIZ_COUNT = 100;
+    const QUESTIONS_COUNT = 1000;
     const ANSWERS_PER_QUESTION_COUNT = 4;
     const QUESTIONS_PER_QUIZ_COUNT = 10;
 
@@ -89,24 +90,38 @@ class AppFixtures extends Fixture
             $quiz = new Quiz();
             $quiz->setName('quizNo' . $i)
                 ->setIsActive((bool)rand(0, 5))
-                ->setCreateDate(new DateTime());
+                ->setCreateDate((new DateTime())->setTimestamp(strtotime(sprintf("-%d days", rand(1, self::QUIZ_COUNT)))));
             for ($k = 0; $k < self::QUESTIONS_PER_QUIZ_COUNT; $k++) {
                 $quiz->addQuestion($questions[rand(0, self::QUESTIONS_COUNT - 1)]);
             }
-            $count = rand(5, 15);
+            $participantCount = rand(5, 15);
             $usersCopy = $users;
-            for ($p = 0; $p < $count; $p++) {
+            shuffle($usersCopy);
+            for ($p = 0; $p < $participantCount; $p++) {
                 $result = new Result();
+
                 /** @var User $user */
                 $user = array_pop($usersCopy);
                 $user->addResult($result);
-                $result->setUser($user)
-                    ->setStartDate(new DateTime())
-                    ->setEndDate(rand(0, 5) ? new DateTime() : null)
-                    ->setProgress($result->getEndDate() ? self::QUESTIONS_PER_QUIZ_COUNT : rand(0, self::QUESTIONS_PER_QUIZ_COUNT - 1))
-                    ->setResult(rand(0, $result->getProgress()))
-                    ->setQuiz($quiz);
                 $quiz->addResult($result);
+
+                $result
+                    ->setStartDate((new DateTime())->setTimestamp(strtotime(sprintf("-%d hours", rand(1, self::QUIZ_COUNT)))))
+                    ->setEndDate(rand(0, 5) ? new DateTime() : null);
+
+                $progressCount = $result->getEndDate() ? self::QUESTIONS_PER_QUIZ_COUNT : rand(0, self::QUESTIONS_PER_QUIZ_COUNT);
+                $rightAnswersCount = 0;
+                for ($j = 0; $j < $progressCount; $j++) {
+                    $progress = (new Progress())
+                        ->setQuestion($questions[$i*$j+$j])
+                        ->setIsRight(random_int(0, 10) >= 3 ? false : true);
+                    $result->addProgress($progress);
+                    $manager->persist($progress);
+                    if ($progress->getIsRight()) {
+                        $rightAnswersCount++;
+                    }
+                }
+                $result->setResult($rightAnswersCount);
                 $manager->persist($result);
             }
             $manager->persist($quiz);
