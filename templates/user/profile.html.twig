@@ -1,44 +1,46 @@
 {% extends 'base.html.twig' %}
+
+{% block title %}{{ 'userpage.title'| trans }}{% endblock %}
+
 {% block body %}
     <div class="container">
         <div class="row flex-fill">
             <div class="col-sm-4">
-                <h2>Info</h2>
-                Name: {{ app.user.name }}<br>
-                Email: {{ app.user.email }}<br>
+                <h2>{{ 'userpage.info'| trans }}</h2>
+                {{ 'userpage.name'| trans }}: {{ app.user.name }}<br>
+                {{ 'userpage.email'| trans }}: {{ app.user.email }}<br>
 
-                <button type="button" class="btn btn-lg btn-primary">Edit</button>
+                <button type="button" class="btn btn-lg btn-primary">{{ 'userpage.edit'| trans }}</button>
             </div>
             <div class="col-sm-8">
-
-                <h2>Quizes</h2>
+                <h2>{{ 'userpage.quizes'| trans }}</h2>
                 {% for result in results %}
-
                     <div class="row flex-fill " style="background-color: #1b9448">
                         <div class="col-md-8">
-                            <h3>Quiz name:
+                            <h3>{{ 'userpage.quizes.name'| trans }}:
                                 <a href="{{ url('app_quiz_info',{id:result.quiz.id}) }}"> {{ result.quiz.name }}</a>
                             </h3>
-
-                            Quiz status:
+                            {{ 'userpage.quizes.status'| trans }}:
                             <span{% if not  result.quiz.isActive %} style="color: #db7778" {% endif %}
                                     {% if  result.quiz.isActive %} style="color: #3ac31a" {% endif %} >
 
-                                {% if  result.quiz.isActive %}active{% endif %}
-                                {% if not  result.quiz.isActive %}closed{% endif %}
+                                {% if  result.quiz.isActive %}{{ 'quiz.active'| trans }}{% endif %}
+                                {% if not  result.quiz.isActive %}{{ 'quiz.close'| trans }}{% endif %}
                             </span><br>
-                            Progress: {{ result.progress|length }}/{{ result.quiz.questions|length }}
+                            {{ 'userpage.quizes.progress'| trans }}:
+                            {{ result.progress|length }}/{{ result.quiz.questions|length }}
                             <br>
-                            Result: {{ result.result }}
+                            {{ 'userpage.quizes.result'| trans }}: {{ result.result }}
                         </div>
                         <div class="col-md-4">
                             <form action="{{ url('app_quiz_leaders',{id:result.quiz.id}) }}">
-                                <button type="submit" class="btn btn-lg btn-primary">Leaderboard</button>
+                                <button type="submit" class="btn btn-lg btn-primary">{{ 'qi.leaders'| trans }}</button>
                             </form>
                             {% if not result.endDate %}
                                 <form action="{{ url('app_quiz',{id:result.quiz.id}) }}">
                                     <button {% if not result.quiz.isActive %}disabled{% endif %}
-                                            class="btn btn-lg btn-primary" type="submit">Continue
+                                            class="btn btn-lg btn-primary"
+                                            type="submit">{{ 'qi.button.continue'| trans }}
                                     </button>
                                 </form>
                             {% endif %}

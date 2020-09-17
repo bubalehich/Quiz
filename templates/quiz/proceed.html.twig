@@ -1,16 +1,16 @@
 {% extends 'base.html.twig' %}
-
+{% block title %}{{ quiz.name }}{% endblock %}
 {% block body %}
-    Question #{{ (result.progress|length+1) }} of {{ quiz.questions|length }}<br>
+    {{ 'qp.question'|trans }} №{{ (result.progress|length+1) }} {{ 'qp.of'|trans }} {{ quiz.questions|length }}<br>
     {{ question.name }}
     {{ form_start(form) }}
     {{ form_widget(form) }}
     <div id="sub">
-        <button type="submit" disabled>Next question</button>
+        <button type="submit" disabled>{{ 'qp.next'|trans }}</button>
     </div>
     {{ form_end(form) }}
     <div id="answer">
-        <button type="button" id="btn" onclick="onAnswer('{{ rightAnswer }}')">Answer</button>
+        <button type="button" id="btn" onclick="onAnswer('{{ rightAnswer }}', '{{ app.session.get("_locale") }}')">{{ 'qp.answer'|trans }}</button>
     </div>
     <div id="isCorrect">
     </div>

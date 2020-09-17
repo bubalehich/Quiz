@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Register{% endblock %}
+{% block title %}{{ 'reg.title'|trans }}{% endblock %}
 {% block stylesheets %}
     {{ parent() }}
     {{ encore_entry_link_tags('form') }}
@@ -11,14 +11,13 @@
         <div class="alert alert-danger" role="alert">{{ flashError }}</div>
     {% endfor %}
     <div class="box">
-        <h1>Register</h1>
+        <h1>{{ 'reg.title' | trans }}</h1>
         {{ form_start(registrationForm) }}
-        {{ form_widget(registrationForm.name,{'attr': {'placeholder': 'Name','label':'false'}}) }}
-        {{ form_widget(registrationForm.email,{'attr': {'placeholder': 'Email','label':'false'}}) }}
-        {{ form_widget(registrationForm.password,{'attr': {'placeholder': 'Password','label':'false'}}) }}
-        <input type="submit" name="" value="Register">
+        {{ form_widget(registrationForm.name,{'attr': {'placeholder': 'reg.name'|trans,'label':'false'}}) }}
+        {{ form_widget(registrationForm.email,{'attr': {'placeholder': 'reg.email'|trans,'label':'false'}}) }}
+        {{ form_widget(registrationForm.password,{'attr': {'placeholder': 'reg.password'|trans,'label':'false'}}) }}
+        <input type="submit" name="" value={{ 'reg.submit'|trans }}>
         {{ form_end(registrationForm) }}
-        <br><a href="{{ path('app_login') }}">Already have an account? Log in</a>
+        <a href="{{ path('app_login') }}">{{ 'reg.acc'|trans }}</a>
     </div>
-
 {% endblock %}

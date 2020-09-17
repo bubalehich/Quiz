@@ -2,29 +2,38 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}Welcome!{% endblock %}</title>
+    <title>{% block title %}{{ 'main.title'|trans }}{% endblock %}</title>
     {% block stylesheets %}
         {{ encore_entry_link_tags('app') }}
     {% endblock %}
 </head>
+
 <body>
 <header>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark justify-content-between">
         <ul class="navbar-nav float-right">
             <li class="nav-item">
-                <a class="nav-link" href="{{ path('app_home') }}">Home</a>
+                <a class="nav-link" href="{{ path('app_home') }}">{{ 'header.home'|trans }}</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ path('app_quizes') }}">Quizes</a>
+                <a class="nav-link" href="{{ path('app_quizes') }}">{{ 'header.quizes'|trans }}</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Language</a>
+                {% if app.request.locale == "en" %}
+                    <a class="nav-link" href="{{ path('app_locale',{_locale:"ru"}) }}">
+                        <img src="{{ asset('build/russia.png') }}"/>
+                    </a>
+                {% elseif app.request.locale == "ru" %}
+                    <a class="nav-link" href="{{ path('app_locale',{_locale:"en"}) }}">
+                        <img src="{{ asset('build/uk.png') }}"/>
+                    </a>
+                {% endif %}
             </li>
         </ul>
         <ul class="navbar-nav float-left">
             {% if is_granted('ROLE_ADMIN') %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ path('admin_page') }}">Administrate</a>
+                    <a class="nav-link" href="{{ path('admin_page') }}">{{ 'header.admin'|trans }}</a>
                 </li>
             {% endif %}
             {% if is_granted('ROLE_USER') %}
@@ -32,19 +41,21 @@
                     <a class="nav-link" href="{{ path('app_profile') }}">{{ app.user.name }}</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ path('app_logout') }}">Logout</a>
+                    <a class="nav-link" href="{{ path('app_logout') }}">{{ 'header.logout'|trans }}</a>
                 </li>
             {% endif %}
             {% if not is_granted('ROLE_USER') %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ path('app_login') }}">Login</a>
+                    <a class="nav-link" href="{{ path('app_login') }}">{{ 'header.login'|trans }}</a>
                 </li>
             {% endif %}
         </ul>
     </nav>
 </header>
+
 {% block body %}
 {% endblock %}
+
 {% block javascripts %}
     {{ encore_entry_script_tags('app') }}
 {% endblock %}

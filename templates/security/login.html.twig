@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Log in!{% endblock %}
+{% block title %}{{ 'header.login'| trans }}{% endblock %}
 {% block stylesheets %}
     {{ parent() }}
     {{ encore_entry_link_tags('form') }}
@@ -17,17 +17,18 @@
             <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
         {% endif %}
 
-        <h1>Login</h1>
-        <input type="email" value="{{ last_username }}" name="email" id="inputEmail" placeholder="Email" required>
-        <input type="password" name="password" id="inputPassword" placeholder="Password" required>
-        <input type="hidden" name="_csrf_token"
-               value="{{ csrf_token('authenticate') }}">
+        <h1>{{ 'header.login'| trans }}</h1>
+        <input type="email" value="{{ last_username }}" name="email" id="inputEmail"
+               placeholder={{ 'login.email'| trans }} required>
+        <input type="password" name="password" id="inputPassword"
+               placeholder={{ 'login.password'| trans }} required>
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
         <div class="cb">
-            <input type="checkbox" name="_remember_me"> Remember me
+            <input type="checkbox" name="_remember_me">{{ 'login.remember'| trans }}
         </div>
-        <input type="submit" name="" value="Login">
+        <input type="submit" name="" value={{ 'login.submit'| trans }}>
 
-        <a href="{{ path('app_forgot_password_request') }}">Forgot password?</a><br>
-        <a href="{{ path('app_register') }}">Have no account yet? Sign up!</a>
+        <a href="{{ path('app_forgot_password_request') }}">{{ 'login.forgot.pass'| trans }}</a><br>
+        <a href="{{ path('app_register') }}">{{ 'login.no.acc'| trans }}</a>
     </form>
 {% endblock %}
