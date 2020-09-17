@@ -1,10 +1,10 @@
-window.onAnswer = function (answer) {
-    showIsRightAnswer(answer);
+window.onAnswer = function (answer, locale) {
+    showIsRightAnswer(answer, locale);
     showButton();
 }
 let content;
 
-function showIsRightAnswer(answer) {
+function showIsRightAnswer(answer, locale) {
     const rbs = document.querySelectorAll('input[type="radio"]');
     let selectedRadio;
     for (const rb of rbs) {
@@ -12,10 +12,13 @@ function showIsRightAnswer(answer) {
             selectedRadio = rb;
         } else rb.disabled = true;
     }
+    let msg;
     if (selectedRadio.value == answer) {
-        content = "<span style=\'color: #23bf5d\'>Right</span>";
+        msg = locale === "ru" ? "Правильно!" : "Right!";
+        content = "<span style=\'color: #23bf5d\'>" + msg + "</span>";
     } else {
-        content = "<span style=\'color:darkred\'>Wrong</span>";
+        msg = locale === "ru" ? "Неправильно!" : "Wrong!";
+        content = "<span style=\'color:darkred\'>" + msg + "</span>";
     }
     document.getElementById("isCorrect").innerHTML = content;
 }
