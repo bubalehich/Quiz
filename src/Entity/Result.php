@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Repository\ResultRepository;
+use DateInterval;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -112,10 +113,10 @@ class Result
         return $this;
     }
 
-    public function getDuration(): ?int
+    public function getDuration(): ?DateInterval
     {
         if ($this->endDate) {
-            return $this->endDate->diff($this->startDate)->s;
+            return $this->endDate->diff($this->startDate);
         }
 
         return null;

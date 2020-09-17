@@ -20,7 +20,7 @@
                 <th>{{ loop.index }}</th>
                 <th>{{ result.user.name }}</th>
                 <th>{{ result.result }}</th>
-                <th>{{ result.duration }}</th>
+                <th>{{ result.duration.format("%dd:%hh:%im:%ss") }}</th>
             </tr>
         {% endfor %}
         </tbody>

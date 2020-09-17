@@ -36,7 +36,7 @@ quiz.date.format: d F Y; h:i a
 lb.count: Total count of results
 lb.name: Name
 lb.score: Score
-lb.duration: Duration (sec)
+lb.duration: Duration
 lb.title: Leaderboard
 lb.number: Place
 

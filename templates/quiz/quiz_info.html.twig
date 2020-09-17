@@ -51,7 +51,7 @@
                                 <td>{{ loop.index }}</td>
                                 <td>{{ tr.user.name }}</td>
                                 <td>{{ tr.result }}</td>
-                                <td>{{ (tr.endDate.diff(tr.startDate)).s }}</td>
+                                <td>{{ tr.duration.format("%dd:%hh:%im:%ss") }}</td>
                             </tr>
                         {% endfor %}
                     </table>

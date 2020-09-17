@@ -36,7 +36,7 @@ quiz.date.format: d.m.Y; H:i
 lb.count: Общее количество прошедших викторину
 lb.name: Имя
 lb.score: Счет
-lb.duration: Время прохождения (сек)
+lb.duration: Время прохождения
 lb.title: Таблица рекордов
 lb.number: Место
 
