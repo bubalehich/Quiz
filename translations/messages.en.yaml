@@ -1,0 +1,110 @@
+#HEADER
+header.home: Home
+header.quizes: Quizes
+header.login: Login
+header.logout: Logout
+header.admin: Administrate
+
+#LOGIN
+login.email: Email
+login.password: Password
+login.remember: Remember me
+login.submit: Login
+login.forgot.pass: Forgot password?
+login.no.acc: Have no account yet?
+
+#REGISTER
+reg.title: Register
+reg.name: Name
+reg.email: Email
+reg.password: Password
+reg.submit: Register
+reg.acc: Already have an account?
+
+#QUIZ TABLE
+quiz.name: Name
+quiz.status: Status
+quiz.date.create: Create date
+quiz.leader: Leader
+quiz.count: Total count of quizes
+quiz.active: Opened
+quiz.close: Closed
+quiz.es: Quizes
+quiz.date.format: d F Y; h:i a
+
+#LEADERBOARD
+lb.count: Total count of results
+lb.name: Name
+lb.score: Score
+lb.duration: Duration (sec)
+lb.title: Leaderboard
+lb.number: Place
+
+#QUIZ PROCESS
+qp.next: Next question
+qp.answer: Answer
+qp.question: Question
+qp.of: of
+qp.right: Right!:)
+qp.wrong: Wrong!:(
+
+#QUIZ INFO
+qi.title: About quiz
+qi.created: Create date
+qi.status: Status
+qi.count.questions: Count of questions
+qi.count.participants: Count of participants
+qi.leaders: Leaderboard
+qi.place: Place
+qi.name: Name
+qi.result: Score
+qi.time: Time
+qi.progress: Your progress
+qi.status.no: Not participating
+qi.status.in: In progress
+qi.status.off: Passed
+
+qi.button.start: Start
+qi.button.continue: Continue
+qi.button.ended: Ended
+qi.answers: Answers
+
+#CONFIRM EMAIL
+confirm.title: Hi! Please confirm your email!
+confirm.message: Please confirm your email address by clicking the following link
+confirm.button: Confirm my Email
+confirm.expire: This link will expire in
+confirm.hours: hour(s)
+confirm.cheers: Cheers!
+
+#RESTORE PASS EMAIL PAGE
+restore.title: Password Reset Email Sent
+restore.msg: An email has been sent that contains a link that you can click to reset your password. This link will expire in
+restore.msg2: If you don't receive an email please check your spam folder or
+restore.msg3: try again
+
+#RESTORE PASS EMAIL
+restore.hi: Привет!
+restore.reset: To reset your password, please visit here
+restore.expire:  This link will expire in
+
+#RESTORE ROUTE
+rr.title: Reset your password
+rr.form: Enter your email address and we we will send you a link to reset your password.
+rr.button: Send password reset email
+rr.btn: Restore
+
+#USER PAGE
+userpage.title: Profile
+userpage.info: Common info
+userpage.name: Name
+userpage.email: Email
+userpage.edit: Edit
+userpage.quizes: Quizes
+userpage.quizes.name: Name
+userpage.quizes.status: Status
+userpage.quizes.progress: Progress
+userpage.quizes.result: Result
+
+#MAIN PAGE
+main.title: Welcome!
