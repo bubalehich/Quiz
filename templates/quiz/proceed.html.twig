@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    Question #{{ (result.progress|length+1) }} of {{ quiz.questions|length }}<br>
+    {{ question.name }}
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    <div id="sub">
+        <button type="submit" disabled>Next question</button>
+    </div>
+    {{ form_end(form) }}
+    <div id="answer">
+        <button type="button" id="btn" onclick="onAnswer('{{ rightAnswer }}')">Answer</button>
+    </div>
+    <div id="isCorrect">
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('app_process') }}
+{% endblock %}

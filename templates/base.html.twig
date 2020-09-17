@@ -8,48 +8,46 @@
     {% endblock %}
 </head>
 <body>
-<div class="container-fluid">
-    <header>
-        {% block header %}
-            <div class="row flex-fill">
-
-                <div class="col-sm-1"><a href="{{ path('app_home') }}">{% trans %}Home{% endtrans %}</a></div>
-                <div class="col-sm-1"><a href="{{ path('app_quizes') }}">{% trans %}Quizes{% endtrans %}</a></div>
-                {% if app.request.locale == "en" %}
-                <div class="col-sm-1"><a href="{{ path('app_locale',{_locale:"ru"}) }}"><img src="{{ asset('build/russia.png') }}"/></a></div>
-                {%  elseif app.request.locale == "ru" %}
-                <div class="col-sm-1"><a href="{{ path('app_locale',{_locale:"en"}) }}"><img src="{{ asset('build/uk.png') }}"/></a></a></div>
-                {% endif %}
-
-                <div class="col-sm-6"></div>
-                {% if is_granted('ROLE_ADMIN') %}
-                    <div class="col-sm-1">
-                        <a href="{{ path('admin_page') }}">Admin</a>
-                    </div>
-                {% endif %}
-                {% if is_granted('ROLE_USER') %}
-                    <div class="col-sm-1">
-                        <a href="{{ path('app_profile') }}">{{ app.user.name }}</a>
-                    </div>
-                {% endif %}
-
-                {% if is_granted('ROLE_USER') %}
-                    <div class="col-sm-1 float-left"><a href="{{ path('app_logout') }}">{% trans %}Logout{% endtrans %}</a></div>
-                {% endif %}
-                {% if not is_granted('ROLE_USER') %}
-                    <div class="col-sm-1 float-left"><a href="{{ path('app_login') }}">{% trans %}Login{% endtrans %}</a></div>
-                    <div class="col-sm-1 float-left"><a href="{{ path('app_register') }}">{% trans %}Register{% endtrans %}</a></div>
-                {% endif %}
-            </div>
-        {% endblock %}
-    </header>
-    {% block body %}
-    {% endblock %}
-
+<header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark justify-content-between">
+        <ul class="navbar-nav float-right">
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('app_home') }}">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('app_quizes') }}">Quizes</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Language</a>
+            </li>
+        </ul>
+        <ul class="navbar-nav float-left">
+            {% if is_granted('ROLE_ADMIN') %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('admin_page') }}">Administrate</a>
+                </li>
+            {% endif %}
+            {% if is_granted('ROLE_USER') %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('app_profile') }}">{{ app.user.name }}</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('app_logout') }}">Logout</a>
+                </li>
+            {% endif %}
+            {% if not is_granted('ROLE_USER') %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('app_login') }}">Login</a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+</header>
+{% block body %}
+{% endblock %}
+{% block javascripts %}
     {{ encore_entry_script_tags('app') }}
-    {% block javascripts %}
+{% endblock %}
 
-    {% endblock %}
-</div>
 </body>
 </html>

@@ -23,14 +23,14 @@
         <tbody>
         {% for quiz in pagination %}
             <tr>
-                <th>{{ quiz.name }}</th>
+                <th><a href="{{ url('app_quiz_info',{id:quiz.id}) }}">{{ quiz.name }}</a></th>
                 <th{% if not  quiz.isActive %} style="color: #db7778" {% endif %}
                         {% if  quiz.isActive %} style="color: #3ac31a" {% endif %} >
                     {% if  quiz.isActive %}active{% endif %}
                     {% if not  quiz.isActive %}closed{% endif %}
                 </th>
                 <th>{{ quiz.createDate.format("d.m.Y; H:i:s") }}</th>
-                <th>{{ attribute(leaders, quiz.id)}}</th>
+                <th>{{ attribute(leaders, quiz.id).user.name }}</th>
             </tr>
         {% endfor %}
         </tbody>

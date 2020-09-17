@@ -37,14 +37,14 @@ class Quiz
     private DateTimeInterface $createDate;
 
     /**
-     * @ORM\OneToMany(targetEntity=Result::class, mappedBy="quiz", fetch="EAGER")
+     * @ORM\OneToMany(targetEntity=Result::class, mappedBy="quiz")
      */
     private Collection $results;
 
     /**
      * @ORM\ManyToMany(targetEntity=Question::class)
      */
-    private ArrayCollection $questions;
+    private Collection $questions;
 
     public function __construct()
     {
@@ -124,7 +124,7 @@ class Quiz
     }
 
     /**
-     * @return Collection|Question[]
+     * @return Collection
      */
     public function getQuestions(): Collection
     {
