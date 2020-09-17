@@ -96,9 +96,6 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
         if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
             return new RedirectResponse($targetPath);
         }
-        if ($this->getTargetPath()){
-            return new RedirectResponse($this->urlGenerator->generate($this->getTargetPath($request->getSession(), 'main')));
-        }
 
         return new RedirectResponse($this->urlGenerator->generate('app_profile'));
     }
