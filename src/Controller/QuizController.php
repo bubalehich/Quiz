@@ -109,7 +109,7 @@ class QuizController extends AbstractController
             $result->setStartDate(new DateTime());
             $quiz->addResult($result);
             $user->addResult($result);
-            $this->em->persist($this->getUser());
+            $this->em->persist($user);
             $this->em->persist($result);
             $this->em->persist($quiz);
             $this->em->flush();
@@ -120,6 +120,7 @@ class QuizController extends AbstractController
             foreach ($result->getProgress() as $progress) {
                 if ($progress->getQuestion() === $question) {
                     $flag = true;
+                    break;
                 }
             }
             if (!$flag) {
@@ -140,11 +141,17 @@ class QuizController extends AbstractController
 
                     return $this->redirectToRoute('app_quiz', ['id' => $quiz->getId()]);
                 }
-
+                foreach ($question->getAnswers() as $ans){
+                    if ($ans->getIsRight()){
+                        $rightAnswer = $ans->getId();
+                        break;
+                    }
+                }
                 return $this->render('quiz/proceed.html.twig', [
                     'form' => $form->createView(),
                     'quiz' => $quiz,
                     'result' => $result,
+                    'rightAnswer'=>$rightAnswer,
                     'question' => $question]);
             }
         }
