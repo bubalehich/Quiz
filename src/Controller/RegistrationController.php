@@ -10,15 +10,18 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
 class RegistrationController extends AbstractController
 {
     private EmailManager $emailVerifier;
+    private TranslatorInterface $translator;
 
-    public function __construct(EmailManager $emailVerifier)
+    public function __construct(EmailManager $emailVerifier, TranslatorInterface $translator)
     {
         $this->emailVerifier = $emailVerifier;
+        $this->translator = $translator;
     }
 
     /**
@@ -39,12 +42,12 @@ class RegistrationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $service->register($user = $form->getData());
             $this->emailVerifier->sendEmailConfirmation($user);
-            $this->addFlash('success', 'Account has been create. Check your email and confirm it.');
+            $this->addFlash('success', $this->translator->trans('f.account.create'));
 
             return $this->redirectToRoute('app_login');
         }
         if ($form->isSubmitted()) {
-            $this->addFlash('verify_email_error', 'Account with this email already exist.');
+            $this->addFlash('verify_email_error', $this->translator->trans('f.account.exists'));
         }
 
         return $this->render('registration/register.html.twig', [
@@ -61,7 +64,7 @@ class RegistrationController extends AbstractController
     {
         try {
             $this->emailVerifier->handleEmailConfirmation($request);
-            $this->addFlash('success', 'Your email address has been verified.');
+            $this->addFlash('success', $this->translator->trans('f.account.verify'));
             return $this->redirectToRoute('app_login');
         } catch (VerifyEmailExceptionInterface $exception) {
             $this->addFlash('verify_email_error', $exception->getReason());

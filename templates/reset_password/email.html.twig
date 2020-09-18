@@ -1,8 +1,7 @@
 <h1>{{ 'restore.hi'|trans }}</h1>
 
 <p>
-    {{ 'restore.reset'|trans }}
-    <a href="{{ url('app_reset_password', {token: resetToken.token}) }}"></a>
+    <a href="{{ url('app_reset_password', {token: resetToken.token}) }}">{{ 'restore.reset'|trans }}</a>
     {{ 'restore.expire'|trans }} {{ tokenLifetime|date('g') }} {{ 'confirm.hours'|trans }}.
 </p>
 

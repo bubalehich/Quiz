@@ -47,6 +47,7 @@ qp.question: Вопрос
 qp.of: из
 qp.right: Правильно!:)
 qp.wrong: Неправильно!:(
+qp.vars: Выберите ответ
 
 #QUIZ INFO
 qi.title: Информация о викторине
@@ -108,3 +109,36 @@ userpage.quizes.result: Результат
 
 #MAIN PAGE
 main.title: Добро пожаловать!
+
+#LABELS
+l.answer: Выберите ответ
+l.password.new: Новый пароль
+l.password.repeat: Повторите пароль
+
+#MESSAGES
+msg.password: Пожалуйста, введите пароль
+msg.password.min: Пароль должен быть как минимум %d символов
+msg.password.max: Пароль должен быть короче %s символов
+msg.password.match: Пароли должны совпадать
+msg.email: Пожалуйста, введите эл. почту
+
+#EMAIL BOT MESSAGES
+bot.confirm: Привет! Вы создали аккаун на Quiz. Пожалуйста, подтвердите эл. почту.
+bot.restore: Привет! Вы отправили заявку на восстановление пароля. Вот Ваша ссылка.
+bot.author: Quiz Бот
+
+#USER EXCEPTIONS
+ex.account.banned: Ваш аккаунт заблокирован
+ex.account.notconfirmed: Ваш аккаунт не подтверждён! Проверьте эл. почту и подтвердите его
+ex.email.notfound: Такая эл. почта не найдена
+ex.no.reset.link: Ссылка на восстановление пароля не найдена.
+
+#FLASHES
+f.account.create: Аккаунт успешно создан. Проверьте эл. почту и подтвердите его
+f.account.exists: Аккаунт с такой эл. почтой уже существует
+f.account.verify: Эд. почта подтверждена
+f.validate.error: Возникла проблема при подтверждении Вашей эл. почты - %s
+f.password.update: Пароль успешно обновлён
+f.password.reset.error: Пользователь с такой эл. почтой не найден
+f.handle.reset.pass.error: Возникла проблема при обработке ссылки на восстановление пароля - %s
+

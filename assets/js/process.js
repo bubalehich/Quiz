@@ -1,3 +1,5 @@
+import '../css/quiz.css';
+
 window.onAnswer = function (answer, locale) {
     showIsRightAnswer(answer, locale);
     showButton();
@@ -25,4 +27,5 @@ function showIsRightAnswer(answer, locale) {
 
 function showButton() {
     document.getElementById("sub").innerHTML = "<button type=\"submit\">Next question</button>";
+    document.getElementById("answer").innerHTML = "";
 }

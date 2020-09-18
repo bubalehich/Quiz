@@ -1,18 +1,32 @@
 {% extends 'base.html.twig' %}
 {% block title %}{{ quiz.name }}{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('app_process') }}
+{% endblock %}
 {% block body %}
-    {{ 'qp.question'|trans }} №{{ (result.progress|length+1) }} {{ 'qp.of'|trans }} {{ quiz.questions|length }}<br>
-    {{ question.name }}
-    {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <div id="sub">
-        <button type="submit" disabled>{{ 'qp.next'|trans }}</button>
-    </div>
-    {{ form_end(form) }}
-    <div id="answer">
-        <button type="button" id="btn" onclick="onAnswer('{{ rightAnswer }}', '{{ app.session.get("_locale") }}')">{{ 'qp.answer'|trans }}</button>
-    </div>
-    <div id="isCorrect">
+    <div class="box">
+        {{ 'qp.question'|trans }} №{{ (result.progress|length+1) }} {{ 'qp.of'|trans }} {{ quiz.questions|length }}<br>
+
+        <div class="question">{{ question.name }}</div>
+        {{ form_start(form) }}
+        <div class="answers">
+            {{ form_widget(form) }}
+        </div>
+        <div id="sub">
+            {# submit button from js #}
+        </div>
+        {{ form_end(form) }}
+        <div id="answer">
+            <button type="button" id="btn"
+                    onclick="onAnswer('{{ rightAnswer }}', '{{ app.session.get("_locale") }}')">{{ 'qp.answer'|trans }}
+            </button>
+        </div>
+
+        <div id="isCorrect">
+            {# right/wrong msg from js #}
+        </div>
+
     </div>
 {% endblock %}
 {% block javascripts %}

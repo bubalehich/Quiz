@@ -9,9 +9,21 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class QuizProcessFormType extends AbstractType
 {
+    private TranslatorInterface $translator;
+
+    /**
+     * QuizProcessFormType constructor.
+     * @param TranslatorInterface $translator
+     */
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         /**@var Question $question */
@@ -21,7 +33,7 @@ class QuizProcessFormType extends AbstractType
             'choices' => $question->getAnswers(),
             'multiple' => false,
             'expanded' => true,
-            'placeholder'=>''
+            'label' => $this->translator->trans('l.answer'),
         ]);
     }
 

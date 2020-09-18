@@ -23,9 +23,13 @@ class UserService
      * @param UserPasswordEncoderInterface $passwordEncoder
      * @param RoleRepository $roleRepository
      */
-    public function __construct(UserRepository $userRepository,
-                                EntityManagerInterface $manager, UserPasswordEncoderInterface $passwordEncoder,
-                                RoleRepository $roleRepository)
+    public function __construct
+    (
+        UserRepository $userRepository,
+        EntityManagerInterface $manager,
+        UserPasswordEncoderInterface $passwordEncoder,
+        RoleRepository $roleRepository
+    )
     {
         $this->repository = $userRepository;
         $this->manager = $manager;
@@ -35,15 +39,15 @@ class UserService
 
     public function register(User $user): void
     {
-            $user->addRole($this->roleRepository->findByName('ROLE_USER'))
-                ->setIsActive(true)
-                ->setPassword($this->passwordEncoder->encodePassword($user, $user->getPassword()))
-            ;
-            $this->manager->persist($user);
-            $this->manager->flush();
+        $user->addRole($this->roleRepository->findByName('ROLE_USER'))
+            ->setIsActive(true)
+            ->setPassword($this->passwordEncoder->encodePassword($user, $user->getPassword()));
+        $this->manager->persist($user);
+        $this->manager->flush();
     }
 
-    public function updatePassword(User $user, string $plainPassword){
+    public function updatePassword(User $user, string $plainPassword): void
+    {
         $user->setPassword($this->passwordEncoder->encodePassword(
             $user,
             $plainPassword
