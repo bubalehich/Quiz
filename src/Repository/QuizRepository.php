@@ -24,7 +24,9 @@ class QuizRepository extends ServiceEntityRepository
 
     public function findNext(int $page): Query
     {
-        return $this->createQueryBuilder('q')
-            ->select()->getQuery();
+        return $this
+            ->createQueryBuilder('q')
+            ->select()
+            ->getQuery();
     }
 }

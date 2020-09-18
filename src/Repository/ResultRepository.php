@@ -25,6 +25,7 @@ class ResultRepository extends ServiceEntityRepository
     public function getLeaders(Quiz $quiz): QueryBuilder
     {
         $qb = $this->createQueryBuilder('r');
+
         return $qb
             ->where('r.quiz = :quiz')
             ->andWhere($qb->expr()->isNotNull('r.endDate'))

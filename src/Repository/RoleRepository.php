@@ -26,10 +26,10 @@ class RoleRepository extends ServiceEntityRepository
      * @return Role|null Returns an array of Role objects
      * @throws NonUniqueResultException
      */
-
     public function findByName(string $name): ?Role
     {
-        return $this->createQueryBuilder('r')
+        return $this
+            ->createQueryBuilder('r')
             ->where('r.name = :val')
             ->setParameter('val', $name)
             ->getQuery()
