@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use SymfonyCasts\Bundle\ResetPassword\Controller\ResetPasswordControllerTrait;
 use SymfonyCasts\Bundle\ResetPassword\Exception\ResetPasswordExceptionInterface;
 use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelperInterface;
@@ -22,18 +23,24 @@ use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelperInterface;
  */
 class ResetPasswordController extends AbstractController
 {
-    use ResetPasswordControllerTrait;
-
     private ResetPasswordHelperInterface $resetPasswordHelper;
     private EmailManager $emailManager;
     private UserService $userService;
+    private TranslatorInterface $translator;
+    use ResetPasswordControllerTrait;
 
-    public function __construct(ResetPasswordHelperInterface $resetPasswordHelper, EmailManager $emailManager,
-                                UserService $userService)
+    public function __construct
+    (
+        ResetPasswordHelperInterface $resetPasswordHelper,
+        EmailManager $emailManager,
+        UserService $userService,
+        TranslatorInterface $translator
+    )
     {
         $this->resetPasswordHelper = $resetPasswordHelper;
         $this->emailManager = $emailManager;
         $this->userService = $userService;
+        $this->translator = $translator;
     }
 
     /**
@@ -87,17 +94,17 @@ class ResetPasswordController extends AbstractController
 
         $token = $this->getTokenFromSession();
         if (null === $token) {
-            throw $this->createNotFoundException('No reset password token found in the URL or in the session.');
+            throw $this->createNotFoundException($this->translator->trans('ex.no.reset.link'));
         }
 
         try {
             $user = $this->resetPasswordHelper->validateTokenAndFetchUser($token);
         } catch (ResetPasswordExceptionInterface $e) {
             $this->addFlash('reset_password_error', sprintf(
-                'There was a problem validating your reset request - %s',
+                $this->translator->trans('f.validate.error'),
                 $e->getReason()
             ));
-          
+
             return $this->redirectToRoute('app_forgot_password_request');
         }
 
@@ -108,8 +115,8 @@ class ResetPasswordController extends AbstractController
             $this->resetPasswordHelper->removeResetRequest($token);
             $this->userService->updatePassword($user, $form->get('plainPassword')->getData());
             $this->cleanSessionAfterReset();
-            $this->addFlash('success', 'Password has been updated!');
-          
+            $this->addFlash('success', $this->translator->trans('f.password.update'));
+
             return $this->redirectToRoute('app_login');
         }
 
@@ -124,7 +131,7 @@ class ResetPasswordController extends AbstractController
         $this->setCanCheckEmailInSession();
 
         if (!$user) {
-            $this->addFlash('reset_password_error', 'There is no user with given email.');
+            $this->addFlash('reset_password_error', $this->translator->trans('f.password.reset.error'));
 
             return $this->redirectToRoute('app_forgot_password_request');
         }
@@ -133,7 +140,7 @@ class ResetPasswordController extends AbstractController
             $resetToken = $this->resetPasswordHelper->generateResetToken($user);
         } catch (ResetPasswordExceptionInterface $e) {
             $this->addFlash('reset_password_error', sprintf(
-                'There was a problem handling your password reset request - %s',
+                $this->translator->trans('f.handle.reset.pass.error'),
                 $e->getReason()
             ));
 
