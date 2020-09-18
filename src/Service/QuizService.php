@@ -26,7 +26,12 @@ class QuizService
      * @param ResultRepository $resultRepository
      * @param PaginatorInterface $paginator
      */
-    public function __construct(QuizRepository $quizRepository, ResultRepository $resultRepository, PaginatorInterface $paginator)
+    public function __construct
+    (
+        QuizRepository $quizRepository,
+        ResultRepository $resultRepository,
+        PaginatorInterface $paginator
+    )
     {
         $this->quizRepository = $quizRepository;
         $this->resultRepository = $resultRepository;
@@ -84,6 +89,7 @@ class QuizService
     public function getTopLeaders(Quiz $quiz): array
     {
         $qb = $this->resultRepository->getLeaders($quiz);
+
         return $qb
             ->setMaxResults(self::MAX_RESULT)
             ->getQuery()
@@ -93,6 +99,7 @@ class QuizService
     public function getPaginateLeaders(Quiz $quiz, int $page): PaginationInterface
     {
         $query = $this->resultRepository->getLeaders($quiz)->getQuery();
+
         return $this->paginator->paginate($query, $page, self::PAGINATION_LEADERS_LIMIT);
     }
 }
