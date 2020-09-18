@@ -79,5 +79,4 @@ class Answer
     {
         return $this->getName();
     }
-
 }
