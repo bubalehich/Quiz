@@ -11,9 +11,8 @@ use Symfony\Component\Security\Http\Util\TargetPathTrait;
 
 class TargetPathRequestSubscriber implements EventSubscriberInterface
 {
-    use TargetPathTrait;
-
     private SessionInterface $session;
+    use TargetPathTrait;
 
     public function __construct(SessionInterface $session)
     {
@@ -34,10 +33,8 @@ class TargetPathRequestSubscriber implements EventSubscriberInterface
         $this->saveTargetPath($this->session, 'main', $request->getUri());
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
-        return [
-            KernelEvents::REQUEST => ['onKernelRequest']
-        ];
+        return [KernelEvents::REQUEST => ['onKernelRequest']];
     }
 }
