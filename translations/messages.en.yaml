@@ -47,6 +47,7 @@ qp.question: Question
 qp.of: of
 qp.right: Right!:)
 qp.wrong: Wrong!:(
+qp.vars: Choose answer
 
 #QUIZ INFO
 qi.title: About quiz
@@ -86,7 +87,7 @@ restore.msg3: try again
 #RESTORE PASS EMAIL
 restore.hi: Привет!
 restore.reset: To reset your password, please visit here
-restore.expire:  This link will expire in
+restore.expire: This link will expire in
 
 #RESTORE ROUTE
 rr.title: Reset your password
@@ -108,3 +109,37 @@ userpage.quizes.result: Result
 
 #MAIN PAGE
 main.title: Welcome!
+
+#LABELS
+l.answer: Choose an answer
+l.password.new: New password
+l.password.repeat: Repeat Password
+
+#MESSAGES
+msg.password: Please enter a password
+msg.password.min: Your password should be at least %s characters
+msg.password.max: Your password should be shorter than %s characters
+msg.password.match: The password fields must match
+msg.email: Please enter an email
+
+#EMAIL BOT MESSAGES
+bot.confirm: Hello! You created an account on Quiz. Please confirm your email.
+bot.restore: Hello! You send request for restoring password. Here is your link.
+bot.author: Quiz Bot
+
+#USER EXCEPTIONS
+ex.account.banned: Your user account is banned
+ex.account.notconfirmed: Your account is not confirmed! Check your email and confirm it
+ex.email.notfound: Email not found
+ex.no.reset.link: No reset password token found in the URL or in the session.
+
+#FLASHES
+f.account.create: Account has been created. Check your email and confirm it
+f.account.exists: Account with this email already exist
+f.account.verify: Your email address has been verified
+f.validate.error: There was a problem validating your reset request - %s
+f.password.update: Password has been updated!
+f.password.reset.error: There is no user with given email
+f.handle.reset.pass.error: There was a problem handling your password reset request - %s
+
+
