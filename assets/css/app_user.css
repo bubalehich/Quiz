@@ -22,13 +22,18 @@
 }
 
 .quiz-block h2 {
-    color: #5eb5e0;
+    color: #855454;
     text-align: left;
     padding-left: 10px;
 }
 
 .quiz-block h2 a {
     text-decoration: none;
+    color: #ae6f6f;
+}
+.quiz-block h2 a:hover {
+    text-decoration: none;
+    color: #ffffff;
 }
 
 .quiz-block table td {
