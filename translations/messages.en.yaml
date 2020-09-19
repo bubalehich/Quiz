@@ -106,6 +106,7 @@ userpage.quizes.name: Name
 userpage.quizes.status: Status
 userpage.quizes.progress: Progress
 userpage.quizes.result: Result
+userpage.quizes.count: Participates in quiz
 
 #MAIN PAGE
 main.title: Welcome!

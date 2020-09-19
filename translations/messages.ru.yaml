@@ -27,8 +27,8 @@ quiz.status: Статус
 quiz.date.create: Дата создания
 quiz.leader: Лучший игрок
 quiz.count: Всего викторин
-quiz.active: Открыт
-quiz.close: Закрыт
+quiz.active: Открыта
+quiz.close: Закрыта
 quiz.es: Викторины
 quiz.date.format: d.m.Y; H:i
 
@@ -106,6 +106,7 @@ userpage.quizes.name: Название
 userpage.quizes.status: Статус
 userpage.quizes.progress: Пройдено
 userpage.quizes.result: Результат
+userpage.quizes.count: Участие в викторинах
 
 #MAIN PAGE
 main.title: Добро пожаловать!
