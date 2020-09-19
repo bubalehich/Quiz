@@ -79,11 +79,11 @@ class AdminController extends AbstractController
      * @param Request $request
      * @return RedirectResponse
      */
-    public function onAdminDeleteUser(Request $request)
+    public function onAdminBlockUser(Request $request)
     {
         $this->adminService->blockUser($request->get('id'), $request->get('flag'));
 
-        return new RedirectResponse($this->generateUrl('app_show_users'));
+        return new RedirectResponse($request->headers->get('referer'));
     }
 
     /**
