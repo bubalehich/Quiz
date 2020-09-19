@@ -8464,7 +8464,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": "7.4.9",
+        "php": "7.4.10",
         "ext-ctype": "*",
         "ext-iconv": "*"
     },
