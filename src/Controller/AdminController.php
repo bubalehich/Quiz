@@ -35,7 +35,7 @@ class AdminController extends AbstractController
     public function onAdmin(): Response
     {
 
-        return $this->render('admin/admin_page.html.twig');
+        return new RedirectResponse($this->generateUrl('app_show_users'));
     }
 
     /**
@@ -55,6 +55,7 @@ class AdminController extends AbstractController
     {
         $question = new Question();
         $createQuestionForm = $this->createForm(CreateQuestionFormType::class, $question);
+
         return $this->render('admin/admin_create_question.html.twig', ["createQuestionForm" => $createQuestionForm->createView()]);
     }
 
@@ -64,20 +65,53 @@ class AdminController extends AbstractController
      * @param PaginatorInterface $paginator
      * @return Response
      */
-    public function onAdminUserShow(Request $request,PaginatorInterface $paginator): Response
+    public function onAdminUserShow(Request $request, PaginatorInterface $paginator): Response
     {
-        $users =  $this->adminService
+        $users = $this->adminService
             ->getUsersPage($paginator,
                 (int)$request->query->get("page", 1));
+
         return $this->render('admin/admin_show_users.html.twig', ['users' => $users]);
     }
 
     /**
      * @Route ("/block_user/{id}/{flag}", name = "app_block_user")
+     * @param Request $request
+     * @return RedirectResponse
      */
     public function onAdminDeleteUser(Request $request)
     {
-        $this->adminService->blockUser($request->get('id'),$request->get('flag'));
+        $this->adminService->blockUser($request->get('id'), $request->get('flag'));
+
+        return new RedirectResponse($this->generateUrl('app_show_users'));
+    }
+
+    /**
+     * @Route ("/edit_user/{id}", name = "app_edit_user")
+     * @param Request $request
+     * @return Response
+     */
+    public function onAdminEditUser(Request $request)
+    {
+        $user = $this->adminService->getUserById($request->get('id'));
+        
+        return $this->render('admin/admin_edit_user.html.twig', ["user" => $user]);
+    }
+
+    /**
+     * @Route ("/save_user", name = "app_save_edited_user")
+     * @param Request $request
+     * @return Response
+     */
+    public function onAdminUpdateUser(Request $request)
+    {
+
+        $this->adminService->updateUser(
+            $request->get('id'),
+            $request->get('name'),
+            $request->get('email'),
+            $request->get('verified'));
+
         return new RedirectResponse($this->generateUrl('app_show_users'));
     }
 

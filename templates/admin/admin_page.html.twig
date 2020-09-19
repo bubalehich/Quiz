@@ -1,31 +1,31 @@
 {% extends 'base.html.twig' %}
 {% block body %}
     <div style="display:flex;">
-    <div class="left_bar">
-        <div class="link_block">
-            <span class="badge badge-success">Quiz</span>
-            <div class="links" style="display:none;margin-left:1em;">
-                <a class="badge badge-info" href="{{ path('app_home') }}">All</a>
-                <a class="badge badge-info" href="{{ path('create_quiz_page') }}">Create</a>
+        <div class="left_bar">
+            <div class="link_block">
+                <span class="badge link_level_1">Quiz</span>
+                <div class="links" style="display:none;margin-left:1em;">
+                    <a class="badge link_level_2" href="{{ path('app_home') }}">All</a>
+                    <a class="badge link_level_2" href="{{ path('create_quiz_page') }}">Create</a>
+                </div>
+            </div>
+            <div class="link_block">
+                <span class="badge link_level_1">Question</span>
+                <div class="links" style="display:none;margin-left:1em;">
+                    <a class="badge link_level_2" href="{{ path('app_home') }}">All</a>
+                    <a class="badge link_level_2" href="{{ path('app_create_question_page') }}">Create</a>
+                </div>
+            </div>
+            <div class="link_block">
+                <span class="badge link_level_1">User</span>
+                <div class="links" style="display:none;margin-left:1em;">
+                    <a class="badge link_level_2" href="{{ path('app_show_users') }}">All</a>
+                </div>
             </div>
         </div>
-        <div class="link_block">
-            <span class="badge badge-success">Question</span>
-            <div class="links" style="display:none;margin-left:1em;">
-                <a class="badge badge-info" href="{{ path('app_home') }}">All</a>
-                <a class="badge badge-info" href="{{ path('app_create_question_page') }}">Create</a>
-            </div>
-        </div>
-        <div class="link_block">
-            <span class="badge badge-success">User</span>
-            <div class="links" style="display:none;margin-left:1em;">
-                <a class="badge badge-info" href="{{ path('app_show_users') }}">All</a>
-            </div>
-        </div>
-    </div>
         <div class="right_bar">
-    {% block rightbar %}
-    {% endblock %}
+            {% block rightbar %}
+            {% endblock %}
         </div>
     </div>
 {% endblock %}

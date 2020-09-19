@@ -1,15 +1,50 @@
-.left_bar{
-    margin-top:50px;
-    width:10%;
+.left_bar {
+    margin-top: 50px;
+    width: 10%;
 }
-.right_bar{
-    width:90%;
+
+.right_bar {
+    width: 90%;
 }
-.link_block{
-    margin-top:10px;
+
+.link_block {
+    margin-top: 10px;
 }
-.link_block span{
-    width:70%;
-    font-size:20px;
-    cursor:pointer;
+
+.link_block span {
+    width: 70%;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.link_level_1 {
+    border: 1px solid rebeccapurple;
+    padding: 10px 10px;
+    background: darkmagenta;
+    color: white;
+}
+
+.link_level_2 {
+    border: 1px solid rebeccapurple;
+    padding: 5px 5px;
+    background: lightseagreen;
+    color: white;
+}
+
+.edit_user_form {
+    width: 350px;
+    padding: 25px 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px purple;
+    margin: 0 auto;
+    text-align: center;
+    border: 1px solid black;
+    background: deeppink;
+    opacity: 0.6;
+}
+
+.edit_user_form label {
+    color: black;
+    font-weight: bold;
+    font-size: 20px;
 }
