@@ -1,11 +1,10 @@
-<h1>Hi!</h1>
+<h1>{{ 'restore.hi'|trans }}</h1>
 
 <p>
-    To reset your password, please visit
-    <a href="{{ url('app_reset_password', {token: resetToken.token}) }}">here</a>
-    This link will expire in {{ tokenLifetime|date('g') }} hour(s)..
+    <a href="{{ url('app_reset_password', {token: resetToken.token}) }}">{{ 'restore.reset'|trans }}</a>
+    {{ 'restore.expire'|trans }} {{ tokenLifetime|date('g') }} {{ 'confirm.hours'|trans }}.
 </p>
 
 <p>
-    Cheers!
+    {{ 'confirm.cheers'|trans }}
 </p>

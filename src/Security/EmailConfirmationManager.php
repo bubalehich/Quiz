@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Security;
 
+use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,7 +18,12 @@ class EmailConfirmationManager
     private MailerInterface $mailer;
     private EntityManagerInterface $entityManager;
 
-    public function __construct(VerifyEmailHelperInterface $helper, MailerInterface $mailer, EntityManagerInterface $manager)
+    public function __construct
+    (
+        VerifyEmailHelperInterface $helper,
+        MailerInterface $mailer,
+        EntityManagerInterface $manager
+    )
     {
         $this->verifyEmailHelper = $helper;
         $this->mailer = $mailer;
@@ -31,11 +37,9 @@ class EmailConfirmationManager
             $user->getId(),
             $user->getEmail()
         );
-
         $context = $email->getContext();
         $context['signedUrl'] = $signatureComponents->getSignedUrl();
         $context['expiresAt'] = $signatureComponents->getExpiresAt();
-
         $email->context($context);
 
         $this->mailer->send($email);
@@ -43,13 +47,12 @@ class EmailConfirmationManager
 
     /**
      * @param Request $request
-     * @param UserInterface $user
+     * @param User $user
      * @throws VerifyEmailExceptionInterface
      */
     public function handleEmailConfirmation(Request $request, UserInterface $user): void
     {
-        $this->verifyEmailHelper->validateEmailConfirmation($request->getUri(), $user->getId(), $user->getEmail());
-
+        $this->verifyEmailHelper->validateEmailConfirmation($request->getUri(), (string)$user->getId(), $user->getEmail());
         $user->setIsVerified(true);
 
         $this->entityManager->persist($user);

@@ -1,40 +1,34 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Log in!{% endblock %}
+{% block title %}{{ 'header.login'| trans }}{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('form') }}
+{% endblock %}
 
 {% block body %}
-    <form method="post">
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+    <form class="box" method="post">
         {% if error %}
             <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
         {% endif %}
 
-        {% if app.user %}
-            <div class="mb-3">
-                You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
-            </div>
-        {% endif %}
-
-        <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-        <label for="inputEmail">Email</label>
-        <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" required
-               autofocus>
-        <label for="inputPassword">Password</label>
-        <input type="password" name="password" id="inputPassword" class="form-control" required>
-
-        <input type="hidden" name="_csrf_token"
-               value="{{ csrf_token('authenticate') }}">
-
-        <div class="checkbox mb-3">
-            <label>
-                <input type="checkbox" name="_remember_me"> Remember me
-            </label>
+        <h1>{{ 'header.login'| trans }}</h1>
+        <input type="email" value="{{ last_username }}" name="email" id="inputEmail"
+               placeholder={{ 'login.email'| trans }} required>
+        <input type="password" name="password" id="inputPassword"
+               placeholder={{ 'login.password'| trans }} required>
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+        <div class="cb">
+            <input type="checkbox" name="_remember_me">{{ 'login.remember'| trans }}
         </div>
+        <input type="submit" name="" value={{ 'login.submit'| trans }}>
 
-        <button class="btn btn-lg btn-primary" type="submit">
-            Sign in
-        </button>
-
-        <a href="{{ path('app_forgot_password_request')}}">Forgot password?</a><br>
-        <a href="{{ path('app_register')}}">Have no account yet?</a>
+        <a href="{{ path('app_forgot_password_request') }}">{{ 'login.forgot.pass'| trans }}</a><br>
+        <a href="{{ path('app_register') }}">{{ 'login.no.acc'| trans }}</a>
     </form>
 {% endblock %}

@@ -1,6 +1,144 @@
-Home: Главная
-Quizes: Викторины
-Login: Войти
-Logout: Выйти
-Register: Регистрация
-Admin: Админъ
+#HEADER
+header.home: Главная
+header.quizes: Викторины
+header.login: Вход
+header.logout: Выход
+header.admin: Администрирование
+
+#LOGIN
+login.email: Почта
+login.password: Пароль
+login.remember: Запомнить меня
+login.submit: Войти
+login.forgot.pass: Забыли пароль?
+login.no.acc: Всё ещё нет аккаунта?
+
+#REGISTER
+reg.title: Регистрация
+reg.name: Имя
+reg.email: Почта
+reg.password: Пароль
+reg.submit: Зарегистрироваться
+reg.acc: Уже есть аккаунт?
+
+#QUIZ TABLE
+quiz.name: Название
+quiz.status: Статус
+quiz.date.create: Дата создания
+quiz.leader: Лучший игрок
+quiz.count: Всего викторин
+quiz.active: Открыт
+quiz.close: Закрыт
+quiz.es: Викторины
+quiz.date.format: d.m.Y; H:i
+
+#LEADERBOARD
+lb.count: Общее количество прошедших викторину
+lb.name: Имя
+lb.score: Счет
+lb.duration: Время прохождения
+lb.title: Таблица рекордов
+lb.number: Место
+
+#QUIZ PROCESS
+qp.next: Следующий вопрос
+qp.answer: Ответить
+qp.question: Вопрос
+qp.of: из
+qp.right: Правильно!:)
+qp.wrong: Неправильно!:(
+qp.vars: Выберите ответ
+
+#QUIZ INFO
+qi.title: Информация о викторине
+qi.created: Дата создния
+qi.status: Статус
+qi.count.questions: Количество вопросов
+qi.count.participants: Количество участников
+qi.leaders: Таблица рекордов
+qi.place: Место
+qi.name: Имя
+qi.result: Счёт
+qi.time: Время
+qi.progress: Ваш прогресс
+qi.status.no: Не участвуете
+qi.status.in: Проходится
+qi.status.off: Пройден
+
+qi.button.start: Начать
+qi.button.continue: Продолжить
+qi.button.ended: Пройден
+qi.answers: Ответы
+
+#CONFIRM EMAIL
+confirm.title: Привет! Пожалуйста, подтвердите Вашу электронную почту!
+confirm.message: Пожалуйста, подтвердите Вашу электронную почту по следующей ссылке
+confirm.button: Подтвердить почту
+confirm.expire: Эта ссылка действительна в течении
+confirm.hours: часа(ов)
+confirm.cheers: Ваше здоровье!
+
+#RESTORE PASS EMAIL PAGE
+restore.title: Ссылка на восстановление пароля отправлена!
+restore.msg: На Вашу почту было отправлено письмо со ссылкой для восстановления пароля. Пожалуйста, проверьте почту и перейдите по ссылке. Ссылка будет действительна в течении
+restore.msg2: Если Вы не получали письма, проверьте папку "Спам" или
+restore.msg3: или попробуйте отправить снова
+
+#RESTORE PASS EMAIL
+restore.hi: Привет!
+restore.reset: Чтобы восстановить пароль, пожалуйста перейдите по ссылке
+restore.expire: Ссылка будет действительна в течении
+
+#RESTORE ROUTE
+rr.title: Восстановление пароля
+rr.form: Введите Вашу электронную почту и мы вышлем ссылку для восстановления пароля.
+rr.button: Отправить письмо
+rr.btn: Восстановить
+
+#USER PAGE
+userpage.title: Аккаунт
+userpage.info: Общая информация
+userpage.name: Имя
+userpage.email: Почта
+userpage.edit: Редактировать
+userpage.quizes: Викторины
+userpage.quizes.name: Название
+userpage.quizes.status: Статус
+userpage.quizes.progress: Пройдено
+userpage.quizes.result: Результат
+
+#MAIN PAGE
+main.title: Добро пожаловать!
+
+#LABELS
+l.answer: Выберите ответ
+l.password.new: Новый пароль
+l.password.repeat: Повторите пароль
+
+#MESSAGES
+msg.password: Пожалуйста, введите пароль
+msg.password.min: Пароль должен быть как минимум %d символов
+msg.password.max: Пароль должен быть короче %s символов
+msg.password.match: Пароли должны совпадать
+msg.email: Пожалуйста, введите эл. почту
+
+#EMAIL BOT MESSAGES
+bot.confirm: Привет! Вы создали аккаун на Quiz. Пожалуйста, подтвердите эл. почту.
+bot.restore: Привет! Вы отправили заявку на восстановление пароля. Вот Ваша ссылка.
+bot.author: Quiz Бот
+
+#USER EXCEPTIONS
+ex.account.banned: Ваш аккаунт заблокирован
+ex.account.notconfirmed: Ваш аккаунт не подтверждён! Проверьте эл. почту и подтвердите его
+ex.email.notfound: Такая эл. почта не найдена
+ex.no.reset.link: Ссылка на восстановление пароля не найдена.
+
+#FLASHES
+f.account.create: Аккаунт успешно создан. Проверьте эл. почту и подтвердите его
+f.account.exists: Аккаунт с такой эл. почтой уже существует
+f.account.verify: Эд. почта подтверждена
+f.validate.error: Возникла проблема при подтверждении Вашей эл. почты - %s
+f.password.update: Пароль успешно обновлён
+f.password.reset.error: Пользователь с такой эл. почтой не найден
+f.handle.reset.pass.error: Возникла проблема при обработке ссылки на восстановление пароля - %s
+

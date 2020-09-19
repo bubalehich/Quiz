@@ -2,52 +2,63 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}Welcome!{% endblock %}</title>
+    <title>{% block title %}{{ 'main.title'|trans }}{% endblock %}</title>
     {% block stylesheets %}
         {{ encore_entry_link_tags('app') }}
     {% endblock %}
 </head>
+
 <body>
-<div class="container-fluid">
-    <header>
-        {% block header %}
-            <div class="row flex-fill">
-                <div class="col-sm-1"><a href="{{ path('app_home') }}">{% trans %}Home{% endtrans %}</a></div>
-                <div class="col-sm-1"><a href="{{ path('app_quizes') }}">{% trans %}Quizes{% endtrans %}</a></div>
+<header>
+    <nav class="navbar navbar-expand-lg justify-content-between" style="background-color: rgba(25, 25, 25, 0.9)">
+        <ul class="navbar-nav float-right">
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('app_home') }}">{{ 'header.home'|trans }}</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('app_quizes') }}">{{ 'header.quizes'|trans }}</a>
+            </li>
+            <li class="nav-item">
                 {% if app.request.locale == "en" %}
-                <div class="col-sm-1"><a href="{{ path('app_locale',{_locale:"ru"}) }}"><img src="{{ asset('build/russia.png') }}"/></a></div>
-                {%  elseif app.request.locale == "ru" %}
-                <div class="col-sm-1"><a href="{{ path('app_locale',{_locale:"en"}) }}"><img src="{{ asset('build/uk.png') }}"/></a></a></div>
+                    <a class="nav-link" href="{{ path('app_locale',{_locale:"ru"}) }}">
+                        <img src="{{ asset('build/russia.png') }}"/>
+                    </a>
+                {% elseif app.request.locale == "ru" %}
+                    <a class="nav-link" href="{{ path('app_locale',{_locale:"en"}) }}">
+                        <img src="{{ asset('build/uk.png') }}"/>
+                    </a>
                 {% endif %}
-                <div class="col-sm-6"></div>
-                {% if is_granted('ROLE_ADMIN') %}
-                    <div class="col-sm-1">
-                        <a href="{{ path('admin_page') }}">Admin</a>
-                    </div>
-                {% endif %}
-                {% if is_granted('ROLE_USER') %}
-                    <div class="col-sm-1">
-                        <a href="{{ path('app_profile') }}">{{ app.user.name }}</a>
-                    </div>
-                {% endif %}
+            </li>
+        </ul>
+        <ul class="navbar-nav float-left">
+            {% if is_granted('ROLE_ADMIN') %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('admin_page') }}">{{ 'header.admin'|trans }}</a>
+                </li>
+            {% endif %}
+            {% if is_granted('ROLE_USER') %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('app_profile') }}">{{ app.user.name }}</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('app_logout') }}">{{ 'header.logout'|trans }}</a>
+                </li>
+            {% endif %}
+            {% if not is_granted('ROLE_USER') %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('app_login') }}">{{ 'header.login'|trans }}</a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+</header>
 
-                {% if is_granted('ROLE_USER') %}
-                    <div class="col-sm-1 float-left"><a href="{{ path('app_logout') }}">{% trans %}Logout{% endtrans %}</a></div>
-                {% endif %}
-                {% if not is_granted('ROLE_USER') %}
-                    <div class="col-sm-1 float-left"><a href="{{ path('app_login') }}">{% trans %}Login{% endtrans %}</a></div>
-                    <div class="col-sm-1 float-left"><a href="{{ path('app_register') }}">{% trans %}Register{% endtrans %}</a></div>
-                {% endif %}
-            </div>
-        {% endblock %}
-    </header>
-    {% block body %}
-    {% endblock %}
+{% block body %}
+{% endblock %}
 
+{% block javascripts %}
+    {{ encore_entry_script_tags('app') }}
+{% endblock %}
 
-    {% block javascripts %}
-        {{ encore_entry_script_tags('app') }}
-    {% endblock %}
-</div>
 </body>
 </html>

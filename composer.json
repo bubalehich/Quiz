@@ -2,7 +2,7 @@
   "type": "project",
   "license": "proprietary",
   "require": {
-    "php": "7.4.9",
+    "php": "7.4.10",
     "ext-ctype": "*",
     "ext-iconv": "*",
     "composer/package-versions-deprecated": "^1.11",
@@ -53,6 +53,7 @@
     "twig/twig": "^2.12|^3.0"
   },
   "require-dev": {
+    "symfony/web-profiler-bundle": "5.1.*"
   },
   "config": {
     "optimize-autoloader": true,
