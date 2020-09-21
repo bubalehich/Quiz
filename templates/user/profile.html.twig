@@ -30,7 +30,9 @@
                         <td>{{ results | length }}</td>
                     </tr>
                 </table>
-                <button type="button">{{ 'userpage.edit'| trans }}</button>
+                <form action="{{ url('app_profile_edit_pass') }}">
+                <button type="submit" >{{ 'userpage.edit'| trans }}</button>
+                </form>
             </div>
 
 

@@ -21,7 +21,7 @@ class RegistrationFormType extends AbstractType
     private TranslatorInterface $translator;
 
     /**
-     * ChangePasswordFormType constructor.
+     * ResetPasswordFormType constructor.
      * @param TranslatorInterface $translator
      */
     public function __construct(TranslatorInterface $translator)

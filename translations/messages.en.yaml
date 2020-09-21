@@ -101,7 +101,7 @@ userpage.title: Profile
 userpage.info: Common info
 userpage.name: Name
 userpage.email: Email
-userpage.edit: Edit
+userpage.edit: Edit pass
 userpage.quizes: Quizes
 userpage.quizes.name: Name
 userpage.quizes.status: Status
@@ -144,4 +144,11 @@ f.password.update: Password has been updated!
 f.password.reset.error: There is no user with given email
 f.handle.reset.pass.error: There was a problem handling your password reset request - %s
 
-
+#EDIT USER
+u.edit.pass.old.err: Invalid old password
+u.edit.pass.suc: Password has been updated
+u.btn: Update
+u.pass.title: Update password
+u.pass.old: Old password
+u.pass.new: New password
+u.pass.new2: Repeat new password

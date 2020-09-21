@@ -101,7 +101,7 @@ userpage.title: Аккаунт
 userpage.info: Общая информация
 userpage.name: Имя
 userpage.email: Почта
-userpage.edit: Редактировать
+userpage.edit: Изменить пароль
 userpage.quizes: Викторины
 userpage.quizes.name: Название
 userpage.quizes.status: Статус
@@ -144,3 +144,11 @@ f.password.update: Пароль успешно обновлён
 f.password.reset.error: Пользователь с такой эл. почтой не найден
 f.handle.reset.pass.error: Возникла проблема при обработке ссылки на восстановление пароля - %s
 
+#EDIT USER
+u.edit.pass.old.err: Неверный старый пароль
+u.edit.pass.suc: Пароль обновлён
+u.btn: Обновить
+u.pass.title: Обновить пароль
+u.pass.old: Старый пароль
+u.pass.new: Новый пароль
+u.pass.new2: Повторите новый пароль
