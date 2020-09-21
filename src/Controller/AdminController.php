@@ -3,18 +3,22 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Entity\Answer;
 use App\Entity\Question;
 use App\Form\CreateQuestionFormType;
 use App\Form\CreateQuizType;
+use App\Form\QuestionCreateType;
 use App\Repository\UserRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\MakerBundle\Validator;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Service\AdminService;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @Route ("/admin")
@@ -23,10 +27,12 @@ use App\Service\AdminService;
 class AdminController extends AbstractController
 {
     private AdminService $adminService;
+    private ValidatorInterface $validator;
 
-    public function __construct(AdminService $adminService)
+    public function __construct(AdminService $adminService,ValidatorInterface $validator)
     {
         $this->adminService = $adminService;
+        $this->validator = $validator;
     }
 
     /**
@@ -50,13 +56,25 @@ class AdminController extends AbstractController
 
     /**
      * @Route ("/create_question", name = "app_create_question_page")
+     * @param Request $request
+     * @return Response
      */
-    public function onAdminQuestionCreate(): Response
+    public function onAdminQuestionCreate(Request $request): Response
     {
         $question = new Question();
-        $createQuestionForm = $this->createForm(CreateQuestionFormType::class, $question);
 
-        return $this->render('admin/admin_create_question.html.twig', ["createQuestionForm" => $createQuestionForm->createView()]);
+        $createQuestionForm = $this->createForm(QuestionCreateType::class, $question);
+        $createQuestionForm->handleRequest($request);
+
+        if ($createQuestionForm->isSubmitted()){
+            dump($question);
+            $this->adminService->saveNewQuestion($question);
+            return new RedirectResponse($this->generateUrl('app_show_questions'));
+        }
+
+        return $this->render('admin/admin_create_question.html.twig', [
+            "createQuestionForm" => $createQuestionForm->createView()
+        ]);
     }
 
     /**
@@ -72,6 +90,21 @@ class AdminController extends AbstractController
                 (int)$request->query->get("page", 1));
 
         return $this->render('admin/admin_show_users.html.twig', ['users' => $users]);
+    }
+
+    /**
+     * @Route ("/questions", name = "app_show_questions")
+     * @param Request $request
+     * @param PaginatorInterface $paginator
+     * @return Response
+     */
+    public function onAdminQuestionsShow(Request $request, PaginatorInterface $paginator): Response
+    {
+        $questions = $this->adminService
+            ->getQuestionsPage($paginator,
+                (int)$request->query->get("page", 1));
+
+        return $this->render('admin/admin_show_questions.html.twig', ['questions' => $questions]);
     }
 
     /**

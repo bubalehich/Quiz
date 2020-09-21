@@ -1,25 +1,21 @@
 
 {% extends 'admin/admin_page.html.twig' %}
 {% block rightbar %}
+<div class="question_create_form">
+    {% if message is defined %}
+        {{ dump(message) }}
+    {% endif %}
     {{ form_start(createQuestionForm) }}
     {{ form_row(createQuestionForm.name) }}
-    <button type="button"
-            class="add-another-collection-widget"
-            data-list-selector="#answers-fields-list">Add another answer</button>
-    <ul id="answers-fields-list"
-        data-prototype="{{ form_widget(createQuestionForm.answers.vars.prototype)|e }}"
-        data-widget-tags="{{ '<div><div>'|e }}"
-        data-widget-counter="{{ createQuestionForm.answers|length }}">
+
+    <ul class="answers" data-prototype="{{ form_widget(createQuestionForm.answers.vars.prototype)|e('html_attr') }}">
         {% for answer in createQuestionForm.answers %}
-            <div>
-                {{ form_errors(answer) }}
-                {{ form_widget(answer) }}
-            </div>
+            <li>{{ form_row(answer.name) }}</li>
+            <li>{{ form_row(answer.isRight) }}</li>
         {% endfor %}
     </ul>
-
     {{ form_end(createQuestionForm) }}
-
+</div>
 {% endblock %}
 
 {% block javascripts %}

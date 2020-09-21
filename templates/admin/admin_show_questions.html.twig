@@ -1,0 +1,28 @@
+{% extends('admin/admin_page.html.twig') %}
+
+{% block rightbar %}
+
+    <table class="table table-dark table-striped table-hover">
+        <thead>
+        <th>Question</th>
+        <th>Answers</th>
+        </thead>
+        <tbody>
+        {% for q in questions %}
+            <tr>
+                <td>{{ q.getName }}</td>
+                <td>
+                    <div>
+                        {% for answ in q.getAnswers %}
+                            {{ answ.getName }}   |   is right:{{ answ.getIsRight }}<br>
+                        {% endfor %}
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        <div class="pagination">
+            {{ knp_pagination_render(questions) }}
+        </div>
+        </tbody>
+    </table>
+{% endblock %}

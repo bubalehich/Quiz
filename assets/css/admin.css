@@ -39,12 +39,34 @@
     margin: 0 auto;
     text-align: center;
     border: 1px solid black;
-    background: deeppink;
-    opacity: 0.6;
+    background: rgba(14,14,93,0.7);
 }
 
 .edit_user_form label {
-    color: black;
+    color: white;
     font-weight: bold;
     font-size: 20px;
+}
+.question_create_form{
+    width:400px;
+    padding:25px 20px;
+    margin-left:10%;
+    text-align:left;
+    background: rgba(0,0,0,0.7);
+    border-radius: 10px;
+}
+.question_create_form textarea{
+    height:30px !important;
+}
+.question_create_form label{
+    font-size:20px;
+    color:white;
+    font-weight: bold;
+    margin:10px 10px;
+}
+.question_create_form .answer_element{
+    border:1px solid white;
+    margin:5px 5px;
+    padding:10px 5px;
+    border-radius: 10px;
 }

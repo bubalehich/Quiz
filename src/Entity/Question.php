@@ -26,7 +26,7 @@ class Question
     private string $name;
 
     /**
-     * @ORM\OneToMany(targetEntity=Answer::class, mappedBy="question", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Answer::class, mappedBy="question", orphanRemoval=true, cascade={"persist"})
      */
     private Collection $answers;
 
@@ -63,7 +63,7 @@ class Question
     public function addAnswer(Answer $answer): self
     {
         if (!$this->answers->contains($answer)) {
-            $this->answers[] = $answer;
+            $this->answers->add($answer);
             $answer->setQuestion($this);
         }
 
