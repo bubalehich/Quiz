@@ -31,6 +31,7 @@ quiz.active: Opened
 quiz.close: Closed
 quiz.es: Quizes
 quiz.date.format: d F Y; h:i a
+quiz.participants: Participate
 
 #LEADERBOARD
 lb.count: Total count of results
