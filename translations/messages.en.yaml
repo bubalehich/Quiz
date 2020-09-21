@@ -101,7 +101,7 @@ userpage.title: Profile
 userpage.info: Common info
 userpage.name: Name
 userpage.email: Email
-userpage.edit: Edit pass
+userpage.edit: Update password
 userpage.quizes: Quizes
 userpage.quizes.name: Name
 userpage.quizes.status: Status
@@ -152,3 +152,10 @@ u.pass.title: Update password
 u.pass.old: Old password
 u.pass.new: New password
 u.pass.new2: Repeat new password
+
+#EDIT NAME
+u.name.msg.min: Name should be at least %s characters
+u.name.msg.max: Name should be shorter than %s characters
+u.name.msg: Please enter name
+u.name.suc: Name has been update
+u.name.title: Update name

@@ -101,7 +101,7 @@ userpage.title: Аккаунт
 userpage.info: Общая информация
 userpage.name: Имя
 userpage.email: Почта
-userpage.edit: Изменить пароль
+userpage.edit: Обновить пароль
 userpage.quizes: Викторины
 userpage.quizes.name: Название
 userpage.quizes.status: Статус
@@ -152,3 +152,10 @@ u.pass.title: Обновить пароль
 u.pass.old: Старый пароль
 u.pass.new: Новый пароль
 u.pass.new2: Повторите новый пароль
+
+#EDIT NAME
+u.name.msg.min: Имя должно быть как минимум %d символов
+u.name.msg.max: Максимальная длина имени %d символов
+u.name.msg: Пожалуйста введите имя
+u.name.suc: Имя обновлено
+u.name.title: Обновить имя

@@ -16,6 +16,9 @@
                          src="https://sun9-35.userapi.com/1As_T-bzUwG7tF8sQJjos_VqRhpuIbOytZsmeA/veakSVpnLZo.jpg"
                          alt="photo"></p>
                 </div>
+                {% for msg in app.flashes('success') %}
+                    <div class="alert alert-success" role="alert">{{ msg }}</div>
+                {% endfor %}
                 <table>
                     <tr>
                         <td>{{ 'userpage.name'| trans }}:</td>
@@ -32,6 +35,9 @@
                 </table>
                 <form action="{{ url('app_profile_edit_pass') }}">
                 <button type="submit" >{{ 'userpage.edit'| trans }}</button>
+                </form>
+                <form action="{{ url('app_profile_edit_name') }}">
+                    <button type="submit" >{{ 'u.name.title'| trans }}</button>
                 </form>
             </div>
 
