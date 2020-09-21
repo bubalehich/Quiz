@@ -37,11 +37,11 @@ Encore
      */
     .addEntry('app', './assets/js/app.js')
 
-    .addEntry('app_process', './assets/js/process.js')
     .addStyleEntry('form', './assets/css/app_login_form.css')
     .addStyleEntry('user_page', './assets/css/app_user.css')
     .addStyleEntry('quizes_page', './assets/css/app_quizes.css')
     .addStyleEntry('quiz_info', './assets/css/quiz_info.css')
+    .addStyleEntry('quiz', './assets/css/quiz.css')
 
     //.addEntry('page1', './assets/js/page1.js')
     //.addEntry('page2', './assets/js/page2.js')

@@ -122,6 +122,11 @@ class QuizController extends AbstractController
                     break;
                 }
             }
+
+
+
+
+
             if (!$flag) {
                 $form = $this->createForm(QuizProcessFormType::class, null, ['question' => $question]);
                 $form->handleRequest($request);
@@ -137,20 +142,26 @@ class QuizController extends AbstractController
                     $this->em->persist($progress);
                     $this->em->persist($result);
                     $this->em->flush();
-
-                    return $this->redirectToRoute('app_quiz', ['id' => $quiz->getId()]);
+                    $request->getSession()->set('question', $question->getName());
+                    $request->getSession()->set('answer', $answer->getName());
+                    $request->getSession()->set('isRight', $answer->getIsRight());
+                    $request->getSession()->set('progress', $result->getProgress()->count());
+                    return $this->redirectToRoute('app_show_answer', [
+                        'id' => $quiz->getId(),
+                    ]);
                 }
-                foreach ($question->getAnswers() as $ans){
-                    if ($ans->getIsRight()){
+                foreach ($question->getAnswers() as $ans) {
+                    if ($ans->getIsRight()) {
                         $rightAnswer = $ans->getId();
                         break;
                     }
                 }
+
                 return $this->render('quiz/proceed.html.twig', [
                     'form' => $form->createView(),
                     'quiz' => $quiz,
                     'result' => $result,
-                    'rightAnswer'=>$rightAnswer,
+                    'rightAnswer' => $rightAnswer,
                     'question' => $question]);
             }
         }
@@ -159,5 +170,31 @@ class QuizController extends AbstractController
         $this->em->flush();
 
         return $this->redirectToRoute('app_quiz_info', ['id' => $quiz->getId()]);
+    }
+
+    /**
+     * @Route ("/quiz/{id}/answer", name = "app_show_answer")
+     * @param Quiz $quiz
+     * @param Request $request
+     * @return Response
+     */
+    public function showAnswer(Quiz $quiz, Request $request): Response
+    {
+        $session = $request->getSession();
+        $question = $session->remove('question');
+        $answer = $session->remove('answer');
+        $progress = $session->remove('progress');
+        $isRight = $session->remove('isRight');
+//        dd([$question, $answer, $isRight, $progress]);
+        if (!$question || !$answer || $isRight === null) {
+            return $this->redirectToRoute('app_quiz', ['id' => $quiz->getId()]);
+        }
+        return $this->render('quiz/proceed_answer.html.twig', [
+            'question' => $question,
+            'quiz' => $quiz,
+            'answer' => $answer,
+            'isRight' => $isRight,
+            'progress'=>$progress
+        ]);
     }
 }
