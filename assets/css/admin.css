@@ -55,7 +55,7 @@
     background: rgba(0,0,0,0.7);
     border-radius: 10px;
 }
-.question_create_form textarea{
+ textarea{
     height:30px !important;
 }
 .question_create_form label{
@@ -69,4 +69,42 @@
     margin:5px 5px;
     padding:10px 5px;
     border-radius: 10px;
+}
+.quiz_create_form{
+    width:40%;
+    color:white;
+    font-size:15px;
+    font-weight:bold;
+    margin:20px 40px;
+
+}
+.quiz_create_form .question_element{
+    border:1px solid white;
+    margin:5px 5px;
+    padding:10px 5px;
+    border-radius: 10px;
+}
+.quiz_create_form label{
+    margin:5px 5px;
+}
+.quiz_create_form div{
+    margin:10px 10px;
+    padding:5px 10px;
+}
+.quiz_create_form .quiz_form{
+    border-radius: 5px;
+    background:rgba(0,0,0,0.7);
+}
+.quiz_create_form select{
+    font-size:15px;
+    padding:5px 2px;
+    border-radius: 10px;
+    background:rgba(0,0,0,0.5);
+    color:white;
+}
+.quiz_create_form option{
+    padding:10px 15px;
+}
+.quiz_create_form button{
+    margin:5px 15px;
 }

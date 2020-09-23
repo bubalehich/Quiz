@@ -2,16 +2,21 @@
 {% extends 'admin/admin_page.html.twig' %}
 {% block rightbar %}
 <div class="question_create_form">
-    {% if message is defined %}
-        {{ dump(message) }}
-    {% endif %}
+    {% for message in app.flashes('error') %}
+        <div class="alert alert-danger">
+            {{ message }}
+        </div>
+    {% endfor %}
     {{ form_start(createQuestionForm) }}
     {{ form_row(createQuestionForm.name) }}
 
     <ul class="answers" data-prototype="{{ form_widget(createQuestionForm.answers.vars.prototype)|e('html_attr') }}">
         {% for answer in createQuestionForm.answers %}
+            <div class="answer_element">
             <li>{{ form_row(answer.name) }}</li>
             <li>{{ form_row(answer.isRight) }}</li>
+
+            </div>
         {% endfor %}
     </ul>
     {{ form_end(createQuestionForm) }}

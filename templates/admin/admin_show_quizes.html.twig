@@ -1,0 +1,43 @@
+{% extends('admin/admin_page.html.twig') %}
+{% block rightbar %}
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+    {% for message in app.flashes('error') %}
+        <div class="alert alert-danger">
+            {{ message }}
+        </div>
+    {% endfor %}
+    <table class="table table-dark table-striped" style="margin-top:50px;">
+        <thead>
+        <th>{{ knp_pagination_sortable(quizes,'id','i.id')}}</th>
+        <th>{{ knp_pagination_sortable(quizes,'name','i.name')}}</th>
+        <th>{{ knp_pagination_sortable(quizes,'isActive','i.isActive')}}</th>
+        <th>Questions</th>
+        </thead>
+        <tbody>
+        {% for quiz in quizes %}
+        <tr>
+            <td>{{quiz.getId}}</td>
+            <td>{{quiz.getName}}</td>
+            <td>{{quiz.getIsActive}}</td>
+            <td>
+                <select>
+                    <option selected disabled>{{ quiz.getQuestions | length }} Questions in quiz</option>
+                {% for question in quiz.getQuestions %}
+                    <option>{{ question.name }}</option>
+                {% endfor %}
+                </select>
+            </td>
+            <td><a href="{{ path('app_edit_quiz_page',{"id":quiz.getId}) }}" class="btn btn-warning">Edit</a></td>
+            <td><a href="{{ path('app_delete_quiz',{"id":quiz.getId}) }}" class="btn btn-danger">Delete</a></td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <div class="pagination">
+        {{ knp_pagination_render(quizes) }}
+    </div>
+{% endblock %}

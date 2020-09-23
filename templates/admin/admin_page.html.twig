@@ -1,11 +1,12 @@
 {% extends 'base.html.twig' %}
+{% block title %}Admin panel{% endblock %}
 {% block body %}
     <div style="display:flex;">
         <div class="left_bar">
             <div class="link_block">
                 <span class="badge link_level_1">Quiz</span>
                 <div class="links" style="display:none;margin-left:1em;">
-                    <a class="badge link_level_2" href="{{ path('app_home') }}">All</a>
+                    <a class="badge link_level_2" href="{{ path('app_show_quizes') }}">All</a>
                     <a class="badge link_level_2" href="{{ path('create_quiz_page') }}">Create</a>
                 </div>
             </div>

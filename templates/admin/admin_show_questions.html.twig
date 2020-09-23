@@ -1,7 +1,16 @@
 {% extends('admin/admin_page.html.twig') %}
 
 {% block rightbar %}
-
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+    {% for message in app.flashes('error') %}
+        <div class="alert alert-danger">
+            {{ message }}
+        </div>
+    {% endfor %}
     <table class="table table-dark table-striped table-hover">
         <thead>
         <th>Question</th>
@@ -17,6 +26,12 @@
                             {{ answ.getName }}   |   is right:{{ answ.getIsRight }}<br>
                         {% endfor %}
                     </div>
+                </td>
+                <td>
+                    <a class="btn btn-warning" href="{{ path('app_edit_question_page',{'id':q.getId}) }}">Edit</a>
+                </td>
+                <td>
+                    <a class="btn btn-danger" href="{{ path('app_delete_question',{'id':q.getId}) }}">Delete</a>
                 </td>
             </tr>
         {% endfor %}

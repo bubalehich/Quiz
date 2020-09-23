@@ -5,6 +5,9 @@ var $addTagButton = $('<button type="button" class="add_answer_link btn btn-succ
 var $newLinkLi = $('<li></li>').append($addTagButton);
 
 $(document).ready(function() {
+    $('input[type="checkbox"]').on('click',function(){
+        checkboxEvent($(this));
+    });
 
     $collectionHolder = $('ul.answers');
 
@@ -18,6 +21,7 @@ $(document).ready(function() {
         });
         if($collectionHolder.find('input').length<2)$($('input[type="checkbox"]')['0']).prop('checked',true);
     });
+
 });
 
 function addTagForm($collectionHolder, $newLinkLi) {

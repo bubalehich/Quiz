@@ -1,19 +1,38 @@
 import $ from 'jquery';
+var $collectionHolder;
 
-var selected = $('.selected_questions');
-$('document').ready(function () {
-    $('.question').on('click', function () {
-        if ($(this)['0'].parentElement.className === "available_questions") {
-            $(selected).html($(selected).html()+$(this)['0'].innerHTML);
-        }
-        $(this).css('display', 'none');
-    });
+var $addTagButton = $('<button type="button" class="add_question_link btn btn-info">Add question</button>');
+var $newLinkLi = $('<li></li>').append($addTagButton);
 
-    $('#clear').on('click',function (){
-        $('.available_questions div').each(function(){
-            $(this).css('display','block');
-        });
-        $('.selected_questions').html('');
+$(document).ready(function() {
+
+    $collectionHolder = $('ul.questions');
+
+    $collectionHolder.append($newLinkLi);
+    $collectionHolder.data('index', $collectionHolder.find('input').length);
+
+    $('.add_question_link').on('click', function(e) {
+        addTagForm($collectionHolder, $newLinkLi);
     });
 
 });
+
+function addTagForm($collectionHolder, $newLinkLi) {
+    var prototype = $collectionHolder.data('prototype');
+    var index = $collectionHolder.data('index');
+
+    var newForm = prototype;
+    newForm = newForm.replace(/__name__/g, index);
+    $collectionHolder.data('index', index + 1);
+    var $newFormLi = $('<li class="question_element"></li>').append(newForm);
+    $newLinkLi.before($newFormLi);
+    addTagFormDeleteLink($newFormLi);
+}
+function addTagFormDeleteLink($tagFormLi) {
+    var $removeFormButton = $('<button type="button" class="btn btn-danger">Delete question</button>');
+    $tagFormLi.append($removeFormButton);
+
+    $removeFormButton.on('click', function(e) {
+        $tagFormLi.remove();
+    });
+}

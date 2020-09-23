@@ -20,7 +20,7 @@ class QuestionRepository extends ServiceEntityRepository
         parent::__construct($registry, Question::class);
     }
 
-    public function saveQuestion(Question $question)
+    public function saveQuestion(Question $question) :void
     {
         $this->_em->persist($question);
         $this->_em->flush();
@@ -30,5 +30,11 @@ class QuestionRepository extends ServiceEntityRepository
     {
         $dql = "SELECT i FROM App\Entity\Question i";
         return $this->_em->createQuery($dql);
+    }
+
+    public function deleteQuestion(?Question $question)
+    {
+        $this->_em->remove($question);
+        $this->_em->flush();
     }
 }
