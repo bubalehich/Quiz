@@ -26,7 +26,7 @@ class AnswerRepository extends ServiceEntityRepository
         $this->_em->flush();
     }
 
-    public function deleteAnswer(Answer $answer)
+    public function deleteAnswer(Answer $answer): void
     {
         $this->_em->remove($answer);
         $this->_em->flush();

@@ -1,26 +1,25 @@
 {% extends 'base.html.twig' %}
-{% block title %}Admin panel{% endblock %}
 {% block body %}
     <div style="display:flex;">
         <div class="left_bar">
             <div class="link_block">
-                <span class="badge link_level_1">Quiz</span>
+                <span class="badge link_level_1">{{'a.quizes'|trans}}</span>
                 <div class="links" style="display:none;margin-left:1em;">
-                    <a class="badge link_level_2" href="{{ path('app_show_quizes') }}">All</a>
-                    <a class="badge link_level_2" href="{{ path('create_quiz_page') }}">Create</a>
+                    <a class="badge link_level_2" href="{{ path('app_show_quizes') }}">{{'a.all'|trans}}</a>
+                    <a class="badge link_level_2" href="{{ path('create_quiz_page') }}">{{'a.create'|trans}}</a>
                 </div>
             </div>
             <div class="link_block">
-                <span class="badge link_level_1">Question</span>
+                <span class="badge link_level_1">{{'a.questions'|trans}}</span>
                 <div class="links" style="display:none;margin-left:1em;">
-                    <a class="badge link_level_2" href="{{ path('app_show_questions') }}">All</a>
-                    <a class="badge link_level_2" href="{{ path('app_create_question_page') }}">Create</a>
+                    <a class="badge link_level_2" href="{{ path('app_show_questions') }}">{{'a.all'|trans}}</a>
+                    <a class="badge link_level_2" href="{{ path('app_create_question_page') }}">{{'a.create'|trans}}</a>
                 </div>
             </div>
             <div class="link_block">
-                <span class="badge link_level_1">User</span>
+                <span class="badge link_level_1">{{'a.user'|trans}}</span>
                 <div class="links" style="display:none;margin-left:1em;">
-                    <a class="badge link_level_2" href="{{ path('app_show_users') }}">All</a>
+                    <a class="badge link_level_2" href="{{ path('app_show_users') }}">{{'a.all'|trans}}</a>
                 </div>
             </div>
         </div>

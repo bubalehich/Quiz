@@ -1,10 +1,10 @@
 .left_bar {
     margin-top: 50px;
-    width: 10%;
+    width: 15%;
 }
 
 .right_bar {
-    width: 90%;
+    width: 85%;
 }
 
 .link_block {
@@ -36,7 +36,7 @@
     padding: 25px 20px;
     border-radius: 10px;
     box-shadow: 0 0 10px purple;
-    margin: 0 auto;
+    margin: 100px auto 0;
     text-align: center;
     border: 1px solid black;
     background: rgba(14,14,93,0.7);
@@ -44,6 +44,7 @@
 
 .edit_user_form label {
     color: white;
+    margin:10px 10px;
     font-weight: bold;
     font-size: 20px;
 }
@@ -107,4 +108,8 @@
 }
 .quiz_create_form button{
     margin:5px 15px;
+}
+.answer_show_block{
+    height:50px;
+    overflow-y:scroll;
 }

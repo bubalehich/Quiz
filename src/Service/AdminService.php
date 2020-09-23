@@ -9,10 +9,9 @@ use App\Entity\User;
 use App\Repository\QuestionRepository;
 use App\Repository\AnswerRepository;
 use App\Repository\QuizRepository;
-use App\Repository\RoleRepository;
 use App\Repository\UserRepository;
+use DateTime;
 use Knp\Component\Pager\PaginatorInterface;
-use Symfony\Component\HttpFoundation\Request;
 
 class AdminService
 {
@@ -38,12 +37,7 @@ class AdminService
         $this->quizRepository = $quizRepository;
     }
 
-    public function getQuestions(): array
-    {
-        return $this->questionRepository->findAll();
-    }
-
-    public function saveNewQuiz(Quiz $quiz)
+    public function saveNewQuiz(Quiz $quiz) :bool
     {
         $questionsNames = [];
         foreach($quiz->getQuestions() as $question){
@@ -54,35 +48,19 @@ class AdminService
        }
        if(count($questionsNames)<1)return false;
 
-       $quiz->setCreateDate(new \DateTime());
+       $quiz->setCreateDate(new DateTime());
        $this->quizRepository->saveQuiz($quiz);
+
        return true;
-    }
-
-    public function getUsers(): array
-    {
-        return $this->userRepository->findAll();
-    }
-
-    public function blockUser($id, $flag): void
-    {
-        $this->userRepository->changeUserIsActive($id, $flag);
     }
 
     public function getUsersPage(PaginatorInterface $paginator, int $page)
     {
-
         return $paginator->paginate(
             $this->userRepository->getPaginatorQuery(),
             $page,
             self::USERS_IN_PAGE
         );
-    }
-
-    public function getUserById($id): User
-    {
-
-        return $this->userRepository->find($id);
     }
 
     public function updateUser($id, $name, $email, $verified): void
@@ -92,11 +70,12 @@ class AdminService
         $this->userRepository->updateUserByAdmin($user);
     }
 
-    public function saveQuestion(Question $question)
+    public function saveQuestion(Question $question): bool
     {
-        if (count($question->getAnswers()) > 0)
+        if (!$question->getAnswers()->isEmpty())
         {
             $this->questionRepository->saveQuestion($question);
+
             return true;
         } else {
             return false;
@@ -112,11 +91,6 @@ class AdminService
         );
     }
 
-    public function getQuestionById($id): ?Question
-    {
-        return $this->questionRepository->find($id);
-    }
-
     public function deleteQuestionById($id): void
     {
       $question = $this->questionRepository->find($id);
@@ -124,7 +98,6 @@ class AdminService
             $question->removeAnswer($answer);
             $this->answerRepository->deleteAnswer($answer);
         }
-
         $this->questionRepository->deleteQuestion($question);
     }
 
@@ -137,7 +110,7 @@ class AdminService
         );
     }
 
-    public function deleteQuizById($id)
+    public function deleteQuizById($id): void
     {
         $quiz = $this->quizRepository->find($id);
         foreach($quiz->getQuestions() as $question){

@@ -1,4 +1,5 @@
 {% extends('admin/admin_page.html.twig') %}
+{% block title %}{{'a.quizes.title'|trans}}{% endblock %}
 {% block rightbar %}
     {% for message in app.flashes('success') %}
         <div class="alert alert-success">
@@ -15,7 +16,7 @@
         <th>{{ knp_pagination_sortable(quizes,'id','i.id')}}</th>
         <th>{{ knp_pagination_sortable(quizes,'name','i.name')}}</th>
         <th>{{ knp_pagination_sortable(quizes,'isActive','i.isActive')}}</th>
-        <th>Questions</th>
+        <th>{{'a.questions'|trans}}</th>
         </thead>
         <tbody>
         {% for quiz in quizes %}
@@ -24,15 +25,15 @@
             <td>{{quiz.getName}}</td>
             <td>{{quiz.getIsActive}}</td>
             <td>
-                <select>
-                    <option selected disabled>{{ quiz.getQuestions | length }} Questions in quiz</option>
+                <div class="answer_show_block">
+                <span style="color:lightblue">{{ quiz.getQuestions | length }} Questions in quiz</span><br>
                 {% for question in quiz.getQuestions %}
-                    <option>{{ question.name }}</option>
+                    <span>{{ question.name }}</span><br>
                 {% endfor %}
-                </select>
+                </div>
             </td>
-            <td><a href="{{ path('app_edit_quiz_page',{"id":quiz.getId}) }}" class="btn btn-warning">Edit</a></td>
-            <td><a href="{{ path('app_delete_quiz',{"id":quiz.getId}) }}" class="btn btn-danger">Delete</a></td>
+            <td><a href="{{ path('app_edit_quiz_page',{"id":quiz.getId}) }}" class="btn btn-warning">{{'a.edit'|trans}}</a></td>
+            <td><a href="{{ path('app_delete_quiz',{"id":quiz.getId}) }}" class="btn btn-danger">{{'a.delete'|trans}}</a></td>
         </tr>
         {% endfor %}
         </tbody>

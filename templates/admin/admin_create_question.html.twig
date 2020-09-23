@@ -1,5 +1,6 @@
 
 {% extends 'admin/admin_page.html.twig' %}
+{% block title %}{{'a.create.question.title'|trans}}{% endblock %}
 {% block rightbar %}
 <div class="question_create_form">
     {% for message in app.flashes('error') %}

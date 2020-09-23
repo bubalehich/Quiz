@@ -1,12 +1,13 @@
 {% extends 'admin/admin_page.html.twig' %}
+{% block title %}{{'a.users.title'|trans}}{% endblock %}
 {% block rightbar %}
     <table class="table table-striped table-dark" style="border-radius:5px;">
         <thead>
         <th>{{ knp_pagination_sortable(users , 'id', 'i.id') }}</th>
         <th>{{ knp_pagination_sortable(users , 'name', 'i.name') }}</th>
         <th>{{ knp_pagination_sortable(users , 'email', 'i.email') }}</th>
-        <th>Active</th>
-        <th>Verified</th>
+        <th>{{ knp_pagination_sortable(users , 'active', 'i.isActive') }}</th>
+        <th>{{ knp_pagination_sortable(users , 'verified', 'i.isVerified') }}</th>
         <th>role</th>
 
         </thead>
@@ -37,12 +38,12 @@
                     {% if user.getIsActive == 1 %}
                         <a href="{{ path('app_block_user',{"id":user.getId,"flag":0}) }}"
                            class="btn btn-primary block_user">
-                            Block
+                            {{'a.block'|trans}}
                         </a>
                     {% else %}
                         <a href="{{ path('app_block_user',{"id":user.getId,"flag":1}) }}"
                            class="btn btn-outline-primary block_user">
-                            Unlock
+                            {{'a.unblock'|trans}}
                         </a>
                     {% endif %}
                 </td>

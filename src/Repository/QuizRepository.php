@@ -33,6 +33,7 @@ class QuizRepository extends ServiceEntityRepository
     public function getPaginatorQuery()
     {
         $dql = "SELECT i FROM App\Entity\Quiz i";
+
         return $this->_em->createQuery($dql);
     }
 

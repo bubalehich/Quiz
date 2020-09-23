@@ -3,23 +3,23 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Entity\Answer;
 use App\Entity\Question;
 use App\Entity\Quiz;
-use App\Form\CreateQuestionFormType;
 use App\Form\QuizCreateType;
 use App\Form\QuestionCreateType;
+use App\Form\UserEditType;
+use App\Repository\QuestionRepository;
 use App\Repository\UserRepository;
+use Exception;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Bundle\MakerBundle\Validator;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Service\AdminService;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @Route ("/admin")
@@ -28,10 +28,21 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class AdminController extends AbstractController
 {
     private AdminService $adminService;
+    private QuestionRepository $questionRepository;
+    private UserRepository $userRepository;
+    private TranslatorInterface $translator;
 
-    public function __construct(AdminService $adminService)
+    public function __construct(
+        AdminService $adminService,
+        QuestionRepository $questionRepository,
+        UserRepository $userRepository,
+        TranslatorInterface $translator
+    )
     {
+        $this->userRepository = $userRepository;
+        $this->questionRepository = $questionRepository;
         $this->adminService = $adminService;
+        $this->translator = $translator;
     }
 
     /**
@@ -39,8 +50,7 @@ class AdminController extends AbstractController
      */
     public function onAdmin(): Response
     {
-
-        return new RedirectResponse($this->generateUrl('app_show_users'));
+        return new RedirectResponse($this->generateUrl('app_show_quizes'));
     }
 
     /**
@@ -68,13 +78,13 @@ class AdminController extends AbstractController
         $createQuizForm = $this->createForm(QuizCreateType::class, $quiz);
         $createQuizForm->handleRequest($request);
         if ($createQuizForm->isSubmitted()) {
-           if($this->adminService->saveNewQuiz($quiz)){
-                $this->addFlash('success','Quiz created!');
+            if ($this->adminService->saveNewQuiz($quiz)) {
+                $this->addFlash('success', 'Quiz created!');
 
                 return new RedirectResponse($this->generateUrl('app_show_quizes'));
-           }else{
-               $this->addFlash('error','You have errors, add unique questions!');
-           }
+            } else {
+                $this->addFlash('error', $this->translator->trans('a.error.quiz.unique'));
+            }
         }
 
         return $this->render('admin/admin_create_quiz.html.twig', [
@@ -94,12 +104,12 @@ class AdminController extends AbstractController
         $createQuizForm = $this->createForm(QuizCreateType::class, $quiz);
         $createQuizForm->handleRequest($request);
         if ($createQuizForm->isSubmitted()) {
-            if($this->adminService->saveNewQuiz($quiz)){
-                $this->addFlash('success','Quiz saved!');
+            if ($this->adminService->saveNewQuiz($quiz)) {
+                $this->addFlash('success', $this->translator->trans('a.flash.quiz.created'));
 
                 return new RedirectResponse($this->generateUrl('app_show_quizes'));
-            }else{
-                $this->addFlash('error','You have errors, add unique questions!');
+            } else {
+                $this->addFlash('error', $this->translator->trans('a.error.quiz.unique'));
             }
         }
 
@@ -115,8 +125,12 @@ class AdminController extends AbstractController
      */
     public function onAdminQuizDelete(Request $request): Response
     {
-       $this->adminService->deleteQuizById($request->get('id'));
-       return new RedirectResponse($this->generateUrl('app_show_quizes'));
+        try {
+            $this->adminService->deleteQuizById($request->get('id'));
+        } catch (Exception $ex) {
+            $this->addFlash('error', $this->translator->trans('a.error.quiz.notdelete'));
+        }
+        return new RedirectResponse($this->generateUrl('app_show_quizes'));
     }
 
 
@@ -134,10 +148,12 @@ class AdminController extends AbstractController
 
         if ($createQuestionForm->isSubmitted()) {
             if ($this->adminService->saveQuestion($question)) {
-                $this->addFlash('success', 'Question created!');
+                $this->addFlash('success', $this->translator->trans('a.flash.question.created'));
+
                 return new RedirectResponse($this->generateUrl('app_show_questions'));
             } else {
-                $this->addFlash('error', 'Add some answers!');
+                $this->addFlash('error', $this->translator->trans('a.error.questions.add'));
+
                 return new RedirectResponse($request->headers->get('referer'));
             }
 
@@ -155,13 +171,14 @@ class AdminController extends AbstractController
      */
     public function onAdminQuestionEdit(Request $request): Response
     {
-        $question = $this->adminService->getQuestionById($request->get('id'));
+        $question = $this->questionRepository->find($request->get('id'));
 
         $createQuestionForm = $this->createForm(QuestionCreateType::class, $question);
         $createQuestionForm->handleRequest($request);
 
         if ($createQuestionForm->isSubmitted()) {
             $this->adminService->saveQuestion($question);
+
             return new RedirectResponse($this->generateUrl('app_show_questions'));
         }
 
@@ -177,7 +194,11 @@ class AdminController extends AbstractController
      */
     public function onAdminQuestionDelete(Request $request): Response
     {
-        $this->adminService->deleteQuestionById($request->get('id'));
+        try {
+            $this->adminService->deleteQuestionById($request->get('id'));
+        } catch (Exception $ex) {
+            $this->addFlash('error', $this->translator->trans('a.error.question.notdelete'));
+        }
         return new RedirectResponse($request->headers->get('referer'));
     }
 
@@ -218,7 +239,7 @@ class AdminController extends AbstractController
      */
     public function onAdminBlockUser(Request $request)
     {
-        $this->adminService->blockUser($request->get('id'), $request->get('flag'));
+        $this->userRepository->changeUserIsActive($request->get('id'), $request->get('flag'));
 
         return new RedirectResponse($request->headers->get('referer'));
     }
@@ -228,28 +249,17 @@ class AdminController extends AbstractController
      * @param Request $request
      * @return Response
      */
-    public function onAdminEditUser(Request $request)
+    public function onAdminEditUser(Request $request): Response
     {
-        $user = $this->adminService->getUserById($request->get('id'));
+        $user = $this->userRepository->find($request->get('id'));
+        $editUserForm = $this->createForm(UserEditType::class, $user);
+        $editUserForm->handleRequest($request);
+        if ($editUserForm->isSubmitted() && $editUserForm->isValid()) {
+            $this->userRepository->updateUserByAdmin($user);
 
-        return $this->render('admin/admin_edit_user.html.twig', ["user" => $user]);
+            return new RedirectResponse($this->generateUrl('app_show_users'));
+        }
+
+        return $this->render('admin/admin_edit_user.html.twig', ["editUserForm" => $editUserForm->createView()]);
     }
-
-    /**
-     * @Route ("/save_user", name = "app_save_edited_user")
-     * @param Request $request
-     * @return Response
-     */
-    public function onAdminUpdateUser(Request $request)
-    {
-
-        $this->adminService->updateUser(
-            $request->get('id'),
-            $request->get('name'),
-            $request->get('email'),
-            $request->get('verified'));
-
-        return new RedirectResponse($this->generateUrl('app_show_users'));
-    }
-
 }

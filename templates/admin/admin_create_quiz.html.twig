@@ -1,5 +1,5 @@
 {% extends('admin/admin_page.html.twig') %}
-
+{% block title %}{{'a.create.quiz.title'|trans}}{% endblock %}
 {% block rightbar %}
     <div class="quiz_create_form">
         {% for message in app.flashes('error') %}
