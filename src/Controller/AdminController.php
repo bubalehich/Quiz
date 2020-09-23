@@ -153,8 +153,6 @@ class AdminController extends AbstractController
                 return new RedirectResponse($this->generateUrl('app_show_questions'));
             } else {
                 $this->addFlash('error', $this->translator->trans('a.error.questions.add'));
-
-                return new RedirectResponse($request->headers->get('referer'));
             }
 
         }

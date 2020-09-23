@@ -77,9 +77,8 @@ class AdminService
             $this->questionRepository->saveQuestion($question);
 
             return true;
-        } else {
-            return false;
         }
+            return false;
     }
 
     public function getQuestionsPage(PaginatorInterface $paginator, int $page)
