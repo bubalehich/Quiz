@@ -23,7 +23,11 @@
                 <td>
                     <div>
                         {% for answ in q.getAnswers %}
-                            {{ answ.getName }}   |   is right:{{ answ.getIsRight }}<br>
+                            <span {% if answ.getIsRight == 1 %}
+                                style="color:green;font-weight:bold;"
+                                    {% endif %}>
+                                    {{ answ.getName }}
+                            </span><br>
                         {% endfor %}
                     </div>
                 </td>

@@ -16,7 +16,13 @@
                 <td>{{ user.getId }}</td>
                 <td>{{ user.getName }}</td>
                 <td>{{ user.getEmail }}</td>
-                <td>{{ user.getIsActive }}</td>
+                <td>
+                    {% if user.getIsActive == 1 %}
+                        <span style="color:green;">Active</span>
+                    {% else %}
+                        <span style="color:red;">Inactive</span>
+                    {% endif %}
+                </td>
                 <td>{{ user.IsVerified }}</td>
                 <td>{% for role in user.getRoles %}
                         |{{ role }}|

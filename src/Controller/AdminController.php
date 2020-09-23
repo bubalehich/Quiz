@@ -71,7 +71,7 @@ class AdminController extends AbstractController
            if($this->adminService->saveNewQuiz($quiz)){
                 $this->addFlash('success','Quiz created!');
 
-                return new RedirectResponse($request->headers->get('referer'));
+                return new RedirectResponse($this->generateUrl('app_show_quizes'));
            }else{
                $this->addFlash('error','You have errors, add unique questions!');
            }
@@ -97,7 +97,7 @@ class AdminController extends AbstractController
             if($this->adminService->saveNewQuiz($quiz)){
                 $this->addFlash('success','Quiz saved!');
 
-                return new RedirectResponse($request->headers->get('referer'));
+                return new RedirectResponse($this->generateUrl('app_show_quizes'));
             }else{
                 $this->addFlash('error','You have errors, add unique questions!');
             }
