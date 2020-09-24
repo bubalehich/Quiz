@@ -1,3 +1,4 @@
+import $ from 'jquery';
 var $collectionHolder;
 
 var $addTagButton = $('<button type="button" class="add_answer_link btn btn-success">Add answer</button>');

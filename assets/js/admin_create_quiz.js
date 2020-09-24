@@ -1,5 +1,4 @@
-import '../css/admin_create_quiz.css';
-
+import $ from 'jquery';
 var $collectionHolder;
 
 var $addTagButton = $('<button type="button" class="add_question_link btn btn-info">Add question</button>');
