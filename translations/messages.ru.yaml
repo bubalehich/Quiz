@@ -161,3 +161,38 @@ u.name.msg.max: Максимальная длина имени %d символо
 u.name.msg: Пожалуйста введите имя
 u.name.suc: Имя обновлено
 u.name.title: Обновить имя
+
+#ADMIN
+a.create.question.title: Админ - создание вопроса
+a.create.quiz.title: Админ - создание викторины
+a.edit.user.title: Админ - редактирование пользователя
+a.quizes: Викторины
+a.questions: Вопросы
+a.user: Пользователи
+a.all: Все
+a.edit: Редактировать
+a.delete: Удалить
+a.create: Создать
+a.questions.show: Админ - вопросы
+a.answers: Ответы
+a.quizes.title: Админ - викторины
+a.questions.title: Админ - вопросы
+a.users.title: Админ - пользователи
+a.name: Имя
+a.isRight: Верный
+a.isActive: Активный
+a.submit: Отправить
+a.block: Заблокировать
+a.unblock: Разблокировать
+
+#ADMIN-FLASH
+a.flash.question.notdelete: Этот вопрос не может быть удален!
+a.error.questions.add: Добавьте вопросы!
+a.error.quiz.unique: Вопросы не должны повторяться или отсутствовать!
+a.flash.quiz.created: Викторина создана!
+a.flash.quiz.deleted: Викторина удалена!
+a.flash.question.deleted: Вопрос удален!
+a.user.blocked: Статус пользователя изменен!
+a.user.edited: Пользователь изменен!
+a.question.edited: Вопрос изменен!
+a.quiz.edited: Викторина изменена!

@@ -19,4 +19,23 @@ class UserRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, User::class);
     }
+
+    public function changeUserIsActive($id, $flag): void
+    {
+        $user = $this->find($id)->setIsActive((bool)$flag);
+        $this->_em->persist($user);
+        $this->_em->flush();
+    }
+
+    public function getPaginatorQuery()
+    {
+        $dql = "SELECT i FROM App\Entity\User i";
+        return $this->_em->createQuery($dql);
+    }
+
+    public function updateUserByAdmin(User $user): void
+    {
+        $this->_em->persist($user);
+        $this->_em->flush();
+    }
 }

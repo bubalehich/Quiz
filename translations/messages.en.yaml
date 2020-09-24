@@ -161,3 +161,39 @@ u.name.msg.max: Name should be shorter than %s characters
 u.name.msg: Please enter name
 u.name.suc: Name has been update
 u.name.title: Update name
+
+#ADMIN
+a.create.question.title: Admin - create question
+a.create.quiz.title: Admin - create quiz
+a.edit.user.title: Admin - edit user
+a.quizes: Quiz
+a.questions: Question
+a.user: User
+a.all: All
+a.create: Create
+a.questions.title: Admin - questions
+a.answers: Answers
+a.edit: Edit
+a.delete: Delete
+a.quizes.title: Admin - quizes
+a.users.title: Admin - users
+a.name: Name
+a.isRight: is right
+a.isActive: is active
+a.submit: Submit
+a.block: Block
+a.unblock: Unblock
+
+#ADMIN-FLASH
+a.error.question.notdelete: This question cannot be deleted!
+a.error.questions.add: Add some answers!
+a.flash.question.created: Question created!
+a.error.quiz.notdelete: This quiz cannot be deleted!
+a.error.quiz.unique: Question must be unique and not null
+a.flash.quiz.created: Quiz created!
+a.flash.quiz.deleted: Quiz deleted!
+a.flash.question.deleted: Question deleted!
+a.user.blocked: User activity is changed!
+a.user.edited: User Edited!
+a.question.edited: Question edited!
+a.quiz.edited: Quiz edited!

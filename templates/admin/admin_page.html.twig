@@ -1,13 +1,46 @@
 {% extends 'base.html.twig' %}
-{% block stylesheets %}
-    {{ parent() }}
-    {{ encore_entry_link_tags('form') }}
-{% endblock %}
+
 {% block body %}
-    <div class="box">
-        <h1>
-            Данила, пиздуй делать админку!ы
-        </h1>
-       <input type="submit" value="Пойти нахуй">
+    <div style="display:flex;">
+        <div class="left_bar">
+            <div class="link_block">
+                <span class="badge link_level_1">{{'a.quizes'|trans}}</span>
+                <div class="links" style="display:none;margin-left:1em;">
+                    <a class="badge link_level_2" href="{{ path('app_show_quizes') }}">{{'a.all'|trans}}</a>
+                    <a class="badge link_level_2" href="{{ path('create_quiz_page') }}">{{'a.create'|trans}}</a>
+                </div>
+            </div>
+            <div class="link_block">
+                <span class="badge link_level_1">{{'a.questions'|trans}}</span>
+                <div class="links" style="display:none;margin-left:1em;">
+                    <a class="badge link_level_2" href="{{ path('app_show_questions') }}">{{'a.all'|trans}}</a>
+                    <a class="badge link_level_2" href="{{ path('app_create_question_page') }}">{{'a.create'|trans}}</a>
+                </div>
+            </div>
+            <div class="link_block">
+                <span class="badge link_level_1">{{'a.user'|trans}}</span>
+                <div class="links" style="display:none;margin-left:1em;">
+                    <a class="badge link_level_2" href="{{ path('app_show_users') }}">{{'a.all'|trans}}</a>
+                </div>
+            </div>
+        </div>
+        <div class="right_bar">
+            {% for message in app.flashes('success') %}
+                <div class="alert alert-success">
+                    {{ message }}
+                </div>
+            {% endfor %}
+            {% for message in app.flashes('error') %}
+                <div class="alert alert-danger">
+                    {{ message }}
+                </div>
+            {% endfor %}
+
+            {% block rightbar %}
+            {% endblock %}
+        </div>
     </div>
+{% endblock %}
+{% block javascripts %}
+    {{ encore_entry_script_tags('admin') }}
 {% endblock %}
