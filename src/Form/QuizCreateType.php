@@ -30,7 +30,8 @@ class QuizCreateType extends AbstractType
         $builder->add('name',TextType::class,[
             'label'=>$this->translator->trans('a.name')
         ])->add('isActive',CheckboxType::class,[
-            'label'=>$this->translator->trans('a.isActive')
+            'label'=>$this->translator->trans('a.isActive'),
+            'required'=>false
         ])->add('Questions',CollectionType::class,[
                 'entry_type'=>EntityType::class,
                 'entry_options'=>[

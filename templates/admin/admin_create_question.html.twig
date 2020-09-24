@@ -3,11 +3,6 @@
 {% block title %}{{'a.create.question.title'|trans}}{% endblock %}
 {% block rightbar %}
 <div class="question_create_form">
-    {% for message in app.flashes('error') %}
-        <div class="alert alert-danger">
-            {{ message }}
-        </div>
-    {% endfor %}
     {{ form_start(createQuestionForm) }}
     {{ form_row(createQuestionForm.name) }}
 

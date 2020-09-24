@@ -19,7 +19,10 @@ $(document).ready(function() {
         $('input[type="checkbox"]').on('click',function(){
             checkboxEvent($(this));
         });
-        if($collectionHolder.find('input').length<2)$($('input[type="checkbox"]')['0']).prop('checked',true);
+
+        if($collectionHolder.find('input').length === 2){
+            $($('input[type="checkbox"]')['0']).prop('checked',true);
+        }
     });
 
 });

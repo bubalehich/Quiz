@@ -171,3 +171,9 @@ a.flash.question.created: Question created!
 a.error.quiz.notdelete: This quiz cannot be deleted!
 a.error.quiz.unique: Question must be unique and not null
 a.flash.quiz.created: Quiz created!
+a.flash.quiz.deleted: Quiz deleted!
+a.flash.question.deleted: Question deleted!
+a.user.blocked: User activity is changed!
+a.user.edited: User Edited!
+a.question.edited: Question edited!
+a.quiz.edited: Quiz edited!

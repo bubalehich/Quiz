@@ -73,12 +73,10 @@ class AdminController extends AbstractController
      */
     public function onAdminQuizCreate(Request $request): Response
     {
-        $quiz = new Quiz();
-
-        $createQuizForm = $this->createForm(QuizCreateType::class, $quiz);
+        $createQuizForm = $this->createForm(QuizCreateType::class);
         $createQuizForm->handleRequest($request);
         if ($createQuizForm->isSubmitted()) {
-            if ($this->adminService->saveNewQuiz($quiz)) {
+            if ($this->adminService->saveNewQuiz($createQuizForm->getData())) {
                 $this->addFlash('success', 'Quiz created!');
 
                 return new RedirectResponse($this->generateUrl('app_show_quizes'));
@@ -105,7 +103,7 @@ class AdminController extends AbstractController
         $createQuizForm->handleRequest($request);
         if ($createQuizForm->isSubmitted()) {
             if ($this->adminService->saveNewQuiz($quiz)) {
-                $this->addFlash('success', $this->translator->trans('a.flash.quiz.created'));
+                $this->addFlash('success', $this->translator->trans('a.quiz.edited'));
 
                 return new RedirectResponse($this->generateUrl('app_show_quizes'));
             } else {
@@ -127,12 +125,13 @@ class AdminController extends AbstractController
     {
         try {
             $this->adminService->deleteQuizById($request->get('id'));
+            $this->addFlash('success', $this->translator->trans('a.flash.quiz.deleted'));
         } catch (Exception $ex) {
             $this->addFlash('error', $this->translator->trans('a.error.quiz.notdelete'));
         }
+
         return new RedirectResponse($this->generateUrl('app_show_quizes'));
     }
-
 
     /**
      * @Route ("/create_question", name = "app_create_question_page")
@@ -141,20 +140,17 @@ class AdminController extends AbstractController
      */
     public function onAdminQuestionCreate(Request $request): Response
     {
-        $question = new Question();
-
-        $createQuestionForm = $this->createForm(QuestionCreateType::class, $question);
+        $createQuestionForm = $this->createForm(QuestionCreateType::class);
         $createQuestionForm->handleRequest($request);
 
         if ($createQuestionForm->isSubmitted()) {
-            if ($this->adminService->saveQuestion($question)) {
+            if ($this->adminService->saveQuestion($createQuestionForm->getData())) {
                 $this->addFlash('success', $this->translator->trans('a.flash.question.created'));
 
                 return new RedirectResponse($this->generateUrl('app_show_questions'));
             } else {
                 $this->addFlash('error', $this->translator->trans('a.error.questions.add'));
             }
-
         }
 
         return $this->render('admin/admin_create_question.html.twig', [
@@ -176,6 +172,7 @@ class AdminController extends AbstractController
 
         if ($createQuestionForm->isSubmitted()) {
             $this->adminService->saveQuestion($question);
+            $this->addFlash('success',$this->translator->trans('a.question.edited'));
 
             return new RedirectResponse($this->generateUrl('app_show_questions'));
         }
@@ -194,10 +191,11 @@ class AdminController extends AbstractController
     {
         try {
             $this->adminService->deleteQuestionById($request->get('id'));
+            $this->addFlash('success', $this->translator->trans('a.flash.question.deleted'));
         } catch (Exception $ex) {
             $this->addFlash('error', $this->translator->trans('a.error.question.notdelete'));
         }
-        return new RedirectResponse($request->headers->get('referer'));
+        return new RedirectResponse($this->generateUrl('app_show_questions'));
     }
 
     /**
@@ -238,6 +236,7 @@ class AdminController extends AbstractController
     public function onAdminBlockUser(Request $request)
     {
         $this->userRepository->changeUserIsActive($request->get('id'), $request->get('flag'));
+        $this->addFlash('success',$this->translator->trans('a.user.blocked'));
 
         return new RedirectResponse($request->headers->get('referer'));
     }
@@ -254,6 +253,7 @@ class AdminController extends AbstractController
         $editUserForm->handleRequest($request);
         if ($editUserForm->isSubmitted() && $editUserForm->isValid()) {
             $this->userRepository->updateUserByAdmin($user);
+            $this->addFlash('success',$this->translator->trans('a.user.edited'));
 
             return new RedirectResponse($this->generateUrl('app_show_users'));
         }
