@@ -32,6 +32,8 @@ quiz.close: Закрыта
 quiz.es: Викторины
 quiz.date.format: d.m.Y; H:i
 quiz.participants: Участвует
+quiz.people: человек
+quiz.people.no: Нет участников
 
 #LEADERBOARD
 lb.count: Общее количество прошедших викторину

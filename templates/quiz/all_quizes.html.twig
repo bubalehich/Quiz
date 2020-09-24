@@ -34,15 +34,22 @@
                 <tbody>
                 {% for quiz in pagination %}
                     <tr>
-                        <th ><a href="{{ url('app_quiz_info',{id:quiz.id}) }}">{{ quiz.name }}</a></th>
+                        <th><a href="{{ url('app_quiz_info',{id:quiz.id}) }}">{{ quiz.name }}</a></th>
                         <th{% if not  quiz.isActive %} style="color: #db7778" {% endif %}
                                 {% if  quiz.isActive %} style="color: #3ac31a" {% endif %} >
                             {% if  quiz.isActive %}{{ 'quiz.active'|trans }}{% endif %}
                             {% if not  quiz.isActive %}{{ 'quiz.close'|trans }}{% endif %}
                         </th>
                         <th>{{ quiz.createDate.format('quiz.date.format'|trans) }}</th>
-                        <th>{{ attribute(leaders, quiz.id).user.name }}</th>
-                        <th>{{ quiz.results | length }}</th>
+                        <th>
+                            {% if  attribute(leaders, quiz.id).user.name is defined %}
+                                {{ attribute(leaders, quiz.id).user.name }}
+                            {% else %}
+                                {{ 'quiz.people.no'|trans }}
+                            {% endif %}
+
+                        </th>
+                        <th>{{ quiz.results | length }} {{ 'quiz.people'|trans }}</th>
                     </tr>
                 {% endfor %}
                 </tbody>

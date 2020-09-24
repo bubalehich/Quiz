@@ -32,6 +32,8 @@ quiz.close: Closed
 quiz.es: Quizes
 quiz.date.format: d F Y; h:i a
 quiz.participants: Participate
+quiz.people: people
+quiz.people.no: No participants
 
 #LEADERBOARD
 lb.count: Total count of results

@@ -48,6 +48,7 @@ class QuizController extends AbstractController
         $page = $request->query->getInt('page', 1);
         $pagination = $this->service->getPaginateQuizes($page);
         $leaders = $this->service->getLeadersForPage($pagination);
+
         return $this->render
         (
             'quiz/all_quizes.html.twig',
@@ -64,6 +65,7 @@ class QuizController extends AbstractController
     {
         $result = $this->service->getResult($this->getUser(), $quiz);
         $topResults = $this->service->getTopLeaders($quiz);
+
         return $this->render('quiz/quiz_info.html.twig', [
             'quiz' => $quiz,
             'topResults' => $topResults,
@@ -81,6 +83,7 @@ class QuizController extends AbstractController
     {
         $page = $request->query->getInt('page', 1);
         $pagination = $this->service->getPaginateLeaders($quiz, $page);
+
         return $this->render('quiz/leaderboard.html.twig', [
             'quiz' => $quiz,
             'pagination' => $pagination
@@ -123,10 +126,6 @@ class QuizController extends AbstractController
                 }
             }
 
-
-
-
-
             if (!$flag) {
                 $form = $this->createForm(QuizProcessFormType::class, null, ['question' => $question]);
                 $form->handleRequest($request);
@@ -142,10 +141,12 @@ class QuizController extends AbstractController
                     $this->em->persist($progress);
                     $this->em->persist($result);
                     $this->em->flush();
+
                     $request->getSession()->set('question', $question->getName());
                     $request->getSession()->set('answer', $answer->getName());
                     $request->getSession()->set('isRight', $answer->getIsRight());
                     $request->getSession()->set('progress', $result->getProgress()->count());
+
                     return $this->redirectToRoute('app_show_answer', [
                         'id' => $quiz->getId(),
                     ]);
@@ -185,16 +186,16 @@ class QuizController extends AbstractController
         $answer = $session->remove('answer');
         $progress = $session->remove('progress');
         $isRight = $session->remove('isRight');
-//        dd([$question, $answer, $isRight, $progress]);
         if (!$question || !$answer || $isRight === null) {
             return $this->redirectToRoute('app_quiz', ['id' => $quiz->getId()]);
         }
+
         return $this->render('quiz/proceed_answer.html.twig', [
             'question' => $question,
             'quiz' => $quiz,
             'answer' => $answer,
             'isRight' => $isRight,
-            'progress'=>$progress
+            'progress' => $progress
         ]);
     }
 }

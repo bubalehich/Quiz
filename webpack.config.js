@@ -42,6 +42,7 @@ Encore
     .addStyleEntry('quizes_page', './assets/css/app_quizes.css')
     .addStyleEntry('quiz_info', './assets/css/quiz_info.css')
     .addStyleEntry('quiz', './assets/css/quiz.css')
+    .addStyleEntry('common', './assets/css/common.css')
 
     //.addEntry('page1', './assets/js/page1.js')
     //.addEntry('page2', './assets/js/page2.js')

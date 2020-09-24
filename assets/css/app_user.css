@@ -1,4 +1,3 @@
-/*quizes part*/
 .quiz-info {
     background: rgba(25, 25, 25, 0.9);
     margin-left: 10px;
@@ -43,8 +42,6 @@
     color: white;
 }
 
-
-/*user info block*/
 .user-info {
     background: rgba(25, 25, 25, 0.9);
     color: #3498db;
@@ -66,12 +63,6 @@ img.displayed {
     width: 200px;
 }
 
-.user-info table td {
-    /*text-align: center;*/
-    /*padding: 5px;*/
-}
-
-/*buttons style*/
 button {
     border: 0;
     background: none;
@@ -91,8 +82,6 @@ button:hover {
     background: #2ecc71;
 }
 
-
-/*scroll style*/
 ::-webkit-scrollbar-button {
     background-repeat: no-repeat;
     width: 5px;
