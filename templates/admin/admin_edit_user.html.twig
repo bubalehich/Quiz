@@ -1,0 +1,7 @@
+{% extends('admin/admin_page.html.twig') %}
+{% block title %}{{'a.edit.user.title'|trans}}{% endblock %}
+{% block rightbar %}
+    <div class="edit_user_form">
+    {{ form(editUserForm) }}
+    </div>
+{% endblock %}

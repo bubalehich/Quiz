@@ -14,8 +14,8 @@ use Knp\Component\Pager\PaginatorInterface;
 class QuizService
 {
     private const MAX_RESULT = 3;
-    private const PAGINATION_QUIZES_LIMIT = 7;
-    private const PAGINATION_LEADERS_LIMIT = 7;
+    private const PAGINATION_QUIZES_LIMIT = 8;
+    private const PAGINATION_LEADERS_LIMIT = 8;
     private QuizRepository $quizRepository;
     private ResultRepository $resultRepository;
     private PaginatorInterface $paginator;

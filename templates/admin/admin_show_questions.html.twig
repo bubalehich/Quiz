@@ -1,0 +1,38 @@
+{% extends('admin/admin_page.html.twig') %}
+
+{% block rightbar %}
+    {% block title %}{{'a.questions.title'|trans}}{% endblock %}
+    <table class="table table-dark table-striped table-hover">
+        <thead>
+        <th>{{'a.questions'|trans}}</th>
+        <th>{{'a.answers'|trans}}</th>
+        </thead>
+        <tbody>
+        {% for q in questions %}
+            <tr>
+                <td>{{ q.getName }}</td>
+                <td>
+                    <div class="answer_show_block">
+                        {% for answ in q.getAnswers %}
+                            <span {% if answ.getIsRight == 1 %}
+                                style="color:green;font-weight:bold;"
+                                    {% endif %}>
+                                    {{ answ.getName }}
+                            </span><br>
+                        {% endfor %}
+                    </div>
+                </td>
+                <td>
+                    <a class="btn btn-warning" href="{{ path('app_edit_question_page',{'id':q.getId}) }}">{{'a.edit'|trans}}</a>
+                </td>
+                <td>
+                    <a class="btn btn-danger" href="{{ path('app_delete_question',{'id':q.getId}) }}">{{'a.delete'|trans}}</a>
+                </td>
+            </tr>
+        {% endfor %}
+        <div class="pagination">
+            {{ knp_pagination_render(questions) }}
+        </div>
+        </tbody>
+    </table>
+{% endblock %}

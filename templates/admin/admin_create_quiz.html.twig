@@ -1,0 +1,27 @@
+{% extends('admin/admin_page.html.twig') %}
+{% block title %}{{'a.create.quiz.title'|trans}}{% endblock %}
+{% block rightbar %}
+    <div class="quiz_create_form">
+        <div class="quiz_form">
+    {{ form_start(createQuizForm) }}
+            {{ form_row(createQuizForm.name) }}
+            {{ form_row(createQuizForm.isActive) }}
+
+            <ul class="questions" data-prototype="{{ form_widget(createQuizForm.Questions.vars.prototype)|e('html_attr') }}">
+                {% for question in createQuizForm.Questions %}
+                    <div class="question_element">
+                        <li>{{ form_row(question) }}</li>
+                    </div>
+                {% endfor %}
+            </ul>
+    {{ form_end(createQuizForm) }}
+        </div>
+
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('admin_create_quiz') }}
+
+{%  endblock %}

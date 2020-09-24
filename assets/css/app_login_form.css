@@ -7,7 +7,7 @@ body{
     width: 400px;
     padding: 40px;
     position: absolute;
-    top: 57%;
+    top: 50%;
     left: 50%;
     transform: translate(-50%,-50%);
     background:rgba(25, 25, 25, 0.9);

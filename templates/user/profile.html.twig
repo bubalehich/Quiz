@@ -1,53 +1,99 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}{{ 'userpage.title'| trans }}{% endblock %}
-
+  {% block stylesheets %}
+      {{ parent() }}
+      {{ encore_entry_link_tags('user_page') }}
+  {% endblock %}
 {% block body %}
     <div class="container">
-        <div class="row flex-fill">
-            <div class="col-sm-4">
-                <h2>{{ 'userpage.info'| trans }}</h2>
-                {{ 'userpage.name'| trans }}: {{ app.user.name }}<br>
-                {{ 'userpage.email'| trans }}: {{ app.user.email }}<br>
+        <div class="row flex-fill" style="padding: 10px">
 
-                <button type="button" class="btn btn-lg btn-primary">{{ 'userpage.edit'| trans }}</button>
-            </div>
-            <div class="col-sm-8">
-                <h2>{{ 'userpage.quizes'| trans }}</h2>
-                {% for result in results %}
-                    <div class="row flex-fill " style="background-color: #1b9448">
-                        <div class="col-md-8">
-                            <h3>{{ 'userpage.quizes.name'| trans }}:
-                                <a href="{{ url('app_quiz_info',{id:result.quiz.id}) }}"> {{ result.quiz.name }}</a>
-                            </h3>
-                            {{ 'userpage.quizes.status'| trans }}:
-                            <span{% if not  result.quiz.isActive %} style="color: #db7778" {% endif %}
-                                    {% if  result.quiz.isActive %} style="color: #3ac31a" {% endif %} >
-
-                                {% if  result.quiz.isActive %}{{ 'quiz.active'| trans }}{% endif %}
-                                {% if not  result.quiz.isActive %}{{ 'quiz.close'| trans }}{% endif %}
-                            </span><br>
-                            {{ 'userpage.quizes.progress'| trans }}:
-                            {{ result.progress|length }}/{{ result.quiz.questions|length }}
-                            <br>
-                            {{ 'userpage.quizes.result'| trans }}: {{ result.result }}
-                        </div>
-                        <div class="col-md-4">
-                            <form action="{{ url('app_quiz_leaders',{id:result.quiz.id}) }}">
-                                <button type="submit" class="btn btn-lg btn-primary">{{ 'qi.leaders'| trans }}</button>
-                            </form>
-                            {% if not result.endDate %}
-                                <form action="{{ url('app_quiz',{id:result.quiz.id}) }}">
-                                    <button {% if not result.quiz.isActive %}disabled{% endif %}
-                                            class="btn btn-lg btn-primary"
-                                            type="submit">{{ 'qi.button.continue'| trans }}
-                                    </button>
-                                </form>
-                            {% endif %}
-                        </div>
-                    </div>
+            <div class="col-sm-4 user-info">
+                <h3>{{ 'userpage.info'| trans }}</h3>
+                <div class="photo">
+                    <img class="displayed"
+                         src="https://sun9-35.userapi.com/1As_T-bzUwG7tF8sQJjos_VqRhpuIbOytZsmeA/veakSVpnLZo.jpg"
+                         alt="photo">
                     <br>
+                </div>
+                {% for msg in app.flashes('success') %}
+                    <div class="alert alert-success" role="alert">{{ msg }}</div>
                 {% endfor %}
+                <table>
+                    <tr>
+                        <td>{{ 'userpage.name'| trans }}:</td>
+                        <td>{{ app.user.name }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ 'userpage.email'| trans }}:</td>
+                        <td>{{ app.user.email }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ 'userpage.quizes.count'| trans }}:</td>
+                        <td>{{ results | length }}</td>
+                    </tr>
+                </table>
+                <form action="{{ url('app_profile_edit_pass') }}">
+                <button type="submit" >{{ 'userpage.edit'| trans }}</button>
+                </form>
+                <form action="{{ url('app_profile_edit_name') }}">
+                    <button type="submit" >{{ 'u.name.title'| trans }}</button>
+                </form>
+            </div>
+
+
+            <div class="col-sm-7 quiz-info">
+                <h2>{{ 'userpage.quizes'| trans }}</h2>
+                <div class="quizes">
+                    {% for result in results %}
+
+                        <div class="row flex-fill quiz-block">
+                            <div class="col-md-7">
+                                <h2>
+                                    <a href="{{ url('app_quiz_info',{id:result.quiz.id}) }}"> {{ result.quiz.name }}</a>
+                                </h2>
+                                <table>
+                                    <tr>
+                                        <td>
+                                            {{ 'userpage.quizes.status'| trans }}:
+                                        </td>
+                                        <td>
+                                            <span{% if not  result.quiz.isActive %} style="color: #db7778" {% endif %}
+                                                    {% if  result.quiz.isActive %} style="color: #3ac31a" {% endif %}>
+                                                {% if  result.quiz.isActive %}{{ 'quiz.active'| trans }}{% endif %}
+                                                {% if not  result.quiz.isActive %}{{ 'quiz.close'| trans }}{% endif %}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{ 'userpage.quizes.progress'| trans }}:</td>
+                                        <td>{{ result.progress|length }}/{{ result.quiz.questions|length }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{ 'userpage.quizes.result'| trans }}:</td>
+                                        <td>{{ result.result }}</td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <div class="col-md-5">
+                                <form action="{{ url('app_quiz_leaders',{id:result.quiz.id}) }}">
+                                    <button type="submit">{{ 'qi.leaders'| trans }}</button>
+                                </form>
+                                {% if not result.endDate %}
+                                    <form action="{{ url('app_quiz',{id:result.quiz.id}) }}">
+                                        <button {% if not result.quiz.isActive %}disabled{% endif %}
+                                                type="submit">{{ 'qi.button.continue'| trans }}
+                                        </button>
+                                    </form>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <br>
+                    {% endfor %}
+                </div>
+                <br>
             </div>
         </div>
     </div>

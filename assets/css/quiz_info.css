@@ -1,0 +1,83 @@
+.container {
+    margin-top: 10px;
+    background: rgba(25, 25, 25, 0.9);
+}
+
+.container h2 {
+    color: #2ecc71;
+    text-align: center;
+}
+
+.quiz-i {
+    margin: 5px;
+    background: rgba(46, 204, 113, 0.2);
+    color: #3498db;
+}
+
+.quiz-i h3 {
+    color: white;
+}
+
+table a {
+    text-decoration: none;
+    color: white;
+}
+
+table a:hover {
+    text-decoration: none;
+    color: #3498db;
+}
+
+table {
+    width: 100%;
+    text-align: center
+}
+
+.rez {
+    background-color: rgba(0, 139, 139, 0.2);
+    color: white;
+}
+
+.col-sm {
+    padding: 0;
+    margin: 5px;
+}
+
+button {
+    border: 0;
+    background: none;
+    display: block;
+    /*margin: 20px auto;*/
+    text-align: center;
+    border: 2px solid #2ecc71;
+    padding: 14px 40px;
+    outline: none;
+    color: white;
+    border-radius: 24px;
+    transition: 0.25s;
+    cursor: pointer;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+button:hover {
+    background: #2ecc71;
+}
+
+button:disabled {
+    background: #4f805d;
+}
+
+.tac {
+    color: white;
+}
+
+.ans-t {
+    font-size: 30px;
+    color: #23bf5d
+}
+
+.ans-f {
+    font-size: 30px;
+    color: #C82829
+}

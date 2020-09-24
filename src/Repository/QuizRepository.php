@@ -29,4 +29,24 @@ class QuizRepository extends ServiceEntityRepository
             ->select()
             ->getQuery();
     }
+
+    public function getPaginatorQuery()
+    {
+        $dql = "SELECT i FROM App\Entity\Quiz i";
+
+        return $this->_em->createQuery($dql);
+    }
+
+    public function saveQuiz(Quiz $quiz): void
+    {
+        $this->_em->persist($quiz);
+        $this->_em->flush();
+    }
+
+    public function deleteQuiz(Quiz $quiz): void
+    {
+        $this->_em->remove($quiz);
+        $this->_em->flush();
+    }
+
 }

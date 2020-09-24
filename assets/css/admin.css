@@ -1,0 +1,144 @@
+.left_bar {
+    margin-top: 50px;
+    width: 15%;
+}
+
+.right_bar {
+    width: 85%;
+}
+
+.link_block {
+    margin-top: 10px;
+}
+
+.link_block span {
+    width: 70%;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.link_level_1 {
+    border: 1px solid rebeccapurple;
+    padding: 10px 10px;
+    background: darkmagenta;
+    color: white;
+}
+
+.link_level_2 {
+    border: 1px solid rebeccapurple;
+    padding: 5px 5px;
+    background: lightseagreen;
+    color: white;
+}
+
+.edit_user_form {
+    width: 350px;
+    padding: 25px 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px purple;
+    margin: 100px auto 0;
+    text-align: center;
+    border: 1px solid black;
+    background: rgba(14,14,93,0.7);
+}
+
+.edit_user_form label {
+    color: white;
+    margin:10px 10px;
+    font-weight: bold;
+    font-size: 20px;
+}
+.question_create_form{
+    width:400px;
+    padding:25px 20px;
+    margin-left:10%;
+    text-align:left;
+    background: rgba(0,0,0,0.7);
+    border-radius: 10px;
+}
+ textarea{
+    height:30px !important;
+}
+.question_create_form label{
+    font-size:20px;
+    color:white;
+    font-weight: bold;
+    margin:10px 10px;
+}
+.question_create_form .answer_element{
+    border:1px solid white;
+    margin:5px 5px;
+    padding:10px 5px;
+    border-radius: 10px;
+}
+.quiz_create_form{
+    width:40%;
+    color:white;
+    font-size:15px;
+    font-weight:bold;
+    margin:20px 40px;
+
+}
+.quiz_create_form .question_element{
+    border:1px solid white;
+    margin:5px 5px;
+    padding:10px 5px;
+    border-radius: 10px;
+}
+.quiz_create_form label{
+    margin:5px 5px;
+}
+.quiz_create_form div{
+    margin:10px 10px;
+    padding:5px 10px;
+}
+.quiz_create_form .quiz_form{
+    border-radius: 5px;
+    background:rgba(0,0,0,0.7);
+}
+.quiz_create_form select{
+    font-size:15px;
+    padding:5px 2px;
+    border-radius: 10px;
+    background:rgba(0,0,0,0.5);
+    color:white;
+}
+.quiz_create_form option{
+    padding:10px 15px;
+}
+.quiz_create_form button{
+    margin:5px 15px;
+}
+.answer_show_block{
+    height:50px;
+    overflow-y:scroll;
+}
+.answer_show_block::-webkit-scrollbar-button {
+    background-repeat: no-repeat;
+    width: 5px;
+    height: 0px
+}
+
+.answer_show_block::-webkit-scrollbar-track {
+    background-color: #000000
+}
+
+.answer_show_block::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 0px;
+    border-radius: 0px;
+    background-color: #0d4eb3;
+}
+
+.answer_show_block::-webkit-scrollbar-thumb:hover {
+    background-color: #56999f;
+}
+
+.answer_show_block::-webkit-resizer {
+    background-repeat: no-repeat;
+    width: 4px;
+    height: 0px
+}
+
+.answer_show_block::-webkit-scrollbar {
+    width: 4px;
+}

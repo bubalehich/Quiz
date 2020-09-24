@@ -27,10 +27,13 @@ quiz.status: Статус
 quiz.date.create: Дата создания
 quiz.leader: Лучший игрок
 quiz.count: Всего викторин
-quiz.active: Открыт
-quiz.close: Закрыт
+quiz.active: Открыта
+quiz.close: Закрыта
 quiz.es: Викторины
 quiz.date.format: d.m.Y; H:i
+quiz.participants: Участвует
+quiz.people: человек
+quiz.people.no: Нет участников
 
 #LEADERBOARD
 lb.count: Общее количество прошедших викторину
@@ -100,12 +103,13 @@ userpage.title: Аккаунт
 userpage.info: Общая информация
 userpage.name: Имя
 userpage.email: Почта
-userpage.edit: Редактировать
+userpage.edit: Обновить пароль
 userpage.quizes: Викторины
 userpage.quizes.name: Название
 userpage.quizes.status: Статус
 userpage.quizes.progress: Пройдено
 userpage.quizes.result: Результат
+userpage.quizes.count: Участие в викторинах
 
 #MAIN PAGE
 main.title: Добро пожаловать!
@@ -142,3 +146,53 @@ f.password.update: Пароль успешно обновлён
 f.password.reset.error: Пользователь с такой эл. почтой не найден
 f.handle.reset.pass.error: Возникла проблема при обработке ссылки на восстановление пароля - %s
 
+#EDIT USER
+u.edit.pass.old.err: Неверный старый пароль
+u.edit.pass.suc: Пароль обновлён
+u.btn: Обновить
+u.pass.title: Обновить пароль
+u.pass.old: Старый пароль
+u.pass.new: Новый пароль
+u.pass.new2: Повторите новый пароль
+
+#EDIT NAME
+u.name.msg.min: Имя должно быть как минимум %d символов
+u.name.msg.max: Максимальная длина имени %d символов
+u.name.msg: Пожалуйста введите имя
+u.name.suc: Имя обновлено
+u.name.title: Обновить имя
+
+#ADMIN
+a.create.question.title: Админ - создание вопроса
+a.create.quiz.title: Админ - создание викторины
+a.edit.user.title: Админ - редактирование пользователя
+a.quizes: Викторины
+a.questions: Вопросы
+a.user: Пользователи
+a.all: Все
+a.edit: Редактировать
+a.delete: Удалить
+a.create: Создать
+a.questions.show: Админ - вопросы
+a.answers: Ответы
+a.quizes.title: Админ - викторины
+a.questions.title: Админ - вопросы
+a.users.title: Админ - пользователи
+a.name: Имя
+a.isRight: Верный
+a.isActive: Активный
+a.submit: Отправить
+a.block: Заблокировать
+a.unblock: Разблокировать
+
+#ADMIN-FLASH
+a.flash.question.notdelete: Этот вопрос не может быть удален!
+a.error.questions.add: Добавьте вопросы!
+a.error.quiz.unique: Вопросы не должны повторяться или отсутствовать!
+a.flash.quiz.created: Викторина создана!
+a.flash.quiz.deleted: Викторина удалена!
+a.flash.question.deleted: Вопрос удален!
+a.user.blocked: Статус пользователя изменен!
+a.user.edited: Пользователь изменен!
+a.question.edited: Вопрос изменен!
+a.quiz.edited: Викторина изменена!

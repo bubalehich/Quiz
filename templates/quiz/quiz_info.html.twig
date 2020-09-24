@@ -1,14 +1,20 @@
 {% extends 'base.html.twig' %}
 {% block title %}{{ quiz.name }}{% endblock %}
+  {% block stylesheets %}
+      {{ parent() }}
+      {{ encore_entry_link_tags('quiz_info') }}
+  {% endblock %}
 {% block body %}
     <div class="container">
         <div class="d-flex justify-content-center">
-            <h1>{{ quiz.name }}</h1>
+            <h2>{{ quiz.name }}</h2>
         </div>
+
         <div class="row flex-fill">
-            <div class="col-sm-6" style="background-color: #e08742;margin:5px">
+            {# QUIZ INFO #}
+            <div class="col-sm quiz-i">
                 <div class="d-flex justify-content-center">
-                    <h2>{{ 'qi.title'|trans }}</h2>
+                    <h3>{{ 'qi.title'|trans }}</h3>
                 </div>
                 <table width="100%">
                     <tr>
@@ -32,34 +38,40 @@
                     </tr>
                 </table>
             </div>
-            <div class="col-sm-5" style=" margin:5px">
-                <div style="background-color: #23bf5d">
-                    <table width="100%" style="text-align: center">
-                        <tr>
-                            <th colspan="4"><a
-                                        href="{{ url('app_quiz_leaders', {id:quiz.id}) }}">{{ 'qi.leaders'|trans }}</a>
-                            </th>
-                        </tr>
-                        <tr>
-                            <th>{{ 'qi.place'|trans }}</th>
-                            <th>{{ 'qi.name'|trans }}</th>
-                            <th>{{ 'qi.result'|trans }}</th>
-                            <th>{{ 'qi.time'|trans }}</th>
-                        </tr>
-                        {% for tr in topResults %}
-                            <tr>
-                                <td>{{ loop.index }}</td>
-                                <td>{{ tr.user.name }}</td>
-                                <td>{{ tr.result }}</td>
-                                <td>{{ tr.duration.format("%dd:%hh:%im:%ss") }}</td>
-                            </tr>
-                        {% endfor %}
-                    </table>
-                </div>
 
-                <div style="background-color: #008b8b;margin-top:5px">
+            {# LEADERS #}
+            <div class="col-sm quiz-i">
+                <table>
+                    <tr>
+                        <th colspan="4"><h3><a href="{{ url('app_quiz_leaders', {id:quiz.id}) }}">
+                                    {{ 'qi.leaders'|trans }}
+                                </a>
+                            </h3></th>
+                    </tr>
+                    <tr>
+                        <th>{{ 'qi.place'|trans }}</th>
+                        <th>{{ 'qi.name'|trans }}</th>
+                        <th>{{ 'qi.result'|trans }}</th>
+                        <th>{{ 'qi.time'|trans }}</th>
+                    </tr>
+                    {% for tr in topResults %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td>{{ tr.user.name }}</td>
+                            <td>{{ tr.result }}</td>
+                            <td>{{ tr.duration.format("%dd:%hh:%im:%ss") }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+
+        {# RESULT WITH START BUTTON #}
+        <div class="row flex-fill">
+            <div class="col-sm">
+                <div class="rez">
                     <div class="d-flex justify-content-center">
-                        <h2>{{ 'qi.progress'|trans }}:</h2>
+                        <h3>{{ 'qi.progress'|trans }}:</h3>
                     </div>
                     <p style="text-align: center; margin: 0">{{ 'qi.status'|trans }}:
                         {% if result is null %}{{ 'qi.status.no'|trans }}{% endif %}
@@ -71,43 +83,47 @@
                         {% endif %}
                         {% endif %}
                     </p>
-                    <div class="d-flex justify-content-center ">
+                    <div class="d-flex justify-content-center">
                         <form action="{{ url('app_quiz',{id:quiz.id}) }}">
                             <button type="submit"
                                     {% if result is null %}
-                                    class="btn btn-success">{{ 'qi.button.start'|trans }}{% endif %}
-                                {% if result is not null and result.endDate is null %} class ="btn btn-success">{{ 'qi.button.continue'|trans }}{% endif %}
-                                {% if result is not null and result.endDate is not null %} class="btn btn-secondary" disabled>{{ 'qi.button.ended'|trans }}{% endif %}
+                            >{{ 'qi.button.start'|trans }}{% endif %}
+                                {% if result is not null and result.endDate is null %} >{{ 'qi.button.continue'|trans }}{% endif %}
+                                {% if result is not null and result.endDate is not null %} disabled>{{ 'qi.button.ended'|trans }}{% endif %}
                             </button>
                         </form>
                     </div>
-                    {% if result and (result.progress|length) > 0 %}
-                        <div class="d-flex justify-content-center">
-                            <h2>{{ 'qi.answers'|trans }}:</h2>
-                        </div>
-                        <table class="table table-dark">
-                            <thead>
-                            <tr>
-                                {% for question in quiz.questions %}
-                                    <th>
-                                        {{ (loop.index) }}
-                                    </th>
-                                {% endfor %}
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                {% for progress in result.progress %}
-                                    <th {% if progress.isRight %}style="color: #23bf5d">+{% endif %}
-                                        {% if not progress.isRight %}style="color: #C82829">-{% endif %}
-                                    </th>
-                                {% endfor %}
-                            </tr>
-                            </tbody>
-                        </table>
-                    {% endif %}
                 </div>
             </div>
         </div>
+
+        {# ANSWERS #}
+        {% if result and (result.progress|length) > 0 %}
+            <div class="row flex-fill tac">
+                <div class="col-sm">
+                    <div class="d-flex justify-content-center">
+                        <h3>{{ 'qi.answers'|trans }}:</h3>
+                    </div>
+                    <table>
+                        <thead>
+                        <tr>
+                            {% for question in quiz.questions %}
+                                <th>{{ (loop.index) }}</th>
+                            {% endfor %}
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            {% for progress in result.progress %}
+                                <th {% if progress.isRight %} class="ans-t">+{% endif %}
+                                    {% if not progress.isRight %} class = "ans-f">-{% endif %}
+                                </th>
+                            {% endfor %}
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        {% endif %}
     </div>
 {% endblock %}

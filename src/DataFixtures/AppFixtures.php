@@ -17,12 +17,12 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class AppFixtures extends Fixture
 {
-    const USER_COUNT = 1000;
-    const ADMIN_COUNT = 10;
+    const USER_COUNT = 50;
+    const ADMIN_COUNT = 2;
     const QUIZ_COUNT = 100;
-    const QUESTIONS_COUNT = 1000;
     const ANSWERS_PER_QUESTION_COUNT = 4;
     const QUESTIONS_PER_QUIZ_COUNT = 10;
+    const QUESTIONS_COUNT = self::QUIZ_COUNT * self::QUESTIONS_PER_QUIZ_COUNT;
 
     private UserPasswordEncoderInterface $encoder;
 
