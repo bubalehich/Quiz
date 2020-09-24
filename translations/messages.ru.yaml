@@ -34,6 +34,8 @@ quiz.date.format: d.m.Y; H:i
 quiz.participants: Участвует
 quiz.people: человек
 quiz.people.no: Нет участников
+quiz.search: Поиск
+quiz.search.button: Найти
 
 #LEADERBOARD
 lb.count: Общее количество прошедших викторину

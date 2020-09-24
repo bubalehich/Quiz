@@ -34,6 +34,8 @@ quiz.date.format: d F Y; h:i a
 quiz.participants: Participate
 quiz.people: people
 quiz.people.no: No participants
+quiz.search: Search
+quiz.search.button: Find
 
 #LEADERBOARD
 lb.count: Total count of results
