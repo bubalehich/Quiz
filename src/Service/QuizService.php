@@ -13,6 +13,7 @@ use Knp\Component\Pager\PaginatorInterface;
 
 class QuizService
 {
+    private const  BUNCH_SIZE = 100;
     private const MAX_RESULT = 3;
     private const PAGINATION_QUIZES_LIMIT = 8;
     private const PAGINATION_LEADERS_LIMIT = 8;
@@ -66,6 +67,25 @@ class QuizService
         }
 
         return $result;
+    }
+
+    public function getUserPlace(User $user, Quiz $quiz): int
+    {
+        $i = 1;
+        while (true) {
+            $results = [];
+            $it = $this
+                ->paginator
+                ->paginate($this->resultRepository->getLeaders($quiz), $i, self::BUNCH_SIZE)
+                ->getItems();
+            array_push($results, ...$it);
+            for ($k = 0; $k < count($results); $k++) {
+                if ($results[$k]->getUser() === $user) {
+                    return $k + 1;
+                }
+            }
+            $i++;
+        }
     }
 
     function maxResult(float $max, Result $r): float

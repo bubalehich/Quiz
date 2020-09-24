@@ -8,6 +8,7 @@ use App\Form\ChangePasswordTypeForm;
 use App\Form\EditUsernameFormType;
 use App\Repository\ResultRepository;
 use App\Service\UserService;
+use phpDocumentor\Reflection\Types\This;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -52,7 +53,8 @@ class UserController extends AbstractController
     public function onUserPage()
     {
         $results = $this->resultRepository->findByUser($this->getUser());
-        return $this->render('user/profile.html.twig', ['results' => $results]);
+        $places = $this->userService->getAllPlacesForUser($this->getUser(), $results);
+        return $this->render('user/profile.html.twig', ['results' => $results, 'places' => $places]);
     }
 
     /**
