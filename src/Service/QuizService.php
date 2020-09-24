@@ -42,7 +42,14 @@ class QuizService
     {
         return $this
             ->paginator
-            ->paginate($this->quizRepository->findNext($page), $page, self::PAGINATION_QUIZES_LIMIT);
+            ->paginate($this->quizRepository->findNext(), $page, self::PAGINATION_QUIZES_LIMIT);
+    }
+
+    public function getPaginateQuizesWithSearchCriteria(int $page, string $search): PaginationInterface
+    {
+        return $this
+            ->paginator
+            ->paginate($this->quizRepository->search($search), $page, self::PAGINATION_QUIZES_LIMIT);
     }
 
     public function getLeadersForPage(PaginationInterface $pagination): array

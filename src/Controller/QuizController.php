@@ -46,7 +46,11 @@ class QuizController extends AbstractController
     public function listAction(Request $request): Response
     {
         $page = $request->query->getInt('page', 1);
-        $pagination = $this->service->getPaginateQuizes($page);
+        $searchCriteria = $request->query->get('search');
+
+        $pagination = $searchCriteria
+            ? $this->service->getPaginateQuizesWithSearchCriteria($page, $searchCriteria)
+            : $this->service->getPaginateQuizes($page);
         $leaders = $this->service->getLeadersForPage($pagination);
 
         return $this->render
