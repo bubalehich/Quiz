@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+{% block title %}
+    {{ 'u.name.title'|trans }}
+{% endblock %}
+ {% block stylesheets %}
+     {{ parent() }}
+     {{ encore_entry_link_tags('form') }}
+ {% endblock %}
+
+{% block body %}
+    <div class="box">
+        <h1>{{ 'u.name.title'|trans }}</h1>
+        {{ form_start(form) }}
+        {{ form_widget(form.name, {'attr': {'placeholder': app.user.name}}) }}
+        <input type="submit" name="" value={{ 'u.btn'| trans }}>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
+
+
+

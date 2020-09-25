@@ -6,6 +6,7 @@ namespace App\Service;
 use App\Entity\User;
 use App\Repository\RoleRepository;
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
@@ -15,6 +16,10 @@ class UserService
     private EntityManagerInterface $manager;
     private UserPasswordEncoderInterface $passwordEncoder;
     private RoleRepository $roleRepository;
+    /**
+     * @var QuizService
+     */
+    private QuizService $quizService;
 
     /**
      * UserService constructor.
@@ -22,19 +27,22 @@ class UserService
      * @param EntityManagerInterface $manager
      * @param UserPasswordEncoderInterface $passwordEncoder
      * @param RoleRepository $roleRepository
+     * @param QuizService $quizService
      */
     public function __construct
     (
         UserRepository $userRepository,
         EntityManagerInterface $manager,
         UserPasswordEncoderInterface $passwordEncoder,
-        RoleRepository $roleRepository
+        RoleRepository $roleRepository,
+        QuizService $quizService
     )
     {
         $this->repository = $userRepository;
         $this->manager = $manager;
         $this->passwordEncoder = $passwordEncoder;
         $this->roleRepository = $roleRepository;
+        $this->quizService = $quizService;
     }
 
     public function register(User $user): void
@@ -53,5 +61,16 @@ class UserService
             $plainPassword
         ));
         $this->manager->flush();
+    }
+
+    public function getAllPlacesForUser(User $user, array $results)
+    {
+        $arr = [];
+        foreach ($results as $result) {
+            if ($result->getEndDate()) {
+                $arr[$result->getQuiz()->getId()] = $this->quizService->getUserPlace($user, $result->getQuiz());
+            }
+        }
+        return $arr;
     }
 }

@@ -17,13 +17,12 @@ use Exception;
  */
 class QuizRepository extends ServiceEntityRepository
 {
-
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Quiz::class);
     }
 
-    public function findNext(int $page): Query
+    public function findNext(): Query
     {
         return $this
             ->createQueryBuilder('q')
@@ -55,4 +54,12 @@ class QuizRepository extends ServiceEntityRepository
         return true;
     }
 
+    public function search(string $searchCriteria): Query
+    {
+        return $this
+            ->createQueryBuilder('q')
+            ->where('q.name like :search')
+            ->setParameter('search', '%'.$searchCriteria.'%')
+            ->getQuery();
+    }
 }

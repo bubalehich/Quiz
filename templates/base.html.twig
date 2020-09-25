@@ -58,8 +58,15 @@
 {% endblock %}
 
 {% block javascripts %}
-    {{ encore_entry_script_tags('app') }}
 {% endblock %}
 
+{% block footer %}
+    <div class="fixed-bottom footer" style="text-align: center">
+        <a class="nav-link" href="https://github.com/JaneBmx/Quiz">2020
+            <img src="https://github.githubassets.com/images/icons/emoji/octocat.png"
+                 style="height: 20px; width: 20px; text-align: center"/>
+        </a>
+    </div>
+{% endblock %}
 </body>
 </html>

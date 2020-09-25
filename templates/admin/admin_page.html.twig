@@ -1,4 +1,5 @@
 {% extends 'base.html.twig' %}
+
 {% block body %}
     <div style="display:flex;">
         <div class="left_bar">
@@ -41,5 +42,6 @@
     </div>
 {% endblock %}
 {% block javascripts %}
+    {{ parent() }}
     {{ encore_entry_script_tags('admin') }}
 {% endblock %}

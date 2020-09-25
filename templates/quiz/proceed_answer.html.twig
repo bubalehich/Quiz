@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+{% block title %}{{ quiz.name }}{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('quiz') }}
+{% endblock %}
+{% block body %}
+    <div class="box">
+        {{ 'qp.question'|trans }} №{{ progress }} {{ 'qp.of'|trans }} {{ quiz.questions|length }}<br>
+
+        <div class="question">{{ question }}</div>
+
+        <p>answer: {{ answer }}</p>
+        <p> {% if isRight %} RIGHT{% else %} WRONG{% endif %}</p>
+
+        <form action="{{ url('app_quiz', {id: quiz.id} ) }}">
+            <button type="submit">  {{ 'qp.next'|trans }}</button>
+        </form>
+    </div>
+{% endblock %}

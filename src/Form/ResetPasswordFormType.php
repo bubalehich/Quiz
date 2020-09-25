@@ -12,14 +12,14 @@ use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class ChangePasswordFormType extends AbstractType
+class ResetPasswordFormType extends AbstractType
 {
     private const PASSWORD_MIN_LENGTH = 6;
     private const PASSWORD_MAX_LENGTH = 100;
     private TranslatorInterface $translator;
 
     /**
-     * ChangePasswordFormType constructor.
+     * ResetPasswordFormType constructor.
      * @param TranslatorInterface $translator
      */
     public function __construct(TranslatorInterface $translator)
@@ -43,10 +43,12 @@ class ChangePasswordFormType extends AbstractType
                         'maxMessage' => sprintf($this->translator->trans('msg.password.max'), self::PASSWORD_MAX_LENGTH),
                     ]),
                 ],
-                'label' => $this->translator->trans('l.password.new'),
+                'label' =>false ,
+                'attr'=>['placeholder'=>$this->translator->trans('l.password.new')]
             ],
             'second_options' => [
-                'label' => $this->translator->trans('l.password.repeat'),
+                'label' => false,
+                'attr' => ['placeholder' => $this->translator->trans('l.password.repeat')]
             ],
             'invalid_message' => $this->translator->trans('msg.password.match'),
             'mapped' => false,

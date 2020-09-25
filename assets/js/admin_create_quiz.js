@@ -4,14 +4,14 @@ var $collectionHolder;
 var $addTagButton = $('<button type="button" class="add_question_link btn btn-info">Add question</button>');
 var $newLinkLi = $('<li></li>').append($addTagButton);
 
-$(document).ready(function() {
+$(document).ready(function () {
 
     $collectionHolder = $('ul.questions');
 
     $collectionHolder.append($newLinkLi);
     $collectionHolder.data('index', $collectionHolder.find('input').length);
 
-    $('.add_question_link').on('click', function(e) {
+    $('.add_question_link').on('click', function (e) {
         addTagForm($collectionHolder, $newLinkLi);
     });
 
@@ -28,11 +28,12 @@ function addTagForm($collectionHolder, $newLinkLi) {
     $newLinkLi.before($newFormLi);
     addTagFormDeleteLink($newFormLi);
 }
+
 function addTagFormDeleteLink($tagFormLi) {
     var $removeFormButton = $('<button type="button" class="btn btn-danger">Delete question</button>');
     $tagFormLi.append($removeFormButton);
 
-    $removeFormButton.on('click', function(e) {
+    $removeFormButton.on('click', function (e) {
         $tagFormLi.remove();
     });
 }

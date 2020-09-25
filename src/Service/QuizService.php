@@ -13,9 +13,10 @@ use Knp\Component\Pager\PaginatorInterface;
 
 class QuizService
 {
+    private const  BUNCH_SIZE = 100;
     private const MAX_RESULT = 3;
-    private const PAGINATION_QUIZES_LIMIT = 7;
-    private const PAGINATION_LEADERS_LIMIT = 7;
+    private const PAGINATION_QUIZES_LIMIT = 8;
+    private const PAGINATION_LEADERS_LIMIT = 8;
     private QuizRepository $quizRepository;
     private ResultRepository $resultRepository;
     private PaginatorInterface $paginator;
@@ -42,7 +43,14 @@ class QuizService
     {
         return $this
             ->paginator
-            ->paginate($this->quizRepository->findNext($page), $page, self::PAGINATION_QUIZES_LIMIT);
+            ->paginate($this->quizRepository->findNext(), $page, self::PAGINATION_QUIZES_LIMIT);
+    }
+
+    public function getPaginateQuizesWithSearchCriteria(int $page, string $search): PaginationInterface
+    {
+        return $this
+            ->paginator
+            ->paginate($this->quizRepository->search($search), $page, self::PAGINATION_QUIZES_LIMIT);
     }
 
     public function getLeadersForPage(PaginationInterface $pagination): array
@@ -59,6 +67,25 @@ class QuizService
         }
 
         return $result;
+    }
+
+    public function getUserPlace(User $user, Quiz $quiz): int
+    {
+        $i = 1;
+        while (true) {
+            $results = [];
+            $it = $this
+                ->paginator
+                ->paginate($this->resultRepository->getLeaders($quiz), $i, self::BUNCH_SIZE)
+                ->getItems();
+            array_push($results, ...$it);
+            for ($k = 0; $k < count($results); $k++) {
+                if ($results[$k]->getUser() === $user) {
+                    return $k + 1;
+                }
+            }
+            $i++;
+        }
     }
 
     function maxResult(float $max, Result $r): float

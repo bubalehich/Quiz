@@ -15,7 +15,7 @@ class ResetPasswordRequestFormType extends AbstractType
     private TranslatorInterface $translator;
 
     /**
-     * ChangePasswordFormType constructor.
+     * ResetPasswordFormType constructor.
      * @param TranslatorInterface $translator
      */
     public function __construct(TranslatorInterface $translator)
@@ -26,6 +26,8 @@ class ResetPasswordRequestFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('email', EmailType::class, [
+            'attr' => ['placeholder' => $this->translator->trans('login.email')],
+            'label'=>false,
             'constraints' => [
                 new NotBlank([
                     'message' => $this->translator->trans('msg.email'),

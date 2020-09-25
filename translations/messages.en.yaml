@@ -31,6 +31,11 @@ quiz.active: Opened
 quiz.close: Closed
 quiz.es: Quizes
 quiz.date.format: d F Y; h:i a
+quiz.participants: Participate
+quiz.people: people
+quiz.people.no: No participants
+quiz.search: Search
+quiz.search.button: Find
 
 #LEADERBOARD
 lb.count: Total count of results
@@ -64,11 +69,13 @@ qi.progress: Your progress
 qi.status.no: Not participating
 qi.status.in: In progress
 qi.status.off: Passed
+qi.rate: Your rate
 
 qi.button.start: Start
 qi.button.continue: Continue
 qi.button.ended: Ended
 qi.answers: Answers
+qi.button.closed: Closed
 
 #CONFIRM EMAIL
 confirm.title: Hi! Please confirm your email!
@@ -100,12 +107,13 @@ userpage.title: Profile
 userpage.info: Common info
 userpage.name: Name
 userpage.email: Email
-userpage.edit: Edit
+userpage.edit: Update password
 userpage.quizes: Quizes
 userpage.quizes.name: Name
 userpage.quizes.status: Status
 userpage.quizes.progress: Progress
 userpage.quizes.result: Result
+userpage.quizes.count: Participates in quiz
 
 #MAIN PAGE
 main.title: Welcome!
@@ -141,6 +149,22 @@ f.validate.error: There was a problem validating your reset request - %s
 f.password.update: Password has been updated!
 f.password.reset.error: There is no user with given email
 f.handle.reset.pass.error: There was a problem handling your password reset request - %s
+
+#EDIT USER
+u.edit.pass.old.err: Invalid old password
+u.edit.pass.suc: Password has been updated
+u.btn: Update
+u.pass.title: Update password
+u.pass.old: Old password
+u.pass.new: New password
+u.pass.new2: Repeat new password
+
+#EDIT NAME
+u.name.msg.min: Name should be at least %s characters
+u.name.msg.max: Name should be shorter than %s characters
+u.name.msg: Please enter name
+u.name.suc: Name has been update
+u.name.title: Update name
 
 #ADMIN
 a.create.question.title: Admin - create question
