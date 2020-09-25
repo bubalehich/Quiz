@@ -25,11 +25,10 @@ class LocaleController extends AbstractController
     public function changeLocale(Request $request, string $_locale, UrlGeneratorInterface $urlGenerator): Response
     {
         $request->getSession()->set('_locale', $_locale);
-        if ($targetPath = $request->headers->get("referer")) {
-            $response = new RedirectResponse($targetPath);
-        } else {
-            $response = new RedirectResponse($urlGenerator->generate("app_home"));
-        }
+
+        $response = ($targetPath = $request->headers->get("referer"))
+            ? new RedirectResponse($targetPath)
+            : new RedirectResponse($urlGenerator->generate("app_home"));
         $cookie = new Cookie('_locale', $_locale, time() + self::COOKIE_LIFETIME);
         $response->headers->setCookie($cookie);
 

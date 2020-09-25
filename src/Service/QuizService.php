@@ -3,11 +3,16 @@ declare(strict_types=1);
 
 namespace App\Service;
 
+use App\Entity\Answer;
+use App\Entity\Progress;
+use App\Entity\Question;
 use App\Entity\Quiz;
 use App\Entity\Result;
 use App\Entity\User;
 use App\Repository\QuizRepository;
 use App\Repository\ResultRepository;
+use DateTime;
+use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
 
@@ -20,23 +25,27 @@ class QuizService
     private QuizRepository $quizRepository;
     private ResultRepository $resultRepository;
     private PaginatorInterface $paginator;
+    private EntityManagerInterface $em;
 
     /**
      * QuizService constructor.
      * @param QuizRepository $quizRepository
      * @param ResultRepository $resultRepository
      * @param PaginatorInterface $paginator
+     * @param EntityManagerInterface $em
      */
     public function __construct
     (
         QuizRepository $quizRepository,
         ResultRepository $resultRepository,
-        PaginatorInterface $paginator
+        PaginatorInterface $paginator,
+        EntityManagerInterface $em
     )
     {
         $this->quizRepository = $quizRepository;
         $this->resultRepository = $resultRepository;
         $this->paginator = $paginator;
+        $this->em = $em;
     }
 
     public function getPaginateQuizes(int $page): PaginationInterface
@@ -81,7 +90,7 @@ class QuizService
             array_push($results, ...$it);
             for ($k = 0; $k < count($results); $k++) {
                 if ($results[$k]->getUser() === $user) {
-                    return $k + 1;
+                    return ($i - 1) * self::BUNCH_SIZE + $k + 1;
                 }
             }
             $i++;
@@ -128,5 +137,45 @@ class QuizService
         $query = $this->resultRepository->getLeaders($quiz)->getQuery();
 
         return $this->paginator->paginate($query, $page, self::PAGINATION_LEADERS_LIMIT);
+    }
+
+    public function startParticipate(Quiz $quiz, User $user): Result
+    {
+        if (!$result = $this->getResult($user, $quiz)) {
+            $result = new Result();
+            $result->setStartDate(new DateTime());
+            $quiz->addResult($result);
+            $user->addResult($result);
+            $this->em->persist($user);
+            $this->em->persist($result);
+            $this->em->persist($quiz);
+            $this->em->flush();
+        }
+        return $result;
+    }
+
+    public function isProceed(Question $question, Result $result): bool
+    {
+        $flag = false;
+        foreach ($result->getProgress() as $progress) {
+            if ($progress->getQuestion() === $question) {
+                $flag = true;
+                break;
+            }
+        }
+        return $flag;
+    }
+
+    public function createNewProgress(Result $result, Answer $answer): void
+    {
+        $question = $answer->getQuestion();
+        $progress = (new Progress())->setQuestion($question)->setIsRight($answer->getIsRight());
+        if ($answer->getIsRight()) {
+            $result->setResult($result->getResult() + 1);
+        }
+        $result->addProgress($progress);
+        $this->em->persist($progress);
+        $this->em->persist($result);
+        $this->em->flush();
     }
 }

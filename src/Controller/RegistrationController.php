@@ -15,12 +15,12 @@ use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
 class RegistrationController extends AbstractController
 {
-    private EmailManager $emailVerifier;
+    private EmailManager $emailManager;
     private TranslatorInterface $translator;
 
-    public function __construct(EmailManager $emailVerifier, TranslatorInterface $translator)
+    public function __construct(EmailManager $emailManager, TranslatorInterface $translator)
     {
-        $this->emailVerifier = $emailVerifier;
+        $this->emailManager = $emailManager;
         $this->translator = $translator;
     }
 
@@ -41,7 +41,7 @@ class RegistrationController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $service->register($user = $form->getData());
-            $this->emailVerifier->sendEmailConfirmation($user);
+            $this->emailManager->sendEmailConfirmation($user);
             $this->addFlash('success', $this->translator->trans('f.account.create'));
 
             return $this->redirectToRoute('app_login');
@@ -63,7 +63,7 @@ class RegistrationController extends AbstractController
     public function verifyUserEmail(Request $request): Response
     {
         try {
-            $this->emailVerifier->handleEmailConfirmation($request);
+            $this->emailManager->handleEmailConfirmation($request);
             $this->addFlash('success', $this->translator->trans('f.account.verify'));
             return $this->redirectToRoute('app_login');
         } catch (VerifyEmailExceptionInterface $exception) {

@@ -67,10 +67,11 @@ class QuizController extends AbstractController
      */
     public function quizInfo(Quiz $quiz): Response
     {
-        $result = $this->service->getResult($this->getUser(), $quiz);
+        /**@var User $user */
+        $user = $this->getUser();
+        $result = $this->service->getResult($user, $quiz);
         $topResults = $this->service->getTopLeaders($quiz);
-
-        $rate = $result && $result->getEndDate()?  $this->service->getUserPlace($this->getUser(), $quiz):null;
+        $rate = $result && $result->getEndDate() ? $this->service->getUserPlace($user, $quiz) : null;
 
         return $this->render('quiz/quiz_info.html.twig', [
             'quiz' => $quiz,
@@ -107,47 +108,22 @@ class QuizController extends AbstractController
     {
         /** @var User $user */
         $user = $this->getUser();
-        $result = $this->service->getResult($user, $quiz);
+        $result = $this->service->startParticipate($quiz, $user);
 
-        if (!($quiz->getIsActive()) || ($result) && $result->getEndDate()) {
+        if (!($quiz->getIsActive()) || $result->getEndDate()) {
             return $this->redirectToRoute('app_quiz_info', ['id' => $quiz->getId()]);
         }
 
-        if (!$result) {
-            $result = new Result();
-            $result->setStartDate(new DateTime());
-            $quiz->addResult($result);
-            $user->addResult($result);
-            $this->em->persist($user);
-            $this->em->persist($result);
-            $this->em->persist($quiz);
-            $this->em->flush();
-        }
-
         foreach ($quiz->getQuestions() as $question) {
-            $flag = false;
-            foreach ($result->getProgress() as $progress) {
-                if ($progress->getQuestion() === $question) {
-                    $flag = true;
-                    break;
-                }
-            }
+            if (!$this->service->isProceed($question, $result)) {
 
-            if (!$flag) {
                 $form = $this->createForm(QuizProcessFormType::class, null, ['question' => $question]);
                 $form->handleRequest($request);
 
                 if ($form->isSubmitted() && $form->isValid()) {
                     /** @var Answer $answer */
                     $answer = ($form->getData())['answer'];
-                    $progress = (new Progress())->setQuestion($question)->setIsRight($answer->getIsRight());
-                    if ($answer->getIsRight()) {
-                        $result->setResult($result->getResult() + 1);
-                    }
-                    $result->addProgress($progress);
-                    $this->em->persist($progress);
-                    $this->em->persist($result);
-                    $this->em->flush();
+                    $this->service->createNewProgress($result, $answer);
 
                     $request->getSession()->set('question', $question->getName());
                     $request->getSession()->set('answer', $answer->getName());
@@ -158,18 +134,11 @@ class QuizController extends AbstractController
                         'id' => $quiz->getId(),
                     ]);
                 }
-                foreach ($question->getAnswers() as $ans) {
-                    if ($ans->getIsRight()) {
-                        $rightAnswer = $ans->getId();
-                        break;
-                    }
-                }
 
                 return $this->render('quiz/proceed.html.twig', [
                     'form' => $form->createView(),
                     'quiz' => $quiz,
                     'result' => $result,
-                    'rightAnswer' => $rightAnswer,
                     'question' => $question]);
             }
         }

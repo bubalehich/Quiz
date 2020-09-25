@@ -6,19 +6,16 @@ namespace App\Service;
 use App\Entity\User;
 use App\Repository\RoleRepository;
 use App\Repository\UserRepository;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class UserService
 {
+    private const DEFAULT_ROLE = 'ROLE_USER';
     private UserRepository $repository;
     private EntityManagerInterface $manager;
     private UserPasswordEncoderInterface $passwordEncoder;
     private RoleRepository $roleRepository;
-    /**
-     * @var QuizService
-     */
     private QuizService $quizService;
 
     /**
@@ -47,7 +44,7 @@ class UserService
 
     public function register(User $user): void
     {
-        $user->addRole($this->roleRepository->findByName('ROLE_USER'))
+        $user->addRole($this->roleRepository->findByName(self::DEFAULT_ROLE))
             ->setIsActive(true)
             ->setPassword($this->passwordEncoder->encodePassword($user, $user->getPassword()));
         $this->manager->persist($user);
