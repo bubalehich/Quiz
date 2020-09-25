@@ -5,6 +5,7 @@ namespace App\Repository;
 
 use App\Entity\Question;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -20,17 +21,18 @@ class QuestionRepository extends ServiceEntityRepository
         parent::__construct($registry, Question::class);
     }
 
-    public function saveQuestion(Question $question) :void
+    public function saveQuestion(Question $question): void
     {
         $this->_em->persist($question);
         $this->_em->flush();
     }
 
-    public function getPaginatorQuery()
+    public function getPaginatorQuery(): Query
     {
-        $dql = "SELECT i FROM App\Entity\Question i";
-
-        return $this->_em->createQuery($dql);
+        return $this
+            ->createQueryBuilder('q')
+            ->select()
+            ->getQuery();
     }
 
     public function deleteQuestion(Question $question): void

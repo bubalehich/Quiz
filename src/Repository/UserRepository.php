@@ -5,6 +5,7 @@ namespace App\Repository;
 
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -27,10 +28,12 @@ class UserRepository extends ServiceEntityRepository
         $this->_em->flush();
     }
 
-    public function getPaginatorQuery()
+    public function getPaginatorQuery(): Query
     {
-        $dql = "SELECT i FROM App\Entity\User i";
-        return $this->_em->createQuery($dql);
+        return $this
+            ->createQueryBuilder('u')
+            ->select()
+            ->getQuery();
     }
 
     public function updateUserByAdmin(User $user): void

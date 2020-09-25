@@ -35,6 +35,4 @@ class RoleRepository extends ServiceEntityRepository
             ->getQuery()
             ->getOneOrNullResult();
     }
-
-
 }
