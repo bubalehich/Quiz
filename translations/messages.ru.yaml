@@ -75,6 +75,7 @@ qi.button.start: Начать
 qi.button.continue: Продолжить
 qi.button.ended: Пройден
 qi.answers: Ответы
+qi.button.closed: Закрыта
 
 #CONFIRM EMAIL
 confirm.title: Привет! Пожалуйста, подтвердите Вашу электронную почту!

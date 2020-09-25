@@ -79,21 +79,21 @@
                         {% if result.endDate is null %}{{ 'qi.status.in'|trans }}{% endif %}
                         {% if result.endDate is not null %}{{ 'qi.status.off'|trans }}
                     </p>
-                    <p style="text-align: center">{{ 'qi.result'|trans }}: {{ result.result }}
+                    <p style="text-align: center; margin: 0">{{ 'qi.result'|trans }}: {{ result.result }}
                         {% endif %}
                         {% endif %}
                     </p>
                     {% if rate %}
-                        <p style="text-align: center">
+                        <p style="text-align: center; margin: 0">
                             {{ 'qi.rate'|trans }}: {{ rate }}
                         </p>
                     {% endif %}
                     <div class="d-flex justify-content-center">
                         <form action="{{ url('app_quiz',{id:quiz.id}) }}">
                             <button type="submit"
-                                    {% if result is null %}
-                            >{{ 'qi.button.start'|trans }}{% endif %}
-                                {% if result is not null and result.endDate is null %} >{{ 'qi.button.continue'|trans }}{% endif %}
+                                    {% if result is null and quiz.isActive %}>{{ 'qi.button.start'|trans }}{% endif %}
+                                {% if result is null and not quiz.isActive %} disabled>{{ 'qi.button.closed' |trans }}{% endif %}
+                                {% if result is not null and result.endDate is null and quiz.isActive %} >{{ 'qi.button.continue'|trans }}{% endif %}
                                 {% if result is not null and result.endDate is not null %} disabled>{{ 'qi.button.ended'|trans }}{% endif %}
                             </button>
                         </form>
@@ -120,8 +120,8 @@
                         <tbody>
                         <tr>
                             {% for progress in result.progress %}
-                                <th {% if progress.isRight %} class="ans-t">+{% endif %}
-                                    {% if not progress.isRight %} class = "ans-f">-{% endif %}
+                                <th {% if progress.isRight %} class="ans-t">✓{% endif %}
+                                    {% if not progress.isRight %} class = "ans-f">×{% endif %}
                                 </th>
                             {% endfor %}
                         </tr>

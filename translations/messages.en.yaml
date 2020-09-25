@@ -75,6 +75,7 @@ qi.button.start: Start
 qi.button.continue: Continue
 qi.button.ended: Ended
 qi.answers: Answers
+qi.button.closed: Closed
 
 #CONFIRM EMAIL
 confirm.title: Hi! Please confirm your email!
