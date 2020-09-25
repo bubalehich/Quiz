@@ -30,10 +30,12 @@ class ChangePasswordTypeForm extends AbstractType
     {
         $builder->add('oldPassword', PasswordType::class, [
             'required' => true,
-            'label' => false
+            'label' => false,
+            'attr' => ['placeholder' => $this->translator->trans('u.pass.old')]
         ])
             ->add('plainPassword', RepeatedType::class, [
                 'label' => false,
+
                 'type' => PasswordType::class,
                 'first_options' => [
                     'constraints' => [
@@ -48,9 +50,11 @@ class ChangePasswordTypeForm extends AbstractType
                         ]),
                     ],
                     'label' => false,
+                    'attr' => ['placeholder' => $this->translator->trans('u.pass.new')],
                 ],
                 'second_options' => [
                     'label' => false,
+                    'attr' => ['placeholder' => $this->translator->trans('u.pass.new2')],
                 ],
                 'invalid_message' => $this->translator->trans('msg.password.match'),
                 'mapped' => false,
