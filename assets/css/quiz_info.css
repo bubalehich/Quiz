@@ -81,3 +81,16 @@ button:disabled {
     font-size: 30px;
     color: #C82829
 }
+
+p {
+    text-align: center;
+    margin: 0;
+}
+
+.right {
+    color: #3ac31a;
+}
+
+.wrong {
+    color: #db7778;
+}

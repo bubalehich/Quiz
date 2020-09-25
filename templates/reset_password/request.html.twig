@@ -2,20 +2,21 @@
 
 {% block title %}{{ 'rr.title'|trans }}{% endblock %}
 
+ {% block stylesheets %}
+     {{ parent() }}
+     {{ encore_entry_link_tags('form') }}
+ {% endblock %}
+
 {% block body %}
     {% for flashError in app.flashes('reset_password_error') %}
         <div class="alert alert-danger" role="alert">{{ flashError }}</div>
     {% endfor %}
-    <h1>{{ 'rr.title'|trans }}</h1>
 
-    {{ form_start(requestForm) }}
-    {{ form_row(requestForm.email) }}
-    <div>
-        <small>
-            {{ 'rr.form'|trans }}
-        </small>
+    <div class="box">
+        <h1>{{ 'rr.title'|trans }}</h1>
+        {{ form_start(requestForm) }}
+        {{ form_row(requestForm.email) }}
+        <input type="submit" name="" value={{ 'rr.button'| trans }}>
+        {{ form_end(requestForm) }}
     </div>
-
-    <button class="btn btn-primary">{{ 'rr.button'|trans }}</button>
-    {{ form_end(requestForm) }}
 {% endblock %}

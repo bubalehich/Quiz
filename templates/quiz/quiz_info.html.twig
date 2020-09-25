@@ -16,15 +16,15 @@
                 <div class="d-flex justify-content-center">
                     <h3>{{ 'qi.title'|trans }}</h3>
                 </div>
-                <table width="100%">
+                <table>
                     <tr>
                         <td>{{ 'qi.created'|trans }}:</td>
                         <td>{{ quiz.createDate.format( 'quiz.date.format'|trans ) }}</td>
                     </tr>
                     <tr>
                         <td>{{ 'qi.status'|trans }}:</td>
-                        <td{% if not  quiz.isActive %} style="color: #db7778" {% endif %}
-                                {% if  quiz.isActive %} style="color: #3ac31a" {% endif %} >
+                        <td{% if not  quiz.isActive %} class="wrong" {% endif %}
+                                {% if  quiz.isActive %} class="right" {% endif %} >
                             {% if  quiz.isActive %}{{ 'quiz.active'|trans }}{% endif %}
                             {% if not  quiz.isActive %}{{ 'quiz.close'|trans }}{% endif %}</td>
                     </tr>
@@ -43,10 +43,9 @@
             <div class="col-sm quiz-i">
                 <table>
                     <tr>
-                        <th colspan="4"><h3><a href="{{ url('app_quiz_leaders', {id:quiz.id}) }}">
-                                    {{ 'qi.leaders'|trans }}
-                                </a>
-                            </h3></th>
+                        <th colspan="4">
+                            <h3><a href="{{ url('app_quiz_leaders', {id:quiz.id}) }}"></a></h3>
+                        </th>
                     </tr>
                     <tr>
                         <th>{{ 'qi.place'|trans }}</th>
@@ -73,18 +72,18 @@
                     <div class="d-flex justify-content-center">
                         <h3>{{ 'qi.progress'|trans }}:</h3>
                     </div>
-                    <p style="text-align: center; margin: 0">{{ 'qi.status'|trans }}:
+                    <p>{{ 'qi.status'|trans }}:
                         {% if result is null %}{{ 'qi.status.no'|trans }}{% endif %}
                         {% if result is not null %}
                         {% if result.endDate is null %}{{ 'qi.status.in'|trans }}{% endif %}
                         {% if result.endDate is not null %}{{ 'qi.status.off'|trans }}
                     </p>
-                    <p style="text-align: center; margin: 0">{{ 'qi.result'|trans }}: {{ result.result }}
+                    <p>{{ 'qi.result'|trans }}: {{ result.result }}
                         {% endif %}
                         {% endif %}
                     </p>
                     {% if rate %}
-                        <p style="text-align: center; margin: 0">
+                        <p>
                             {{ 'qi.rate'|trans }}: {{ rate }}
                         </p>
                     {% endif %}
