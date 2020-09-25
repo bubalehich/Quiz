@@ -49,8 +49,8 @@ class QuizController extends AbstractController
         $searchCriteria = $request->query->get('search');
 
         $pagination = $searchCriteria
-            ? $this->service->getPaginateQuizesWithSearchCriteria($page, $searchCriteria)
-            : $this->service->getPaginateQuizes($page);
+            ? $this->service->getPaginateQuizzesWithSearchCriteria($page, $searchCriteria)
+            : $this->service->getPaginateQuizzes($page);
         $leaders = $this->service->getLeadersForPage($pagination);
 
         return $this->render

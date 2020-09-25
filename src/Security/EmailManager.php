@@ -18,10 +18,6 @@ use Symfony\Component\Mime\Address;
 class EmailManager
 {
     private const EMAIL = 'quiz.sender.bot@gmail.com';
-    private const VERIFY_EMAIL_TEMPLATE = 'app_verify_email';
-    private const RESTORE_PASSWORD_TEMPLATE = 'reset_password/email.html.twig';
-    private const CONFIRMATION_TEMPLATE = 'registration/confirmation_email.html.twig';
-
     private VerifyEmailHelperInterface $verifyEmailHelper;
     private MailerInterface $mailer;
     private EntityManagerInterface $entityManager;
@@ -58,10 +54,10 @@ class EmailManager
             ->from(new Address(self::EMAIL, $this->translator->trans('bot.author')))
             ->to($user->getEmail())
             ->subject($this->translator->trans('bot.confirm'))
-            ->htmlTemplate(self::CONFIRMATION_TEMPLATE);
+            ->htmlTemplate('registration/confirmation_email.html.twig');
 
         $signatureComponents = $this->verifyEmailHelper->generateSignature(
-            self::VERIFY_EMAIL_TEMPLATE,
+            'app_verify_email',
             (string)$user->getId(),
             $user->getEmail()
         );
@@ -79,7 +75,9 @@ class EmailManager
      */
     public function handleEmailConfirmation(Request $request): void
     {
-        $user = $this->entityManager->getRepository(User::class)
+        $user = $this
+            ->entityManager
+            ->getRepository(User::class)
             ->find($request->get('id'));
         $uri = str_replace
         (
@@ -101,7 +99,7 @@ class EmailManager
             ->from(new Address(self::EMAIL, $this->translator->trans('bot.author')))
             ->to($email)
             ->subject($this->translator->trans('bot.restore'))
-            ->htmlTemplate(self::RESTORE_PASSWORD_TEMPLATE)
+            ->htmlTemplate('reset_password/email.html.twig')
             ->context([
                 'resetToken' => $resetToken,
                 'tokenLifetime' => $tokenLifetime,

@@ -62,12 +62,12 @@ class UserService
 
     public function getAllPlacesForUser(User $user, array $results)
     {
-        $arr = [];
+        $places = [];
         foreach ($results as $result) {
             if ($result->getEndDate()) {
-                $arr[$result->getQuiz()->getId()] = $this->quizService->getUserPlace($user, $result->getQuiz());
+                $places[$result->getQuiz()->getId()] = $this->quizService->getUserPlace($user, $result->getQuiz());
             }
         }
-        return $arr;
+        return $places;
     }
 }

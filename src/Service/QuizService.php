@@ -18,9 +18,9 @@ use Knp\Component\Pager\PaginatorInterface;
 
 class QuizService
 {
-    private const  BUNCH_SIZE = 100;
+    private const BUNCH_SIZE = 100;
     private const MAX_RESULT = 3;
-    private const PAGINATION_QUIZES_LIMIT = 8;
+    private const PAGINATION_QUIZZES_LIMIT = 8;
     private const PAGINATION_LEADERS_LIMIT = 8;
     private QuizRepository $quizRepository;
     private ResultRepository $resultRepository;
@@ -48,18 +48,18 @@ class QuizService
         $this->em = $em;
     }
 
-    public function getPaginateQuizes(int $page): PaginationInterface
+    public function getPaginateQuizzes(int $page): PaginationInterface
     {
         return $this
             ->paginator
-            ->paginate($this->quizRepository->findNext(), $page, self::PAGINATION_QUIZES_LIMIT);
+            ->paginate($this->quizRepository->findNext(), $page, self::PAGINATION_QUIZZES_LIMIT);
     }
 
-    public function getPaginateQuizesWithSearchCriteria(int $page, string $search): PaginationInterface
+    public function getPaginateQuizzesWithSearchCriteria(int $page, string $search): PaginationInterface
     {
         return $this
             ->paginator
-            ->paginate($this->quizRepository->search($search), $page, self::PAGINATION_QUIZES_LIMIT);
+            ->paginate($this->quizRepository->search($search), $page, self::PAGINATION_QUIZZES_LIMIT);
     }
 
     public function getLeadersForPage(PaginationInterface $pagination): array
@@ -95,21 +95,6 @@ class QuizService
             }
             $i++;
         }
-    }
-
-    function maxResult(float $max, Result $r): float
-    {
-        return $max >= $r->getResult() ? $max : $r->getResult();
-    }
-
-    function minDuration(int $min, Result $r)
-    {
-        if (!$r->getEndDate()) {
-            return $min;
-        }
-        $duration = $r->getEndDate()->getTimestamp() - $r->getStartDate()->getTimestamp();
-
-        return $min <= $duration ? $min : $duration;
     }
 
     /**
