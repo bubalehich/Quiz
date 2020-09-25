@@ -33,7 +33,7 @@ class QuestionCreateType extends AbstractType
             'by_reference' => false,
             'allow_add' => true,
             'allow_delete' => true,
-            'label'=>$this->translator->trans('a.answers')
+            'label' => $this->translator->trans('a.answers')
         ])
             ->add('submit', SubmitType::class, [
                 'attr' => [

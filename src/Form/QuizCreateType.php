@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Form;
 
-
 use App\Entity\Quiz;
 use App\Entity\Question;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;

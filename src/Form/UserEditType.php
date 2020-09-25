@@ -24,17 +24,17 @@ class UserEditType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('name',TextType::class,[
-            'label'=>$this->translator->trans('a.name')
-        ])->add('isVerified',CheckboxType::class,[
-            'label'=>$this->translator->trans('a.isVerified'),
-            'required'=>false
-        ])->add('submit',SubmitType::class,[
-                'label'=>$this->translator->trans('a.submit'),
-                'attr'=>[
-                    'class'=>'btn btn-success'
-                ]
-            ]);
+        $builder->add('name', TextType::class, [
+            'label' => $this->translator->trans('a.name')
+        ])->add('isVerified', CheckboxType::class, [
+            'label' => $this->translator->trans('a.isVerified'),
+            'required' => false
+        ])->add('submit', SubmitType::class, [
+            'label' => $this->translator->trans('a.submit'),
+            'attr' => [
+                'class' => 'btn btn-success'
+            ]
+        ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
