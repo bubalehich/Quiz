@@ -1,11 +1,45 @@
 {% extends 'base.html.twig' %}
+
 {% block title %}Main{% endblock %}
 
+ {% block stylesheets %}
+     {{ parent() }}
+     {{ encore_entry_link_tags('common') }}
+ {% endblock %}
 
 {% block body %}
-
     <div class="co">
-        sdhfjahsdjkfhk
+        <div class="d-flex justify-content-center">
+            <h1>Welcome to Quiz!</h1>
+        </div>
+
+        <div class="d-flex justify-content-center">
+            <h2>About</h2>
+        </div>
+        <div class="d-flex justify-content-center">
+            <p> This is a tutorial project. It was made for the purpose of learning PHP language and Symfony
+                features. </p></div>
+        <div class="d-flex justify-content-center">
+            <h2>What y can do?</h2></div>
+        <div class="d-flex justify-content-center">
+            <ul>
+                <li>Choose any open <a href="{{ path('app_quizes') }}">quiz</a></li>
+                <li>Pass it (or return later and continue from the same place)</li>
+                <li>View your result, progress, score, place in leaderboard</li>
+                <li>Also!.. You always can go to profile page and view all your quiz which you have ever participated
+                    in
+                </li>
+                <li>Change language</li>
+            </ul>
+        </div>
+        <div class="d-flex justify-content-center">
+            <h3>But at first you need to <a href="{{ path('app_register') }}">create an account</a> or
+                <a href="{{ path('app_login') }}">log in</a></h3>
+        </div>
+        <hr>
+        <div class="d-flex justify-content-center">
+            Thanks <a href="https://www.instagram.com/mklgustafsson/"> Mikael Gustafsson </a> for amazing pictures
+        </div>
     </div>
 
 {% endblock %}
