@@ -30,11 +30,12 @@ class QuizRepository extends ServiceEntityRepository
             ->getQuery();
     }
 
-    public function getPaginatorQuery()
+    public function getPaginatorQuery(?string $name)
     {
-        $dql = "SELECT i FROM App\Entity\Quiz i";
-
-        return $this->_em->createQuery($dql);
+        return $this->createQueryBuilder('q')
+            ->where('q.name like :name')
+            ->setParameter('name', '%' . $name . '%')
+            ->getQuery();
     }
 
     public function saveQuiz(Quiz $quiz): void

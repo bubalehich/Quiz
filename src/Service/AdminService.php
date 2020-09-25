@@ -11,6 +11,7 @@ use App\Repository\AnswerRepository;
 use App\Repository\QuizRepository;
 use App\Repository\UserRepository;
 use DateTime;
+use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
 
 class AdminService
@@ -18,6 +19,7 @@ class AdminService
     private const USERS_IN_PAGE = 5;
     private const QUESTIONS_IN_PAGE = 3;
     private const QUIZES_IN_PAGE = 5;
+
     private QuestionRepository $questionRepository;
     private UserRepository $userRepository;
     private AnswerRepository $answerRepository;
@@ -36,104 +38,80 @@ class AdminService
         $this->quizRepository = $quizRepository;
     }
 
-    /*method have its own validation for unique questions*/
-    public function saveNewQuiz(Quiz $quiz): bool
+    public function saveNewQuiz(Quiz $quiz) :bool
     {
         $questionsNames = [];
-        foreach ($quiz->getQuestions() as $question) {
+        foreach($quiz->getQuestions() as $question){
             $questionsNames[] = $question->getName();
         }
-        if (count(array_unique($questionsNames)) < count($questionsNames)) {
-            return false;
-        }
-        if (count($questionsNames) < 1) return false;
+       if(count(array_unique($questionsNames))<count($questionsNames)){
+           return false;
+       }
+       if(count($questionsNames)<1)return false;
 
-        $quiz->setCreateDate(new DateTime());
-        $this->quizRepository->saveQuiz($quiz);
+       $quiz->setCreateDate(new DateTime());
+       $this->quizRepository->saveQuiz($quiz);
 
-        return true;
+       return true;
     }
 
-    /*method ask repository for query in db, to get part of entities*/
-    public function getUsersPage(PaginatorInterface $paginator, int $page)
-    {
-        return $paginator->paginate(
-            $this->userRepository->getPaginatorQuery(),
-            $page,
-            self::USERS_IN_PAGE
-        );
-    }
-
-    /*method validates answers count and save question*/
     public function saveQuestion(Question $question): bool
     {
-        if (!$question->getAnswers()->isEmpty()) {
+        if (!$question->getAnswers()->isEmpty())
+        {
             $this->questionRepository->saveQuestion($question);
 
             return true;
         }
-        return false;
+            return false;
     }
 
-    /*method ask question repository for query in db for part of entities*/
-    public function getQuestionsPage(PaginatorInterface $paginator, int $page)
+    public function getQuestionsPage(PaginatorInterface $paginator, int $page, ?string $name): PaginationInterface
     {
         return $paginator->paginate(
-            $this->questionRepository->getPaginatorQuery(),
+            $this->questionRepository->getPaginatorQuery($name),
             $page,
             self::QUESTIONS_IN_PAGE
         );
     }
 
-    /*method removes and deletes all answer from a question, and then try to delete question*/
-    /*if it falls, method restore answers in question*/
-    public function deleteQuestionById($id): bool
+    public function deleteQuestionById($id): void
     {
-        $question = $this->questionRepository->find($id);
-        $answers = $question->getAnswers();
-        foreach ($answers as $answer) {
+      $question = $this->questionRepository->find($id);
+        foreach($question->getAnswers() as $answer){
             $question->removeAnswer($answer);
+            $this->answerRepository->deleteAnswer($answer);
         }
-        if($this->questionRepository->deleteQuestion($question))
-        {
-            foreach ($answers as $answer) {
-                $this->answerRepository->deleteAnswer($answer);
-            }
-
-            return true;
-        }else{
-            foreach ($answers as $answer) {
-                $question->addAnswer($answer);
-            }
-
-            return false;
-        }
+        $this->questionRepository->deleteQuestion($question);
     }
-    /*return part of quiz entities for pagination*/
-    public function getQuizesPage(PaginatorInterface $paginator, int $page)
+
+    public function getQuizesPage(PaginatorInterface $paginator, int $page, ?string $name): PaginationInterface
     {
         return $paginator->paginate(
-            $this->quizRepository->getPaginatorQuery(),
+            $this->quizRepository->getPaginatorQuery($name),
             $page,
             self::QUIZES_IN_PAGE
         );
     }
-    /*method removes questions from an answer, and then try to delete it*/
-    /*if falls, restores all questions*/
-    public function deleteQuizById($id): bool
+
+    public function deleteQuizById($id): void
     {
         $quiz = $this->quizRepository->find($id);
-        $questions = $quiz->getQuestions();
-        foreach ($questions as $question) {
+        foreach($quiz->getQuestions() as $question){
             $quiz->removeQuestion($question);
         }
-        if(!$this->quizRepository->deleteQuiz($quiz))
-        {
-            foreach ($questions as $question) {
-                $quiz->addQuestion($question);
-            }
-            return false;
-        }
-        return true;
+        $this->quizRepository->deleteQuiz($quiz);
     }
+
+    public function getUsersPage(PaginatorInterface $paginator,int $page, ?string $name, ?string $email): PaginationInterface
+    {
+        return $paginator
+            ->paginate($this->userRepository->search($name,$email), $page, self::USERS_IN_PAGE);
+    }
+
+    public function getQuizById($id): Quiz
+    {
+        return $this->quizRepository->find($id);
+    }
+
 }

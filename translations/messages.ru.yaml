@@ -172,7 +172,7 @@ a.create.quiz.title: Админ - создание викторины
 a.edit.user.title: Админ - редактирование пользователя
 a.quizes: Викторины
 a.questions: Вопросы
-a.user: Пользователи
+a.users: Пользователи
 a.all: Все
 a.edit: Редактировать
 a.delete: Удалить
@@ -189,6 +189,15 @@ a.isVerified: Подтверждена почта
 a.submit: Отправить
 a.block: Заблокировать
 a.unblock: Разблокировать
+a.verified: Подтвержден
+a.role: Роль
+a.admin: Админ
+a.user: Пользователь
+a.active: Активен
+a.inactive: Неактивен
+a.questions_in_quiz: Вопросов в викторине
+a.search: Найти
+a.clear: Сброс
 
 #ADMIN-FLASH
 a.flash.question.notdelete: Этот вопрос не может быть удален!

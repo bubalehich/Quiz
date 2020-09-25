@@ -30,6 +30,14 @@
                 </td>
             </tr>
         {% endfor %}
+        <div class="search_block">
+            <form action="{{ url('app_show_questions') }}" method="get">
+                <label for="name">{{ 'a.name'|trans }}</label>
+                <input type="text" name="name" required />
+                <input type="submit" class="btn btn-success" value="{{ 'a.search'|trans }}" />
+                <a href="{{ url('app_show_questions') }}" class="btn btn-danger">{{ 'a.clear'|trans }}</a>
+            </form>
+        </div>
         <div class="pagination">
             {{ knp_pagination_render(questions) }}
         </div>

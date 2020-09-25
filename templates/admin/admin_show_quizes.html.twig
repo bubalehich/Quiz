@@ -1,11 +1,19 @@
 {% extends('admin/admin_page.html.twig') %}
 {% block title %}{{ 'a.quizes.title'|trans }}{% endblock %}
 {% block rightbar %}
-    <table class="table table-dark table-striped" style="margin-top:50px;">
+    <div class="search_block">
+        <form action="{{ url('app_show_quizes') }}" method="get">
+            <label for="name">{{ 'a.name'|trans }}</label>
+            <input type="text" name="name" required />
+            <input type="submit" class="btn btn-success" value="{{ 'a.search'|trans }}" />
+            <a href="{{ url('app_show_questions') }}" class="btn btn-danger">{{ 'a.clear'|trans }}</a>
+        </form>
+    </div>
+    <table class="table table-dark table-striped">
         <thead>
         <th>{{ knp_pagination_sortable(quizes,'id','i.id') }}</th>
-        <th>{{ knp_pagination_sortable(quizes,'name','i.name') }}</th>
-        <th>{{ knp_pagination_sortable(quizes,'isActive','i.isActive') }}</th>
+        <th>{{ knp_pagination_sortable(quizes,'a.name'|trans,'i.name') }}</th>
+        <th>{{ knp_pagination_sortable(quizes,'a.isActive'|trans,'i.isActive') }}</th>
         <th>{{ 'a.questions'|trans }}</th>
         </thead>
         <tbody>
@@ -14,14 +22,14 @@
                 <td>{{ quiz.getId }}</td>
                 <td>{{ quiz.getName }}</td>
                 <td>{% if quiz.getIsActive == 1 %}
-                        <span style="color:greenyellow">Active</span>
+                        <span style="color:greenyellow">{{'a.active'|trans}}</span>
                     {% else %}
-                        <span style="color:red;">Inactive</span>
+                        <span style="color:red;">{{'a.inactive'|trans}}</span>
                     {% endif %}
                 </td>
                 <td>
                     <div class="answer_show_block">
-                        <span style="color:lightblue">{{ quiz.getQuestions | length }} Questions in quiz</span><br>
+                        <span style="color:lightblue">{{ quiz.getQuestions | length }} {{ 'a.questions_in_quiz'|trans }}</span><br>
                         {% for question in quiz.getQuestions %}
                             <span>{{ question.name }}</span><br>
                         {% endfor %}

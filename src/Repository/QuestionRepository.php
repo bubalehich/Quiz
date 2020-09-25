@@ -28,11 +28,12 @@ class QuestionRepository extends ServiceEntityRepository
         $this->_em->flush();
     }
 
-    public function getPaginatorQuery()
+    public function getPaginatorQuery(?string $name)
     {
-        $dql = "SELECT i FROM App\Entity\Question i";
-
-        return $this->_em->createQuery($dql);
+        return $this->createQueryBuilder('q')
+            ->where('q.name like :name')
+            ->setParameter('name', '%' . $name . '%')
+            ->getQuery();
     }
 
     public function deleteQuestion(Question $question): bool
