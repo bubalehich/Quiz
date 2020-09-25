@@ -1,11 +1,12 @@
 import $ from 'jquery';
+
 var $collectionHolder;
 
 var $addTagButton = $('<button type="button" class="add_answer_link btn btn-success">Add answer</button>');
 var $newLinkLi = $('<li></li>').append($addTagButton);
 
-$(document).ready(function() {
-    $('input[type="checkbox"]').on('click',function(){
+$(document).ready(function () {
+    $('input[type="checkbox"]').on('click', function () {
         checkboxEvent($(this));
     });
 
@@ -14,14 +15,14 @@ $(document).ready(function() {
     $collectionHolder.append($newLinkLi);
     $collectionHolder.data('index', $collectionHolder.find('input').length);
 
-    $('.add_answer_link').on('click', function(e) {
+    $('.add_answer_link').on('click', function (e) {
         addTagForm($collectionHolder, $newLinkLi);
-        $('input[type="checkbox"]').on('click',function(){
+        $('input[type="checkbox"]').on('click', function () {
             checkboxEvent($(this));
         });
 
-        if($collectionHolder.find('input').length === 2){
-            $($('input[type="checkbox"]')['0']).prop('checked',true);
+        if ($collectionHolder.find('input').length === 2) {
+            $($('input[type="checkbox"]')['0']).prop('checked', true);
         }
     });
 
@@ -38,26 +39,28 @@ function addTagForm($collectionHolder, $newLinkLi) {
     $newLinkLi.before($newFormLi);
     addTagFormDeleteLink($newFormLi);
 }
+
 function addTagFormDeleteLink($tagFormLi) {
     var $removeFormButton = $('<button type="button" class="btn btn-danger">Delete answer</button>');
     $tagFormLi.append($removeFormButton);
 
-    $removeFormButton.on('click', function(e) {
+    $removeFormButton.on('click', function (e) {
         $tagFormLi.remove();
     });
 }
-function checkboxEvent(e){
+
+function checkboxEvent(e) {
     var checkboxes = $('input[type="checkbox"]');
-    $(checkboxes).each(function(){
-        if(!$(this).is(e)){
-            $(this).prop('checked',false);
+    $(checkboxes).each(function () {
+        if (!$(this).is(e)) {
+            $(this).prop('checked', false);
         }
     })
     var required = true;
-    $(checkboxes).each(function(){
-       if($(this).prop('checked')===true)required=false;
+    $(checkboxes).each(function () {
+        if ($(this).prop('checked') === true) required = false;
     });
-    if(required)$($(checkboxes)['0']).prop('checked',true);
+    if (required) $($(checkboxes)['0']).prop('checked', true);
 }
 
 

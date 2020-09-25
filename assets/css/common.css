@@ -1,29 +1,35 @@
-.co{
+.co {
     margin-top: 10px;
     margin-left: 10px;
     margin-right: 10px;
+    padding: 10px;
 
     background: rgba(25, 25, 25, 0.9);
     color: white;
 }
 
-h1{
+h1 {
     color: white;
 }
 
-p{
+p {
     margin-top: 10px;
     margin-left: 10px;
     margin-right: 10px;
 }
 
-.co img{
+.co img {
     height: 100px;
     width: 150px;
 }
 
-hr{
+hr {
     background-color: white;
     margin-right: 30px;
     margin-left: 30px;
+}
+
+a {
+    margin-right: 5px;
+    margin-left: 5px;
 }

@@ -10,36 +10,39 @@
     margin: 10px auto;
 }
 
-.table-q{
+.table-q {
     color: white;
     background: rgba(46, 204, 113, 0.2);
     margin: 0;
     width: 100%;
 }
-.tbl table th{
+
+.tbl table th {
     padding: 5px;
 }
 
-table{
+table {
     margin: 10px;
     text-align: center;
 }
 
-tbody th a{
+tbody th a {
     text-decoration: none;
     font-size: 25px;
 }
-tbody th a:hover{
+
+tbody th a:hover {
     text-decoration: none;
     font-size: 25px;
     color: white;
 }
-tr{
+
+tr {
     border-bottom: 2px;
     border-color: #5eb5e0;
 }
 
-.meh{
+.meh {
     margin-top: 10px;
     margin-bottom: 8px;
 }
