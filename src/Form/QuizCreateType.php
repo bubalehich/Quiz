@@ -27,28 +27,28 @@ class QuizCreateType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('name',TextType::class,[
-            'label'=>$this->translator->trans('a.name')
-        ])->add('isActive',CheckboxType::class,[
-            'label'=>$this->translator->trans('a.isActive'),
-            'required'=>false
-        ])->add('Questions',CollectionType::class,[
-                'entry_type'=>EntityType::class,
-                'entry_options'=>[
-                    'class'=>Question::class,
-                    'choice_label'=>'name',
-                    'label'=>false
-                ],
-                'by_reference'=>false,
-                'label'=>$this->translator->trans('a.questions'),
-                'allow_add'=>true,
-                'allow_delete'=>true
-            ])->add('submit',SubmitType::class,[
-                'attr'=>[
-                    'class'=>'btn btn-success'
-                ],
-            'label'=>$this->translator->trans('a.submit')
-            ]);
+        $builder->add('name', TextType::class, [
+            'label' => $this->translator->trans('a.name')
+        ])->add('isActive', CheckboxType::class, [
+            'label' => $this->translator->trans('a.isActive'),
+            'required' => false
+        ])->add('Questions', CollectionType::class, [
+            'entry_type' => EntityType::class,
+            'entry_options' => [
+                'class' => Question::class,
+                'choice_label' => 'name',
+                'label' => false
+            ],
+            'by_reference' => false,
+            'label' => $this->translator->trans('a.questions'),
+            'allow_add' => true,
+            'allow_delete' => true
+        ])->add('submit', SubmitType::class, [
+            'attr' => [
+                'class' => 'btn btn-success'
+            ],
+            'label' => $this->translator->trans('a.submit')
+        ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

@@ -5,7 +5,9 @@ namespace App\Repository;
 
 use App\Entity\Question;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\ConnectionException;
 use Doctrine\Persistence\ManagerRegistry;
+use Exception;
 
 /**
  * @method Question|null find($id, $lockMode = null, $lockVersion = null)
@@ -33,9 +35,14 @@ class QuestionRepository extends ServiceEntityRepository
         return $this->_em->createQuery($dql);
     }
 
-    public function deleteQuestion(Question $question): void
+    public function deleteQuestion(Question $question): bool
     {
-        $this->_em->remove($question);
-        $this->_em->flush();
+        try {
+            $this->_em->remove($question);
+            $this->_em->flush();
+        }catch(Exception $exception){
+            return false;
+        }
+        return true;
     }
 }

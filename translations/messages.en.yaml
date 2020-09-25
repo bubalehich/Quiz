@@ -160,6 +160,7 @@ a.users.title: Admin - users
 a.name: Name
 a.isRight: is right
 a.isActive: is active
+a.isVerified: is verified
 a.submit: Submit
 a.block: Block
 a.unblock: Unblock

@@ -7,6 +7,7 @@ use App\Entity\Quiz;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
+use Exception;
 
 /**
  * @method Quiz|null find($id, $lockMode = null, $lockVersion = null)
@@ -43,10 +44,15 @@ class QuizRepository extends ServiceEntityRepository
         $this->_em->flush();
     }
 
-    public function deleteQuiz(Quiz $quiz): void
+    public function deleteQuiz(Quiz $quiz): bool
     {
-        $this->_em->remove($quiz);
-        $this->_em->flush();
+        try {
+            $this->_em->remove($quiz);
+            $this->_em->flush();
+        }catch (Exception $exception){
+            return false;
+        }
+        return true;
     }
 
 }

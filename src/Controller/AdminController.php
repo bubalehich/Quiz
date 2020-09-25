@@ -9,6 +9,7 @@ use App\Form\QuizCreateType;
 use App\Form\QuestionCreateType;
 use App\Form\UserEditType;
 use App\Repository\QuestionRepository;
+use App\Repository\QuizRepository;
 use App\Repository\UserRepository;
 use Exception;
 use Knp\Component\Pager\PaginatorInterface;
@@ -31,15 +32,18 @@ class AdminController extends AbstractController
     private QuestionRepository $questionRepository;
     private UserRepository $userRepository;
     private TranslatorInterface $translator;
+    private QuizRepository $quizRepository;
 
     public function __construct(
         AdminService $adminService,
         QuestionRepository $questionRepository,
         UserRepository $userRepository,
+        QuizRepository $quizRepository,
         TranslatorInterface $translator
     )
     {
         $this->userRepository = $userRepository;
+        $this->quizRepository = $quizRepository;
         $this->questionRepository = $questionRepository;
         $this->adminService = $adminService;
         $this->translator = $translator;
@@ -97,7 +101,7 @@ class AdminController extends AbstractController
      */
     public function onAdminQuizEdit(Request $request): Response
     {
-        $quiz = $this->adminService->getQuizById($request->get('id'));
+        $quiz = $this->quizRepository->find($request->get('id'));
 
         $createQuizForm = $this->createForm(QuizCreateType::class, $quiz);
         $createQuizForm->handleRequest($request);
@@ -124,8 +128,11 @@ class AdminController extends AbstractController
     public function onAdminQuizDelete(Request $request): Response
     {
         try {
-            $this->adminService->deleteQuizById($request->get('id'));
-            $this->addFlash('success', $this->translator->trans('a.flash.quiz.deleted'));
+            if($this->adminService->deleteQuizById($request->get('id'))) {
+                $this->addFlash('success', $this->translator->trans('a.flash.quiz.deleted'));
+            }else{
+                throw new Exception("cannot delete");
+            }
         } catch (Exception $ex) {
             $this->addFlash('error', $this->translator->trans('a.error.quiz.notdelete'));
         }
@@ -190,8 +197,11 @@ class AdminController extends AbstractController
     public function onAdminQuestionDelete(Request $request): Response
     {
         try {
-            $this->adminService->deleteQuestionById($request->get('id'));
-            $this->addFlash('success', $this->translator->trans('a.flash.question.deleted'));
+            if($this->adminService->deleteQuestionById($request->get('id'))) {
+                $this->addFlash('success', $this->translator->trans('a.flash.question.deleted'));
+            }else{
+                throw new Exception("Cannot delete");
+            }
         } catch (Exception $ex) {
             $this->addFlash('error', $this->translator->trans('a.error.question.notdelete'));
         }

@@ -161,6 +161,7 @@ a.users.title: Админ - пользователи
 a.name: Имя
 a.isRight: Верный
 a.isActive: Активный
+a.isVerified: Подтверждена почта
 a.submit: Отправить
 a.block: Заблокировать
 a.unblock: Разблокировать

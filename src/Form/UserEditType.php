@@ -26,8 +26,9 @@ class UserEditType extends AbstractType
     {
         $builder->add('name',TextType::class,[
             'label'=>$this->translator->trans('a.name')
-        ])->add('isActive',CheckboxType::class,[
-            'label'=>$this->translator->trans('a.isActive')
+        ])->add('isVerified',CheckboxType::class,[
+            'label'=>$this->translator->trans('a.isVerified'),
+            'required'=>false
         ])->add('submit',SubmitType::class,[
                 'label'=>$this->translator->trans('a.submit'),
                 'attr'=>[

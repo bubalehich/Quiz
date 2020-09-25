@@ -18,7 +18,6 @@ class AdminService
     private const USERS_IN_PAGE = 5;
     private const QUESTIONS_IN_PAGE = 3;
     private const QUIZES_IN_PAGE = 5;
-
     private QuestionRepository $questionRepository;
     private UserRepository $userRepository;
     private AnswerRepository $answerRepository;
@@ -37,23 +36,25 @@ class AdminService
         $this->quizRepository = $quizRepository;
     }
 
-    public function saveNewQuiz(Quiz $quiz) :bool
+    /*method have its own validation for unique questions*/
+    public function saveNewQuiz(Quiz $quiz): bool
     {
         $questionsNames = [];
-        foreach($quiz->getQuestions() as $question){
+        foreach ($quiz->getQuestions() as $question) {
             $questionsNames[] = $question->getName();
         }
-       if(count(array_unique($questionsNames))<count($questionsNames)){
-           return false;
-       }
-       if(count($questionsNames)<1)return false;
+        if (count(array_unique($questionsNames)) < count($questionsNames)) {
+            return false;
+        }
+        if (count($questionsNames) < 1) return false;
 
-       $quiz->setCreateDate(new DateTime());
-       $this->quizRepository->saveQuiz($quiz);
+        $quiz->setCreateDate(new DateTime());
+        $this->quizRepository->saveQuiz($quiz);
 
-       return true;
+        return true;
     }
 
+    /*method ask repository for query in db, to get part of entities*/
     public function getUsersPage(PaginatorInterface $paginator, int $page)
     {
         return $paginator->paginate(
@@ -63,24 +64,18 @@ class AdminService
         );
     }
 
-    public function updateUser($id, $name, $email, $verified): void
-    {
-        $user = $this->getUserById($id);
-        $user->setName($name)->setEmail($email)->setIsVerified((bool)$verified);
-        $this->userRepository->updateUserByAdmin($user);
-    }
-
+    /*method validates answers count and save question*/
     public function saveQuestion(Question $question): bool
     {
-        if (!$question->getAnswers()->isEmpty())
-        {
+        if (!$question->getAnswers()->isEmpty()) {
             $this->questionRepository->saveQuestion($question);
 
             return true;
         }
-            return false;
+        return false;
     }
 
+    /*method ask question repository for query in db for part of entities*/
     public function getQuestionsPage(PaginatorInterface $paginator, int $page)
     {
         return $paginator->paginate(
@@ -90,16 +85,31 @@ class AdminService
         );
     }
 
-    public function deleteQuestionById($id): void
+    /*method removes and deletes all answer from a question, and then try to delete question*/
+    /*if it falls, method restore answers in question*/
+    public function deleteQuestionById($id): bool
     {
-      $question = $this->questionRepository->find($id);
-        foreach($question->getAnswers() as $answer){
+        $question = $this->questionRepository->find($id);
+        $answers = $question->getAnswers();
+        foreach ($answers as $answer) {
             $question->removeAnswer($answer);
-            $this->answerRepository->deleteAnswer($answer);
         }
-        $this->questionRepository->deleteQuestion($question);
-    }
+        if($this->questionRepository->deleteQuestion($question))
+        {
+            foreach ($answers as $answer) {
+                $this->answerRepository->deleteAnswer($answer);
+            }
 
+            return true;
+        }else{
+            foreach ($answers as $answer) {
+                $question->addAnswer($answer);
+            }
+
+            return false;
+        }
+    }
+    /*return part of quiz entities for pagination*/
     public function getQuizesPage(PaginatorInterface $paginator, int $page)
     {
         return $paginator->paginate(
@@ -108,19 +118,22 @@ class AdminService
             self::QUIZES_IN_PAGE
         );
     }
-
-    public function deleteQuizById($id): void
+    /*method removes questions from an answer, and then try to delete it*/
+    /*if falls, restores all questions*/
+    public function deleteQuizById($id): bool
     {
         $quiz = $this->quizRepository->find($id);
-        foreach($quiz->getQuestions() as $question){
+        $questions = $quiz->getQuestions();
+        foreach ($questions as $question) {
             $quiz->removeQuestion($question);
         }
-        $this->quizRepository->deleteQuiz($quiz);
+        if(!$this->quizRepository->deleteQuiz($quiz))
+        {
+            foreach ($questions as $question) {
+                $quiz->addQuestion($question);
+            }
+            return false;
+        }
+        return true;
     }
-
-    public function getQuizById($id): Quiz
-    {
-        return $this->quizRepository->find($id);
-    }
-
 }
