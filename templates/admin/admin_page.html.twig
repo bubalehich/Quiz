@@ -1,5 +1,8 @@
 {% extends 'base.html.twig' %}
-
+{% block stylesheets %}
+{{ parent() }}
+    {{ encore_entry_link_tags('admin_style') }}
+{% endblock %}
 {% block body %}
     <div style="display:flex;">
         <div class="left_bar">
@@ -18,7 +21,7 @@
                 </div>
             </div>
             <div class="link_block">
-                <span class="badge link_level_1">{{'a.user'|trans}}</span>
+                <span class="badge link_level_1">{{'a.users'|trans}}</span>
                 <div class="links" style="display:none;margin-left:1em;">
                     <a class="badge link_level_2" href="{{ path('app_show_users') }}">{{'a.all'|trans}}</a>
                 </div>

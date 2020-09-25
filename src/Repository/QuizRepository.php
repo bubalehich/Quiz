@@ -7,6 +7,7 @@ use App\Entity\Quiz;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
+use Exception;
 
 /**
  * @method Quiz|null find($id, $lockMode = null, $lockVersion = null)
@@ -21,17 +22,12 @@ class QuizRepository extends ServiceEntityRepository
         parent::__construct($registry, Quiz::class);
     }
 
-    public function findNext(): Query
+    public function getPaginatorQuery(?string $name): Query
     {
-        return $this
-            ->createQueryBuilder('q')
-            ->select()
+        return $this->createQueryBuilder('q')
+            ->where('q.name like :name')
+            ->setParameter('name', '%' . $name . '%')
             ->getQuery();
-    }
-
-    public function getPaginatorQuery(): Query
-    {
-        return $this->createQueryBuilder('q')->select()->getQuery();
     }
 
     public function saveQuiz(Quiz $quiz): void
@@ -40,18 +36,14 @@ class QuizRepository extends ServiceEntityRepository
         $this->_em->flush();
     }
 
-    public function deleteQuiz(Quiz $quiz): void
+    public function deleteQuiz(Quiz $quiz): bool
     {
-        $this->_em->remove($quiz);
-        $this->_em->flush();
-    }
-
-    public function search(string $searchCriteria): Query
-    {
-        return $this
-            ->createQueryBuilder('q')
-            ->where('q.name like :search')
-            ->setParameter('search', '%' . $searchCriteria . '%')
-            ->getQuery();
+        try {
+            $this->_em->remove($quiz);
+            $this->_em->flush();
+        } catch (Exception $exception) {
+            return false;
+        }
+        return true;
     }
 }

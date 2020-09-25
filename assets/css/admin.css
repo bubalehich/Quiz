@@ -142,3 +142,11 @@
 .answer_show_block::-webkit-scrollbar {
     width: 4px;
 }
+.search_block{
+    margin-top:60px;
+    color:white;
+    font-size:20px;
+}
+.search_block input[type="text"]{
+    width:150px;
+}

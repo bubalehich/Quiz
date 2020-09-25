@@ -11,6 +11,7 @@ use App\Repository\AnswerRepository;
 use App\Repository\QuizRepository;
 use App\Repository\UserRepository;
 use DateTime;
+use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
 
 class AdminService
@@ -54,22 +55,6 @@ class AdminService
        return true;
     }
 
-    public function getUsersPage(PaginatorInterface $paginator, int $page)
-    {
-        return $paginator->paginate(
-            $this->userRepository->getPaginatorQuery(),
-            $page,
-            self::USERS_IN_PAGE
-        );
-    }
-
-    public function updateUser($id, $name, $email, $verified): void
-    {
-        $user = $this->getUserById($id);
-        $user->setName($name)->setEmail($email)->setIsVerified((bool)$verified);
-        $this->userRepository->updateUserByAdmin($user);
-    }
-
     public function saveQuestion(Question $question): bool
     {
         if (!$question->getAnswers()->isEmpty())
@@ -81,10 +66,10 @@ class AdminService
             return false;
     }
 
-    public function getQuestionsPage(PaginatorInterface $paginator, int $page)
+    public function getQuestionsPage(PaginatorInterface $paginator, int $page, ?string $name): PaginationInterface
     {
         return $paginator->paginate(
-            $this->questionRepository->getPaginatorQuery(),
+            $this->questionRepository->getPaginatorQuery($name),
             $page,
             self::QUESTIONS_IN_PAGE
         );
@@ -100,10 +85,10 @@ class AdminService
         $this->questionRepository->deleteQuestion($question);
     }
 
-    public function getQuizesPage(PaginatorInterface $paginator, int $page)
+    public function getQuizesPage(PaginatorInterface $paginator, int $page, ?string $name): PaginationInterface
     {
         return $paginator->paginate(
-            $this->quizRepository->getPaginatorQuery(),
+            $this->quizRepository->getPaginatorQuery($name),
             $page,
             self::QUIZES_IN_PAGE
         );
@@ -116,6 +101,12 @@ class AdminService
             $quiz->removeQuestion($question);
         }
         $this->quizRepository->deleteQuiz($quiz);
+    }
+
+    public function getUsersPage(PaginatorInterface $paginator,int $page, ?string $name, ?string $email): PaginationInterface
+    {
+        return $paginator
+            ->paginate($this->userRepository->search($name,$email), $page, self::USERS_IN_PAGE);
     }
 
     public function getQuizById($id): Quiz

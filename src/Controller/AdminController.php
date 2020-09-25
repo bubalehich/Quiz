@@ -9,6 +9,7 @@ use App\Form\QuizCreateType;
 use App\Form\QuestionCreateType;
 use App\Form\UserEditType;
 use App\Repository\QuestionRepository;
+use App\Repository\QuizRepository;
 use App\Repository\UserRepository;
 use Exception;
 use Knp\Component\Pager\PaginatorInterface;
@@ -31,20 +32,24 @@ class AdminController extends AbstractController
     private QuestionRepository $questionRepository;
     private UserRepository $userRepository;
     private TranslatorInterface $translator;
+    private QuizRepository $quizRepository;
 
     public function __construct(
         AdminService $adminService,
         QuestionRepository $questionRepository,
         UserRepository $userRepository,
+        QuizRepository $quizRepository,
         TranslatorInterface $translator
     )
     {
         $this->userRepository = $userRepository;
+        $this->quizRepository = $quizRepository;
         $this->questionRepository = $questionRepository;
         $this->adminService = $adminService;
         $this->translator = $translator;
     }
 
+    /*main method, which redirects to quiz page*/
     /**
      * @Route ("/", name = "admin_page")
      */
@@ -53,6 +58,7 @@ class AdminController extends AbstractController
         return new RedirectResponse($this->generateUrl('app_show_quizes'));
     }
 
+    /*method which shows all quizes with filter,sort and edit possibility*/
     /**
      * @Route ("/show_quizes", name = "app_show_quizes")
      * @param PaginatorInterface $paginator
@@ -61,11 +67,13 @@ class AdminController extends AbstractController
      */
     public function onAdminQuizShow(PaginatorInterface $paginator, Request $request): Response
     {
-        $quizes = $this->adminService->getQuizesPage($paginator, (int)$request->query->get("page", 1));
+        $name = $request->get('name');
+        $quizes = $this->adminService->getQuizesPage($paginator, (int)$request->query->get("page", 1),$name);
 
         return $this->render('admin/admin_show_quizes.html.twig', ["quizes" => $quizes]);
     }
 
+    /*method which gives possibility to create new quiz*/
     /**
      * @Route ("/create_quiz", name = "create_quiz_page")
      * @param Request $request
@@ -90,6 +98,7 @@ class AdminController extends AbstractController
         ]);
     }
 
+    /*method which gives possibility tot edit existing quiz*/
     /**
      * @Route ("/edit_quiz/{id}", name = "app_edit_quiz_page")
      * @param Request $request
@@ -97,7 +106,7 @@ class AdminController extends AbstractController
      */
     public function onAdminQuizEdit(Request $request): Response
     {
-        $quiz = $this->adminService->getQuizById($request->get('id'));
+        $quiz = $this->quizRepository->find($request->get('id'));
 
         $createQuizForm = $this->createForm(QuizCreateType::class, $quiz);
         $createQuizForm->handleRequest($request);
@@ -116,6 +125,7 @@ class AdminController extends AbstractController
         ]);
     }
 
+    /*method which gives possibility to delete quiz*/
     /**
      * @Route ("/delete_quiz/{id}", name = "app_delete_quiz")
      * @param Request $request
@@ -124,8 +134,11 @@ class AdminController extends AbstractController
     public function onAdminQuizDelete(Request $request): Response
     {
         try {
-            $this->adminService->deleteQuizById($request->get('id'));
-            $this->addFlash('success', $this->translator->trans('a.flash.quiz.deleted'));
+            if($this->adminService->deleteQuizById($request->get('id'))) {
+                $this->addFlash('success', $this->translator->trans('a.flash.quiz.deleted'));
+            }else{
+                throw new Exception("cannot delete");
+            }
         } catch (Exception $ex) {
             $this->addFlash('error', $this->translator->trans('a.error.quiz.notdelete'));
         }
@@ -133,6 +146,7 @@ class AdminController extends AbstractController
         return new RedirectResponse($this->generateUrl('app_show_quizes'));
     }
 
+    /*method which gives possibility to create new question*/
     /**
      * @Route ("/create_question", name = "app_create_question_page")
      * @param Request $request
@@ -158,6 +172,7 @@ class AdminController extends AbstractController
         ]);
     }
 
+    /*method which gives possibility to edit qustion*/
     /**
      * @Route ("/edit_question/{id}", name = "app_edit_question_page")
      * @param Request $request
@@ -182,6 +197,7 @@ class AdminController extends AbstractController
         ]);
     }
 
+    /*method which gives possibility to delete question*/
     /**
      * @Route ("/delete_question/{id}", name = "app_delete_question")
      * @param Request $request
@@ -190,14 +206,18 @@ class AdminController extends AbstractController
     public function onAdminQuestionDelete(Request $request): Response
     {
         try {
-            $this->adminService->deleteQuestionById($request->get('id'));
-            $this->addFlash('success', $this->translator->trans('a.flash.question.deleted'));
+            if($this->adminService->deleteQuestionById($request->get('id'))) {
+                $this->addFlash('success', $this->translator->trans('a.flash.question.deleted'));
+            }else{
+                throw new Exception("Cannot delete");
+            }
         } catch (Exception $ex) {
             $this->addFlash('error', $this->translator->trans('a.error.question.notdelete'));
         }
         return new RedirectResponse($this->generateUrl('app_show_questions'));
     }
 
+    /*method which shows all users with sort,filter,edit possibilities*/
     /**
      * @Route ("/users", name = "app_show_users")
      * @param Request $request
@@ -206,13 +226,17 @@ class AdminController extends AbstractController
      */
     public function onAdminUserShow(Request $request, PaginatorInterface $paginator): Response
     {
-        $users = $this->adminService
-            ->getUsersPage($paginator,
-                (int)$request->query->get("page", 1));
+        $searchName = $request->query->get('name');
+        $searchEmail = $request->query->get('email');
+
+            $users = $this->adminService
+                ->getUsersPage($paginator,
+                    (int)$request->query->get("page", 1), $searchName, $searchEmail);
 
         return $this->render('admin/admin_show_users.html.twig', ['users' => $users]);
     }
 
+    /*method which shows all questions with sort,filter,edit possibilities*/
     /**
      * @Route ("/questions", name = "app_show_questions")
      * @param Request $request
@@ -221,12 +245,15 @@ class AdminController extends AbstractController
      */
     public function onAdminQuestionsShow(Request $request, PaginatorInterface $paginator): Response
     {
+        $name = $request->get('name');
         $questions = $this->adminService
             ->getQuestionsPage($paginator,
-                (int)$request->query->get("page", 1));
+                (int)$request->query->get("page", 1),$name);
 
         return $this->render('admin/admin_show_questions.html.twig', ['questions' => $questions]);
     }
+
+    /*method which gives possibility to block or unblock user*/
 
     /**
      * @Route ("/block_user/{id}/{flag}", name = "app_block_user")
@@ -241,6 +268,7 @@ class AdminController extends AbstractController
         return new RedirectResponse($request->headers->get('referer'));
     }
 
+    /*method which gives possibility to edit user*/
     /**
      * @Route ("/edit_user/{id}", name = "app_edit_user")
      * @param Request $request

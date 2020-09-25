@@ -28,17 +28,19 @@ class UserRepository extends ServiceEntityRepository
         $this->_em->flush();
     }
 
-    public function getPaginatorQuery(): Query
-    {
-        return $this
-            ->createQueryBuilder('u')
-            ->select()
-            ->getQuery();
-    }
-
     public function updateUserByAdmin(User $user): void
     {
         $this->_em->persist($user);
         $this->_em->flush();
+    }
+
+    public function search(?string $name, ?string $email): Query
+    {
+        return $this->createQueryBuilder('q')
+            ->where('q.name like :name')
+            ->andWhere('q.email like :email')
+            ->setParameter('name', '%' . $name . '%')
+            ->setParameter('email', '%' . $email . '%')
+            ->getQuery();
     }
 }

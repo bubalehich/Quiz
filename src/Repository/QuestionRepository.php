@@ -7,6 +7,7 @@ use App\Entity\Question;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
+use Exception;
 
 /**
  * @method Question|null find($id, $lockMode = null, $lockVersion = null)
@@ -27,17 +28,22 @@ class QuestionRepository extends ServiceEntityRepository
         $this->_em->flush();
     }
 
-    public function getPaginatorQuery(): Query
+    public function getPaginatorQuery(?string $name): Query
     {
-        return $this
-            ->createQueryBuilder('q')
-            ->select()
+        return $this->createQueryBuilder('q')
+            ->where('q.name like :name')
+            ->setParameter('name', '%' . $name . '%')
             ->getQuery();
     }
 
-    public function deleteQuestion(Question $question): void
+    public function deleteQuestion(Question $question): bool
     {
-        $this->_em->remove($question);
-        $this->_em->flush();
+        try {
+            $this->_em->remove($question);
+            $this->_em->flush();
+        } catch (Exception $exception) {
+            return false;
+        }
+        return true;
     }
 }

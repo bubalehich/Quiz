@@ -48,18 +48,11 @@ class QuizService
         $this->em = $em;
     }
 
-    public function getPaginateQuizzes(int $page): PaginationInterface
+    public function getPaginateQuizzes(int $page, ?string $search = null): PaginationInterface
     {
         return $this
             ->paginator
-            ->paginate($this->quizRepository->findNext(), $page, self::PAGINATION_QUIZZES_LIMIT);
-    }
-
-    public function getPaginateQuizzesWithSearchCriteria(int $page, string $search): PaginationInterface
-    {
-        return $this
-            ->paginator
-            ->paginate($this->quizRepository->search($search), $page, self::PAGINATION_QUIZZES_LIMIT);
+            ->paginate($this->quizRepository->getPaginatorQuery($search), $page, self::PAGINATION_QUIZZES_LIMIT);
     }
 
     public function getLeadersForPage(PaginationInterface $pagination): array
