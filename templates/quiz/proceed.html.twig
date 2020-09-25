@@ -1,9 +1,12 @@
 {% extends 'base.html.twig' %}
+
 {% block title %}{{ quiz.name }}{% endblock %}
+
 {% block stylesheets %}
     {{ parent() }}
     {{ encore_entry_link_tags('quiz') }}
 {% endblock %}
+
 {% block body %}
     <div class="box">
         {{ 'qp.question'|trans }} №{{ (result.progress|length+1) }} {{ 'qp.of'|trans }} {{ quiz.questions|length }}<br>

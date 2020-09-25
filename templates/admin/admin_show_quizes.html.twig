@@ -1,20 +1,24 @@
 {% extends('admin/admin_page.html.twig') %}
+
 {% block title %}{{ 'a.quizes.title'|trans }}{% endblock %}
+
 {% block rightbar %}
     <div class="search_block">
         <form action="{{ url('app_show_quizes') }}" method="get">
             <label for="name">{{ 'a.name'|trans }}</label>
-            <input type="text" name="name" required />
-            <input type="submit" class="btn btn-success" value="{{ 'a.search'|trans }}" />
+            <input type="text" name="name" required/>
+            <input type="submit" class="btn btn-success" value="{{ 'a.search'|trans }}"/>
             <a href="{{ url('app_show_questions') }}" class="btn btn-danger">{{ 'a.clear'|trans }}</a>
         </form>
     </div>
     <table class="table table-dark table-striped">
         <thead>
-        <th>{{ knp_pagination_sortable(quizes,'id','i.id') }}</th>
-        <th>{{ knp_pagination_sortable(quizes,'a.name'|trans,'i.name') }}</th>
-        <th>{{ knp_pagination_sortable(quizes,'a.isActive'|trans,'i.isActive') }}</th>
-        <th>{{ 'a.questions'|trans }}</th>
+        <tr>
+            <th>{{ knp_pagination_sortable(quizes,'id','i.id') }}</th>
+            <th>{{ knp_pagination_sortable(quizes,'a.name'|trans,'i.name') }}</th>
+            <th>{{ knp_pagination_sortable(quizes,'a.isActive'|trans,'i.isActive') }}</th>
+            <th>{{ 'a.questions'|trans }}</th>
+        </tr>
         </thead>
         <tbody>
         {% for quiz in quizes %}
@@ -22,9 +26,9 @@
                 <td>{{ quiz.getId }}</td>
                 <td>{{ quiz.getName }}</td>
                 <td>{% if quiz.getIsActive == 1 %}
-                        <span style="color:greenyellow">{{'a.active'|trans}}</span>
+                        <span style="color:greenyellow">{{ 'a.active'|trans }}</span>
                     {% else %}
-                        <span style="color:red;">{{'a.inactive'|trans}}</span>
+                        <span style="color:red;">{{ 'a.inactive'|trans }}</span>
                     {% endif %}
                 </td>
                 <td>

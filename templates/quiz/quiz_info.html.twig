@@ -1,9 +1,12 @@
 {% extends 'base.html.twig' %}
+
 {% block title %}{{ quiz.name }}{% endblock %}
-  {% block stylesheets %}
-      {{ parent() }}
-      {{ encore_entry_link_tags('quiz_info') }}
-  {% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('quiz_info') }}
+{% endblock %}
+
 {% block body %}
     <div class="container">
         <div class="d-flex justify-content-center">
@@ -18,23 +21,23 @@
                 </div>
                 <table>
                     <tr>
-                        <td>{{ 'qi.created'|trans }}:</td>
-                        <td>{{ quiz.createDate.format( 'quiz.date.format'|trans ) }}</td>
+                        <th>{{ 'qi.created'|trans }}:</th>
+                        <th>{{ quiz.createDate.format( 'quiz.date.format'|trans ) }}</th>
                     </tr>
                     <tr>
-                        <td>{{ 'qi.status'|trans }}:</td>
-                        <td{% if not  quiz.isActive %} class="wrong" {% endif %}
+                        <th>{{ 'qi.status'|trans }}:</th>
+                        <th{% if not  quiz.isActive %} class="wrong" {% endif %}
                                 {% if  quiz.isActive %} class="right" {% endif %} >
                             {% if  quiz.isActive %}{{ 'quiz.active'|trans }}{% endif %}
-                            {% if not  quiz.isActive %}{{ 'quiz.close'|trans }}{% endif %}</td>
+                            {% if not  quiz.isActive %}{{ 'quiz.close'|trans }}{% endif %}</th>
                     </tr>
                     <tr>
-                        <td>{{ 'qi.count.questions'|trans }}:</td>
-                        <td>{{ quiz.questions.count }}</td>
+                        <th>{{ 'qi.count.questions'|trans }}:</th>
+                        <th>{{ quiz.questions.count }}</th>
                     </tr>
                     <tr>
-                        <td>{{ 'qi.count.participants'|trans }}:</td>
-                        <td>{{ quiz.results.count }}</td>
+                        <th>{{ 'qi.count.participants'|trans }}:</th>
+                        <th>{{ quiz.results.count }}</th>
                     </tr>
                 </table>
             </div>
@@ -42,11 +45,16 @@
             {# LEADERS #}
             <div class="col-sm quiz-i">
                 <table>
+                    <thead>
                     <tr>
                         <th colspan="4">
-                            <h3><a href="{{ url('app_quiz_leaders', {id:quiz.id}) }}"></a></h3>
+                            <h3>
+                                <a href="{{ url('app_quiz_leaders', {id:quiz.id}) }}"> {{ 'qi.leaders'|trans }}</a>
+                            </h3>
                         </th>
                     </tr>
+                    </thead>
+                    <tbody>
                     <tr>
                         <th>{{ 'qi.place'|trans }}</th>
                         <th>{{ 'qi.name'|trans }}</th>
@@ -55,12 +63,13 @@
                     </tr>
                     {% for tr in topResults %}
                         <tr>
-                            <td>{{ loop.index }}</td>
-                            <td>{{ tr.user.name }}</td>
-                            <td>{{ tr.result }}</td>
-                            <td>{{ tr.duration.format("%dd:%hh:%im:%ss") }}</td>
+                            <th>{{ loop.index }}</th>
+                            <th>{{ tr.user.name }}</th>
+                            <th>{{ tr.result }}</th>
+                            <th>{{ tr.duration.format("%dd:%hh:%im:%ss") }}</th>
                         </tr>
                     {% endfor %}
+                    </tbody>
                 </table>
             </div>
         </div>

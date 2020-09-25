@@ -1,11 +1,11 @@
 {% extends 'base.html.twig' %}
-{% block title %}
-    {{ 'u.name.title'|trans }}
+
+{% block title %}{{ 'u.name.title'|trans }}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('form') }}
 {% endblock %}
- {% block stylesheets %}
-     {{ parent() }}
-     {{ encore_entry_link_tags('form') }}
- {% endblock %}
 
 {% block body %}
     <div class="box">

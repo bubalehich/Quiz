@@ -1,10 +1,11 @@
 {% extends 'base.html.twig' %}
+
 {% block title %}{{ 'u.pass.title'|trans }}{% endblock %}
 
- {% block stylesheets %}
-     {{ parent() }}
-     {{ encore_entry_link_tags('form') }}
- {% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('form') }}
+{% endblock %}
 
 {% block body %}
     {% for err in app.flashes('error') %}

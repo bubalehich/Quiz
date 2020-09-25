@@ -1,9 +1,12 @@
 {% extends 'base.html.twig' %}
+
 {% block title %}{{ 'quiz.es'|trans }}{% endblock %}
-  {% block stylesheets %}
-      {{ parent() }}
-      {{ encore_entry_link_tags('quizes_page') }}
-  {% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('quizes_page') }}
+{% endblock %}
+
 {% block body %}
     <div class="container">
         <div class="tbl">

@@ -1,10 +1,12 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}{{ 'userpage.title'| trans }}{% endblock %}
-  {% block stylesheets %}
-      {{ parent() }}
-      {{ encore_entry_link_tags('user_page') }}
-  {% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('user_page') }}
+{% endblock %}
+
 {% block body %}
     <div class="container">
         <div class="row flex-fill" style="padding: 10px">
@@ -22,23 +24,23 @@
                 {% endfor %}
                 <table>
                     <tr>
-                        <td>{{ 'userpage.name'| trans }}:</td>
-                        <td>{{ app.user.name }}</td>
+                        <th>{{ 'userpage.name'| trans }}:</th>
+                        <th>{{ app.user.name }}</th>
                     </tr>
                     <tr>
-                        <td>{{ 'userpage.email'| trans }}:</td>
-                        <td>{{ app.user.email }}</td>
+                        <th>{{ 'userpage.email'| trans }}:</th>
+                        <th>{{ app.user.email }}</th>
                     </tr>
                     <tr>
-                        <td>{{ 'userpage.quizes.count'| trans }}:</td>
-                        <td>{{ results | length }}</td>
+                        <th>{{ 'userpage.quizes.count'| trans }}:</th>
+                        <th>{{ results | length }}</th>
                     </tr>
                 </table>
                 <form action="{{ url('app_profile_edit_pass') }}">
-                <button type="submit" >{{ 'userpage.edit'| trans }}</button>
+                    <button type="submit">{{ 'userpage.edit'| trans }}</button>
                 </form>
                 <form action="{{ url('app_profile_edit_name') }}">
-                    <button type="submit" >{{ 'u.name.title'| trans }}</button>
+                    <button type="submit">{{ 'u.name.title'| trans }}</button>
                 </form>
             </div>
 
@@ -54,31 +56,29 @@
                                     <a href="{{ url('app_quiz_info',{id:result.quiz.id}) }}"> {{ result.quiz.name }}</a>
                                 </h2>
                                 <table>
-                                    {% if result.endDate%}
+                                    {% if result.endDate %}
                                         <tr>
-                                            <td> {{ 'qi.rate'|trans }}:</td>
-                                            <td>{{ places[result.quiz.id] }}</td>
+                                            <th> {{ 'qi.rate'|trans }}:</th>
+                                            <th>{{ places[result.quiz.id] }}</th>
                                         </tr>
                                     {% endif %}
                                     <tr>
-                                        <td>
-                                            {{ 'userpage.quizes.status'| trans }}:
-                                        </td>
-                                        <td>
+                                        <th>{{ 'userpage.quizes.status'| trans }}:</th>
+                                        <th>
                                             <span{% if not  result.quiz.isActive %} style="color: #db7778" {% endif %}
                                                     {% if  result.quiz.isActive %} style="color: #3ac31a" {% endif %}>
                                                 {% if  result.quiz.isActive %}{{ 'quiz.active'| trans }}{% endif %}
                                                 {% if not  result.quiz.isActive %}{{ 'quiz.close'| trans }}{% endif %}
                                             </span>
-                                        </td>
+                                        </th>
                                     </tr>
                                     <tr>
-                                        <td>{{ 'userpage.quizes.progress'| trans }}:</td>
-                                        <td>{{ result.progress|length }}/{{ result.quiz.questions|length }}</td>
+                                        <th>{{ 'userpage.quizes.progress'| trans }}:</th>
+                                        <th>{{ result.progress|length }}/{{ result.quiz.questions|length }}</th>
                                     </tr>
                                     <tr>
-                                        <td>{{ 'userpage.quizes.result'| trans }}:</td>
-                                        <td>{{ result.result }}</td>
+                                        <th>{{ 'userpage.quizes.result'| trans }}:</th>
+                                        <th>{{ result.result }}</th>
                                     </tr>
                                 </table>
                             </div>

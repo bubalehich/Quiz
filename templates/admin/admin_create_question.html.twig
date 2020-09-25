@@ -1,22 +1,20 @@
-
 {% extends 'admin/admin_page.html.twig' %}
-{% block title %}{{'a.create.question.title'|trans}}{% endblock %}
+
+{% block title %}{{ 'a.create.question.title'|trans }}{% endblock %}
+
 {% block rightbar %}
-<div class="question_create_form">
-    {{ form_start(createQuestionForm) }}
-    {{ form_row(createQuestionForm.name) }}
-
-    <ul class="answers" data-prototype="{{ form_widget(createQuestionForm.answers.vars.prototype)|e('html_attr') }}">
-        {% for answer in createQuestionForm.answers %}
-            <div class="answer_element">
-            <li>{{ form_row(answer.name) }}</li>
-            <li>{{ form_row(answer.isRight) }}</li>
-
-            </div>
-        {% endfor %}
-    </ul>
-    {{ form_end(createQuestionForm) }}
-</div>
+    <div class="question_create_form">
+        {{ form_start(createQuestionForm) }}
+        {{ form_row(createQuestionForm.name) }}
+        <ul class="answers"
+            data-prototype="{{ form_widget(createQuestionForm.answers.vars.prototype)|e('html_attr') }}">
+            {% for answer in createQuestionForm.answers %}
+                <li class="answer_element">{{ form_row(answer.name) }}</li>
+                <li class="answer_element">{{ form_row(answer.isRight) }}</li>
+            {% endfor %}
+        </ul>
+        {{ form_end(createQuestionForm) }}
+    </div>
 {% endblock %}
 
 {% block javascripts %}
