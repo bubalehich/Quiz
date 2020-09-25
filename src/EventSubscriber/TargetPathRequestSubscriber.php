@@ -7,16 +7,25 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\Routing\Generator\UrlGenerator;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
 
 class TargetPathRequestSubscriber implements EventSubscriberInterface
 {
     private SessionInterface $session;
+    private UrlGeneratorInterface $generator;
     use TargetPathTrait;
 
-    public function __construct(SessionInterface $session)
+    /**
+     * TargetPathRequestSubscriber constructor.
+     * @param SessionInterface $session
+     * @param UrlGeneratorInterface $generator
+     */
+    public function __construct(SessionInterface $session, UrlGeneratorInterface $generator)
     {
         $this->session = $session;
+        $this->generator = $generator;
     }
 
     public function onKernelRequest(RequestEvent $event): void
@@ -30,7 +39,11 @@ class TargetPathRequestSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $this->saveTargetPath($this->session, 'main', $request->getUri());
+        if (substr_count($request->getUri(), 'reset')) {
+            $this->saveTargetPath($this->session, 'main', $this->generator->generate('app_home'));
+        } else {
+            $this->saveTargetPath($this->session, 'main', $request->getUri());
+        }
     }
 
     public static function getSubscribedEvents(): array
