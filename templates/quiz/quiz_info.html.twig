@@ -83,6 +83,11 @@
                         {% endif %}
                         {% endif %}
                     </p>
+                    {% if rate %}
+                        <p style="text-align: center">
+                            {{ 'qi.rate'|trans }}: {{ rate }}
+                        </p>
+                    {% endif %}
                     <div class="d-flex justify-content-center">
                         <form action="{{ url('app_quiz',{id:quiz.id}) }}">
                             <button type="submit"

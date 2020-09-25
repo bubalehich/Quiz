@@ -69,6 +69,7 @@ qi.progress: Your progress
 qi.status.no: Not participating
 qi.status.in: In progress
 qi.status.off: Passed
+qi.rate: Your rate
 
 qi.button.start: Start
 qi.button.continue: Continue

@@ -70,10 +70,13 @@ class QuizController extends AbstractController
         $result = $this->service->getResult($this->getUser(), $quiz);
         $topResults = $this->service->getTopLeaders($quiz);
 
+        $rate = $result && $result->getEndDate()?  $this->service->getUserPlace($this->getUser(), $quiz):null;
+
         return $this->render('quiz/quiz_info.html.twig', [
             'quiz' => $quiz,
             'topResults' => $topResults,
             'result' => $result,
+            'rate' => $rate,
         ]);
     }
 
