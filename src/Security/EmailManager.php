@@ -17,12 +17,12 @@ use Symfony\Component\Mime\Address;
 
 class EmailManager
 {
-    private const EMAIL = 'quiz.sender.bot@gmail.com';
     private VerifyEmailHelperInterface $verifyEmailHelper;
     private MailerInterface $mailer;
     private EntityManagerInterface $entityManager;
     private TranslatorInterface $translator;
     private UserRepository $repository;
+    private string $email;
 
     /**
      * EmailManager constructor.
@@ -31,6 +31,7 @@ class EmailManager
      * @param EntityManagerInterface $entityManager
      * @param UserRepository $repository
      * @param TranslatorInterface $translator
+     * @param string $email
      */
     public function __construct
     (
@@ -38,7 +39,8 @@ class EmailManager
         MailerInterface $mailer,
         EntityManagerInterface $entityManager,
         UserRepository $repository,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
+        string $email
     )
     {
         $this->verifyEmailHelper = $verifyEmailHelper;
@@ -46,12 +48,13 @@ class EmailManager
         $this->entityManager = $entityManager;
         $this->repository = $repository;
         $this->translator = $translator;
+        $this->email = $email;
     }
 
     public function sendEmailConfirmation(User $user): void
     {
         $templatedEmail = (new TemplatedEmail())
-            ->from(new Address(self::EMAIL, $this->translator->trans('bot.author')))
+            ->from(new Address($this->email, $this->translator->trans('bot.author')))
             ->to($user->getEmail())
             ->subject($this->translator->trans('bot.confirm'))
             ->htmlTemplate('registration/confirmation_email.html.twig');
@@ -96,7 +99,7 @@ class EmailManager
     public function sendEmailRequestForgotPassword(string $email, ResetPasswordToken $resetToken, int $tokenLifetime): void
     {
         $templatedEmail = (new TemplatedEmail())
-            ->from(new Address(self::EMAIL, $this->translator->trans('bot.author')))
+            ->from(new Address($this->email, $this->translator->trans('bot.author')))
             ->to($email)
             ->subject($this->translator->trans('bot.restore'))
             ->htmlTemplate('reset_password/email.html.twig')
