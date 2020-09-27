@@ -16,7 +16,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-
+/**
+ * @Route ("/posts")
+ */
 class PostController extends AbstractController
 {
     private PostService $postService;
@@ -37,7 +39,7 @@ class PostController extends AbstractController
     }
 
     /**
-     * @Route ("/posts/", name="app_posts")
+     * @Route ("/", name="app_posts")
      * @param Request $request
      * @return Response
      */
@@ -66,12 +68,12 @@ class PostController extends AbstractController
             return $this->redirectToRoute('app_posts');
         }
 
-        return $this->render('post/all.html.twig', ['pagination' => $pagination, 'form' => $form->createView()]);
+        return $this->render('post/all_posts.html.twig', ['pagination' => $pagination, 'form' => $form->createView()]);
     }
 
 
     /**
-     * @Route ("/posts/edit/{id}", name= "app_post_edit")
+     * @Route ("/edit/{id}", name= "app_post_edit")
      * @IsGranted ("ROLE_USER")
      * @param Request $request
      * @param Post $post
@@ -88,7 +90,7 @@ class PostController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->em->persist($post->setIsModified(true));
             $this->em->flush();
-            $this->addFlash('success', 'Post has been updated!');
+            $this->addFlash('success', $this->translator->trans('post.msg.upd'));
 
             return $this->redirectToRoute('app_posts');
         }
@@ -97,9 +99,8 @@ class PostController extends AbstractController
     }
 
     /**
-     * @Route ("/posts/delete/{id}", name="app_post_delete")
+     * @Route ("/delete/{id}", name="app_post_delete")
      * @IsGranted ("ROLE_USER")
-     * @param Request $request
      * @param Post $post
      * @return Response
      */
@@ -115,7 +116,7 @@ class PostController extends AbstractController
         $this->em->persist($post);
         $this->em->flush();
 
-        $this->addFlash('success', 'Post has been deleted!');
+        $this->addFlash('success', $this->translator->trans('post.msg.del'));
         return $this->redirectToRoute('app_posts');
     }
 }

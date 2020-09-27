@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{% endblock %}
+{% block title %}{{ 'post.title'|trans }}{% endblock %}
 
 {% block stylesheets %}
     {{ parent() }}
@@ -10,15 +10,13 @@
 {% block body %}
     <div class="container">
         <div class="co">
-
             <div class="tbl">
-
                 <div class="d-flex justify-content-between">
                     {% for msg in app.flashes('success') %}
                         <div class="alert alert-success" role="alert">{{ msg }}</div>
                     {% endfor %}
 
-                    <h3>{{ 'quiz.count'|trans }}: {{ pagination.getTotalItemCount }}</h3>
+                    <h3>{{ 'post.header'|trans }}: {{ pagination.getTotalItemCount }}</h3>
 
                     <div class="d-flex justify-content-center meh">
                         {{ knp_pagination_render(pagination) }}
@@ -38,13 +36,13 @@
                                 <th class="username">{{ post.user.name }}</th>
                                 <th> {{ post.date.format('quiz.date.format'|trans) }}</th>
                                 <th> {{ post.message }}</th>
-                                <th>{% if post.isModified %} edited{% endif %}</th>
+                                <th class="edited">{% if post.isModified %}{{ 'post.edited'|trans }}{% endif %}</th>
 
                                 {% if app.user and app.user.id == post.user.id %}
                                     <th>
                                         <form action="{{ url('app_post_edit', {id: post.id}) }}">
-                                            <button class="btn btn-outline-success my-2 my-sm-0"
-                                                    type="submit">Edit
+                                            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+                                                {{ 'post.button.edit'|trans }}
                                             </button>
                                         </form>
                                     </th>
@@ -53,8 +51,8 @@
                                 {% if app.user and app.user.id == post.user.id or is_granted('ROLE_ADMIN') %}
                                     <th>
                                         <form action="{{ url('app_post_delete', {id: post.id}) }}">
-                                            <button class="btn btn-outline-success my-2 my-sm-0"
-                                                    type="submit">Delete
+                                            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+                                                {{ 'post.button.delete'|trans }}
                                             </button>
                                         </form>
                                     </th>
@@ -68,11 +66,13 @@
                     <div class="d-flex justify-content-center">
                         {{ form_start(form) }}
                         {{ form_widget(form) }}
-                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Send!</button>
+                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+                            {{ 'post.button'|trans }}
+                        </button>
                         {{ form_end(form) }}
                     </div>
                 {% else %}
-                    You are not authorized. Please, log in for leaving a message here.
+                    {{ 'post.no.authorized'|trans }}
                 {% endif %}
             </div>
         </div>

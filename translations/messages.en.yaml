@@ -210,3 +210,18 @@ a.user.blocked: User activity is changed!
 a.user.edited: User Edited!
 a.question.edited: Question edited!
 a.quiz.edited: Quiz edited!
+
+#POST PAGE
+post.title: Posts
+post.header: Total count
+post.button.edit: Edit
+post.button.delete: Delete
+post.no.authorized: Sorry, you are not a user:( Thats why, you cannot leave messages. Please login
+post.button: Send
+post.edited: (edited)
+post.msg.upd: Post has been updated!
+post.msg.del: Post has been deleted!
+post.message: Message
+post.msg.min: Message should be at least %s character
+post.msg.max: Message should be shorter than %s characters
+post.msg: Please enter message

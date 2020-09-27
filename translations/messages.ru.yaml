@@ -210,3 +210,18 @@ a.user.blocked: Статус пользователя изменен!
 a.user.edited: Пользователь изменен!
 a.question.edited: Вопрос изменен!
 a.quiz.edited: Викторина изменена!
+
+#POST PAGE
+post.title: Посты
+post.header: Общее количество
+post.button.edit: Редактировать
+post.button.delete: Удалить
+post.button: Отправить
+post.no.authorized: Извините, но вы не пользователь, поэтому не можете оставлять сообщения:( Войдите
+post.edited: (ред.)
+post.msg.upd: Пост обновлён!
+post.msg.del: Пост удалён!
+post.message: Сообщение
+post.msg.min: Сообщение должно быть как минимум %s символ
+post.msg.max: Сообщение должно быть короче %s символов
+post.msg: Пожалуйста, введите сообщение

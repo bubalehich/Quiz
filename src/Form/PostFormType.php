@@ -8,10 +8,14 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class PostFormType extends AbstractType
 {
+    const MSG_MIN_LENGTH = 1;
+    const MSG_MAX_LENGTH = 100;
     private TranslatorInterface $translator;
 
     /**
@@ -29,12 +33,23 @@ class PostFormType extends AbstractType
         if ($data) {
             $builder->add('message', TextType::class, [
                 'label' => false,
-                'attr' => ['value' => $data]
+                'attr' => ['value' => $data],
+                'constraints' => [
+                    new NotBlank([
+                        'message' => $this->translator->trans('post.msg'),
+                    ]),
+                    new Length([
+                        'min' => self::MSG_MIN_LENGTH,
+                        'minMessage' => sprintf($this->translator->trans('post.msg.min'), self::MSG_MIN_LENGTH),
+                        'max' => self::MSG_MAX_LENGTH,
+                        'maxMessage' => sprintf($this->translator->trans('post.msg.max'), self::MSG_MAX_LENGTH),
+                    ]),
+                ],
             ]);
         } else {
             $builder->add('message', TextType::class, [
                 'label' => false,
-                'attr' => ['placeholder' => 'message']
+                'attr' => ['placeholder' => $this->translator->trans('post.message')]
             ]);
         }
     }
