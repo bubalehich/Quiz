@@ -15,7 +15,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class QuizCreateType extends AbstractType
+class QuizCreateFormType extends AbstractType
 {
     private TranslatorInterface $translator;
 

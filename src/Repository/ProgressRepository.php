@@ -15,6 +15,10 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class ProgressRepository extends ServiceEntityRepository
 {
+    /**
+     * ProgressRepository constructor.
+     * @param ManagerRegistry $registry
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Progress::class);

@@ -7,6 +7,7 @@ use App\Entity\User;
 use App\Repository\RoleRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class UserService
@@ -42,6 +43,10 @@ class UserService
         $this->quizService = $quizService;
     }
 
+    /**
+     * @param User $user
+     * @throws NonUniqueResultException
+     */
     public function register(User $user): void
     {
         $user->addRole($this->roleRepository->findByName(self::DEFAULT_ROLE))
@@ -51,12 +56,13 @@ class UserService
         $this->manager->flush();
     }
 
+    /**
+     * @param User $user
+     * @param string $plainPassword
+     */
     public function updatePassword(User $user, string $plainPassword): void
     {
-        $user->setPassword($this->passwordEncoder->encodePassword(
-            $user,
-            $plainPassword
-        ));
+        $user->setPassword($this->passwordEncoder->encodePassword($user, $plainPassword));
         $this->manager->flush();
     }
 }

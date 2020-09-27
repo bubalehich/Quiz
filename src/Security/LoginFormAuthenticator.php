@@ -33,6 +33,14 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
     private UserPasswordEncoderInterface $passwordEncoder;
     private TranslatorInterface $translator;
 
+    /**
+     * LoginFormAuthenticator constructor.
+     * @param EntityManagerInterface $entityManager
+     * @param UrlGeneratorInterface $urlGenerator
+     * @param CsrfTokenManagerInterface $csrfTokenManager
+     * @param UserPasswordEncoderInterface $passwordEncoder
+     * @param TranslatorInterface $translator
+     */
     public function __construct
     (
         EntityManagerInterface $entityManager,
@@ -49,12 +57,20 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
         $this->translator = $translator;
     }
 
+    /**
+     * @param Request $request
+     * @return bool
+     */
     public function supports(Request $request): bool
     {
         return 'app_login' === $request->attributes->get('_route')
             && $request->isMethod('POST');
     }
 
+    /**
+     * @param Request $request
+     * @return array
+     */
     public function getCredentials(Request $request): array
     {
         $credentials = [
@@ -70,6 +86,11 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
         return $credentials;
     }
 
+    /**
+     * @param mixed $credentials
+     * @param UserProviderInterface $userProvider
+     * @return User|null
+     */
     public function getUser($credentials, UserProviderInterface $userProvider): ?User
     {
         $token = new CsrfToken('authenticate', $credentials['csrf_token']);
@@ -89,6 +110,11 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
         return $user;
     }
 
+    /**
+     * @param mixed $credentials
+     * @param UserInterface $user
+     * @return bool
+     */
     public function checkCredentials($credentials, UserInterface $user): bool
     {
         return $this->passwordEncoder->isPasswordValid($user, $credentials['password']);
@@ -104,6 +130,12 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
         return $credentials['password'];
     }
 
+    /**
+     * @param Request $request
+     * @param TokenInterface $token
+     * @param string $providerKey
+     * @return Response
+     */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey): Response
     {
         if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
@@ -113,6 +145,9 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
         return new RedirectResponse($this->urlGenerator->generate('app_profile'));
     }
 
+    /**
+     * @return string
+     */
     protected function getLoginUrl(): string
     {
         return $this->urlGenerator->generate('app_login');

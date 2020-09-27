@@ -3,17 +3,15 @@ declare(strict_types=1);
 
 namespace App\Form;
 
-
-use App\Entity\User;
-use Symfony\Component\Form\AbstractType;
+use App\Entity\Answer;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\AbstractType;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class UserEditType extends AbstractType
+class AnswerFormType extends AbstractType
 {
     private TranslatorInterface $translator;
 
@@ -26,21 +24,16 @@ class UserEditType extends AbstractType
     {
         $builder->add('name', TextType::class, [
             'label' => $this->translator->trans('a.name')
-        ])->add('isVerified', CheckboxType::class, [
-            'label' => $this->translator->trans('a.isVerified'),
-            'required' => false
-        ])->add('submit', SubmitType::class, [
-            'label' => $this->translator->trans('a.submit'),
-            'attr' => [
-                'class' => 'btn btn-success'
-            ]
+        ])->add('isRight', CheckboxType::class, [
+            'required' => false,
+            'label' => $this->translator->trans('a.isRight')
         ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => User::class,
+            'data_class' => Answer::class
         ]);
     }
 }

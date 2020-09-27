@@ -13,6 +13,7 @@ use App\Repository\QuizRepository;
 use App\Repository\ResultRepository;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\NonUniqueResultException;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
 
@@ -20,8 +21,8 @@ class QuizService
 {
     private const BUNCH_SIZE = 100;
     private const MAX_RESULT = 3;
-    private const PAGINATION_QUIZZES_LIMIT = 8;
-    private const PAGINATION_LEADERS_LIMIT = 8;
+    private const QUIZZES_PER_PAGE = 8;
+    private const LEADERS_PER_PAGE = 8;
     private QuizRepository $quizRepository;
     private ResultRepository $resultRepository;
     private PaginatorInterface $paginator;
@@ -48,13 +49,24 @@ class QuizService
         $this->em = $em;
     }
 
-    public function getPaginateQuizzes(int $page, ?string $search = null): PaginationInterface
+    /**
+     * @param int $page
+     * @param string|null $search
+     * @return PaginationInterface
+     */
+    public function getPaginationQuizzes(int $page, ?string $search = null): PaginationInterface
     {
         return $this
             ->paginator
-            ->paginate($this->quizRepository->getPaginatorQuery($search), $page, self::PAGINATION_QUIZZES_LIMIT);
+            ->paginate($this->quizRepository->getPaginationQuery($search), $page, self::QUIZZES_PER_PAGE);
     }
 
+    /**
+     * Find leaders for quizzes on quiz page
+     * @param PaginationInterface $pagination
+     * @return array
+     * @throws NonUniqueResultException
+     */
     public function getLeadersForPage(PaginationInterface $pagination): array
     {
         $result = [];
@@ -71,7 +83,12 @@ class QuizService
         return $result;
     }
 
-    public function getUserPlace(User $user, Quiz $quiz): int
+    /**
+     * @param User $user
+     * @param Quiz $quiz
+     * @return int
+     */
+    public function findUserPlace(User $user, Quiz $quiz): int
     {
         $i = 1;
         while (true) {
@@ -100,7 +117,11 @@ class QuizService
         return $this->resultRepository->findOneBy(['user' => $user, 'quiz' => $quiz]);
     }
 
-    public function getTopLeaders(Quiz $quiz): array
+    /**
+     * @param Quiz $quiz
+     * @return array
+     */
+    public function findTopLeaders(Quiz $quiz): array
     {
         $qb = $this->resultRepository->getLeaders($quiz);
 
@@ -110,13 +131,24 @@ class QuizService
             ->getResult();
     }
 
+    /**
+     * Find leaders for leaderboard
+     * @param Quiz $quiz
+     * @param int $page
+     * @return PaginationInterface
+     */
     public function getPaginateLeaders(Quiz $quiz, int $page): PaginationInterface
     {
         $query = $this->resultRepository->getLeaders($quiz)->getQuery();
 
-        return $this->paginator->paginate($query, $page, self::PAGINATION_LEADERS_LIMIT);
+        return $this->paginator->paginate($query, $page, self::LEADERS_PER_PAGE);
     }
 
+    /**
+     * @param Quiz $quiz
+     * @param User $user
+     * @return Result
+     */
     public function startParticipate(Quiz $quiz, User $user): Result
     {
         if (!$result = $this->getResult($user, $quiz)) {
@@ -132,6 +164,11 @@ class QuizService
         return $result;
     }
 
+    /**
+     * @param Question $question
+     * @param Result $result
+     * @return bool
+     */
     public function isProceed(Question $question, Result $result): bool
     {
         $flag = false;
@@ -144,6 +181,10 @@ class QuizService
         return $flag;
     }
 
+    /**
+     * @param Result $result
+     * @param Answer $answer
+     */
     public function createNewProgress(Result $result, Answer $answer): void
     {
         $question = $answer->getQuestion();

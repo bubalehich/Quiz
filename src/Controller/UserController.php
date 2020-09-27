@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Form\ChangePasswordTypeForm;
+use App\Form\ChangePasswordFormType;
 use App\Form\EditUsernameFormType;
 use App\Repository\ResultRepository;
 use App\Service\UserService;
@@ -73,7 +73,7 @@ class UserController extends AbstractController
      */
     public function editPassword(Request $request): Response
     {
-        $passwordForm = $this->createForm(ChangePasswordTypeForm::class);
+        $passwordForm = $this->createForm(ChangePasswordFormType::class);
         $passwordForm->handleRequest($request);
         if ($passwordForm->isSubmitted() && $passwordForm->isValid()) {
             /**@var User $user */

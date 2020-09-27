@@ -3,11 +3,9 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Entity\Question;
-use App\Entity\Quiz;
-use App\Form\QuizCreateType;
-use App\Form\QuestionCreateType;
-use App\Form\UserEditType;
+use App\Form\QuizCreateFormType;
+use App\Form\QuestionCreateFormType;
+use App\Form\UserEditFormType;
 use App\Repository\QuestionRepository;
 use App\Repository\QuizRepository;
 use App\Repository\UserRepository;
@@ -68,7 +66,7 @@ class AdminController extends AbstractController
     public function onAdminQuizShow(PaginatorInterface $paginator, Request $request): Response
     {
         $name = $request->get('name');
-        $quizes = $this->adminService->getQuizesPage($paginator, (int)$request->query->get("page", 1),$name);
+        $quizes = $this->adminService->getQuizzesPage($paginator, (int)$request->query->get("page", 1),$name);
 
         return $this->render('admin/admin_show_quizes.html.twig', ["quizes" => $quizes]);
     }
@@ -81,7 +79,7 @@ class AdminController extends AbstractController
      */
     public function onAdminQuizCreate(Request $request): Response
     {
-        $createQuizForm = $this->createForm(QuizCreateType::class);
+        $createQuizForm = $this->createForm(QuizCreateFormType::class);
         $createQuizForm->handleRequest($request);
         if ($createQuizForm->isSubmitted()) {
             if ($this->adminService->saveNewQuiz($createQuizForm->getData())) {
@@ -108,7 +106,7 @@ class AdminController extends AbstractController
     {
         $quiz = $this->quizRepository->find($request->get('id'));
 
-        $createQuizForm = $this->createForm(QuizCreateType::class, $quiz);
+        $createQuizForm = $this->createForm(QuizCreateFormType::class, $quiz);
         $createQuizForm->handleRequest($request);
         if ($createQuizForm->isSubmitted()) {
             if ($this->adminService->saveNewQuiz($quiz)) {
@@ -154,7 +152,7 @@ class AdminController extends AbstractController
      */
     public function onAdminQuestionCreate(Request $request): Response
     {
-        $createQuestionForm = $this->createForm(QuestionCreateType::class);
+        $createQuestionForm = $this->createForm(QuestionCreateFormType::class);
         $createQuestionForm->handleRequest($request);
 
         if ($createQuestionForm->isSubmitted()) {
@@ -182,7 +180,7 @@ class AdminController extends AbstractController
     {
         $question = $this->questionRepository->find($request->get('id'));
 
-        $createQuestionForm = $this->createForm(QuestionCreateType::class, $question);
+        $createQuestionForm = $this->createForm(QuestionCreateFormType::class, $question);
         $createQuestionForm->handleRequest($request);
 
         if ($createQuestionForm->isSubmitted()) {
@@ -277,7 +275,7 @@ class AdminController extends AbstractController
     public function onAdminEditUser(Request $request): Response
     {
         $user = $this->userRepository->find($request->get('id'));
-        $editUserForm = $this->createForm(UserEditType::class, $user);
+        $editUserForm = $this->createForm(UserEditFormType::class, $user);
         $editUserForm->handleRequest($request);
         if ($editUserForm->isSubmitted() && $editUserForm->isValid()) {
             $this->userRepository->updateUserByAdmin($user);

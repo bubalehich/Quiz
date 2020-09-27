@@ -13,16 +13,17 @@ use App\Entity\User;
 use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Exception;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class AppFixtures extends Fixture
 {
-    const USER_COUNT = 50;
-    const ADMIN_COUNT = 2;
-    const QUIZ_COUNT = 100;
-    const ANSWERS_PER_QUESTION_COUNT = 4;
-    const QUESTIONS_PER_QUIZ_COUNT = 10;
-    const QUESTIONS_COUNT = self::QUIZ_COUNT * self::QUESTIONS_PER_QUIZ_COUNT;
+    private const USER_COUNT = 50;
+    private const ADMIN_COUNT = 2;
+    private const QUIZ_COUNT = 100;
+    private const ANSWERS_PER_QUESTION_COUNT = 4;
+    private const QUESTIONS_PER_QUIZ_COUNT = 10;
+    private const QUESTIONS_COUNT = self::QUIZ_COUNT * self::QUESTIONS_PER_QUIZ_COUNT;
 
     private UserPasswordEncoderInterface $encoder;
 
@@ -35,6 +36,10 @@ class AppFixtures extends Fixture
         $this->encoder = $encoder;
     }
 
+    /**
+     * @param ObjectManager $manager
+     * @throws Exception
+     */
     public function load(ObjectManager $manager)
     {
         $users = [];

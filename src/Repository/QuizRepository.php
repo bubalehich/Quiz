@@ -5,6 +5,8 @@ namespace App\Repository;
 
 use App\Entity\Quiz;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
 use Exception;
@@ -17,12 +19,20 @@ use Exception;
  */
 class QuizRepository extends ServiceEntityRepository
 {
+    /**
+     * QuizRepository constructor.
+     * @param ManagerRegistry $registry
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Quiz::class);
     }
 
-    public function getPaginatorQuery(?string $name): Query
+    /**
+     * @param string|null $name
+     * @return Query
+     */
+    public function getPaginationQuery(?string $name): Query
     {
         return $this->createQueryBuilder('q')
             ->where('q.name like :name')
@@ -30,12 +40,21 @@ class QuizRepository extends ServiceEntityRepository
             ->getQuery();
     }
 
+    /**
+     * @param Quiz $quiz
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
     public function saveQuiz(Quiz $quiz): void
     {
         $this->_em->persist($quiz);
         $this->_em->flush();
     }
 
+    /**
+     * @param Quiz $quiz
+     * @return bool
+     */
     public function deleteQuiz(Quiz $quiz): bool
     {
         try {

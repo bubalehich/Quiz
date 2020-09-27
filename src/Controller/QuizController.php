@@ -10,6 +10,7 @@ use App\Form\QuizProcessFormType;
 use App\Service\QuizService;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\NonUniqueResultException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -40,13 +41,14 @@ class QuizController extends AbstractController
      * @Route("/quizes", name="app_quizes")
      * @param Request $request
      * @return Response
+     * @throws NonUniqueResultException
      */
-    public function listAction(Request $request): Response
+    public function onQuizzesPage(Request $request): Response
     {
         $page = $request->query->getInt('page', 1);
         $searchCriteria = $request->query->get('search');
 
-        $pagination = $this->service->getPaginateQuizzes($page, $searchCriteria);
+        $pagination = $this->service->getPaginationQuizzes($page, $searchCriteria);
         $leaders = $this->service->getLeadersForPage($pagination);
 
         return $this->render
@@ -66,8 +68,8 @@ class QuizController extends AbstractController
         /**@var User $user */
         $user = $this->getUser();
         $result = $this->service->getResult($user, $quiz);
-        $topResults = $this->service->getTopLeaders($quiz);
-        $rate = $result && $result->getEndDate() ? $this->service->getUserPlace($user, $quiz) : null;
+        $topResults = $this->service->findTopLeaders($quiz);
+        $rate = $result && $result->getEndDate() ? $this->service->findUserPlace($user, $quiz) : null;
 
         return $this->render('quiz/quiz_info.html.twig', [
             'quiz' => $quiz,

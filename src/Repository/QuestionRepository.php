@@ -5,6 +5,8 @@ namespace App\Repository;
 
 use App\Entity\Question;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
 use Exception;
@@ -17,18 +19,31 @@ use Exception;
  */
 class QuestionRepository extends ServiceEntityRepository
 {
+    /**
+     * QuestionRepository constructor.
+     * @param ManagerRegistry $registry
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Question::class);
     }
 
+    /**
+     * @param Question $question
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
     public function saveQuestion(Question $question): void
     {
         $this->_em->persist($question);
         $this->_em->flush();
     }
 
-    public function getPaginatorQuery(?string $name): Query
+    /**
+     * @param string|null $name
+     * @return Query
+     */
+    public function getPaginationQuery(?string $name): Query
     {
         return $this->createQueryBuilder('q')
             ->where('q.name like :name')
@@ -36,6 +51,10 @@ class QuestionRepository extends ServiceEntityRepository
             ->getQuery();
     }
 
+    /**
+     * @param Question $question
+     * @return bool
+     */
     public function deleteQuestion(Question $question): bool
     {
         try {

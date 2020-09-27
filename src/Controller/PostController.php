@@ -4,11 +4,8 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\Post;
-use App\Entity\User;
 use App\Form\PostFormType;
 use App\Service\PostService;
-use DateTime;
-use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,19 +19,16 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class PostController extends AbstractController
 {
     private PostService $postService;
-    private EntityManagerInterface $em;
     private TranslatorInterface $translator;
 
     /**
      * PostController constructor.
      * @param PostService $postService
-     * @param EntityManagerInterface $em
      * @param TranslatorInterface $translator
      */
-    public function __construct(PostService $postService, EntityManagerInterface $em, TranslatorInterface $translator)
+    public function __construct(PostService $postService, TranslatorInterface $translator)
     {
         $this->postService = $postService;
-        $this->em = $em;
         $this->translator = $translator;
     }
 
@@ -53,24 +47,13 @@ class PostController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /**@var Post $post */
-            $post = $form->getData();
-
-            /**@var User $user */
-            $user = $this->getUser();
-            $user->addPost($post);
-            $post->setUser($user)->setDate(new DateTime());
-
-            $this->em->persist($user);
-            $this->em->persist($post);
-            $this->em->flush();
+            $this->postService->save($form->getData(), $this->getUser());
 
             return $this->redirectToRoute('app_posts');
         }
 
         return $this->render('post/all_posts.html.twig', ['pagination' => $pagination, 'form' => $form->createView()]);
     }
-
 
     /**
      * @Route ("/edit/{id}", name= "app_post_edit")
@@ -88,8 +71,7 @@ class PostController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->em->persist($post->setIsModified(true));
-            $this->em->flush();
+            $this->postService->edit($post);
             $this->addFlash('success', $this->translator->trans('post.msg.upd'));
 
             return $this->redirectToRoute('app_posts');
@@ -109,12 +91,7 @@ class PostController extends AbstractController
         if (!($this->getUser() === $post->getUser() || $this->isGranted("ROLE_ADMIN"))) {
             return $this->redirectToRoute('app_posts');
         }
-        $user = $post->getUser();
-        $user->removePost($post);
-        $this->em->remove($post);
-        $this->em->persist($user);
-        $this->em->persist($post);
-        $this->em->flush();
+        $this->postService->delete($post);
 
         $this->addFlash('success', $this->translator->trans('post.msg.del'));
         return $this->redirectToRoute('app_posts');

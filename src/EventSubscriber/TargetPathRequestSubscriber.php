@@ -7,7 +7,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
 
@@ -28,6 +27,9 @@ class TargetPathRequestSubscriber implements EventSubscriberInterface
         $this->generator = $generator;
     }
 
+    /**
+     * @param RequestEvent $event
+     */
     public function onKernelRequest(RequestEvent $event): void
     {
         $request = $event->getRequest();
@@ -46,6 +48,9 @@ class TargetPathRequestSubscriber implements EventSubscriberInterface
         }
     }
 
+    /**
+     * @return \string[][]
+     */
     public static function getSubscribedEvents(): array
     {
         return [KernelEvents::REQUEST => ['onKernelRequest']];

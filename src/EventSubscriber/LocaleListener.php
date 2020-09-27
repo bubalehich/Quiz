@@ -11,11 +11,18 @@ class LocaleListener implements EventSubscriberInterface
 {
     private string $defaultLocale;
 
+    /**
+     * LocaleListener constructor.
+     * @param string $defaultLocale
+     */
     public function __construct(string $defaultLocale = 'en')
     {
         $this->defaultLocale = $defaultLocale;
     }
 
+    /**
+     * @param RequestEvent $event
+     */
     public function onKernelRequest(RequestEvent $event): void
     {
         $request = $event->getRequest();
@@ -28,6 +35,9 @@ class LocaleListener implements EventSubscriberInterface
         }
     }
 
+    /**
+     * @return \array[][]
+     */
     public static function getSubscribedEvents(): array
     {
         return [KernelEvents::REQUEST => array(array('onKernelRequest', 15))];

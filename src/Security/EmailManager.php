@@ -8,6 +8,7 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordToken;
@@ -51,6 +52,10 @@ class EmailManager
         $this->email = $email;
     }
 
+    /**
+     * @param User $user
+     * @throws TransportExceptionInterface
+     */
     public function sendEmailConfirmation(User $user): void
     {
         $templatedEmail = (new TemplatedEmail())
@@ -96,6 +101,12 @@ class EmailManager
         $this->entityManager->flush();
     }
 
+    /**
+     * @param string $email
+     * @param ResetPasswordToken $resetToken
+     * @param int $tokenLifetime
+     * @throws TransportExceptionInterface
+     */
     public function sendEmailRequestForgotPassword(string $email, ResetPasswordToken $resetToken, int $tokenLifetime): void
     {
         $templatedEmail = (new TemplatedEmail())
