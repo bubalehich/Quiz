@@ -43,13 +43,12 @@ Encore
     .addStyleEntry('quiz_info', './assets/css/quiz_info.css')
     .addStyleEntry('quiz', './assets/css/quiz.css')
     .addStyleEntry('common', './assets/css/common.css')
+    .addStyleEntry('post_page', './assets/css/app_post.css')
 
     .addEntry('admin', './assets/js/admin.js')
     .addEntry('admin_create_quiz', './assets/js/admin_create_quiz.js')
     .addEntry('admin_create_question', './assets/js/admin_create_question.js')
-
-    //.addEntry('page1', './assets/js/page1.js')
-    //.addEntry('page2', './assets/js/page2.js')
+    .addStyleEntry('admin_style','./assets/css/admin.css')
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
     .splitEntryChunks()

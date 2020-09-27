@@ -12,6 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use SymfonyCasts\Bundle\ResetPassword\Controller\ResetPasswordControllerTrait;
@@ -125,6 +126,11 @@ class ResetPasswordController extends AbstractController
         ]);
     }
 
+    /**
+     * @param string $emailFormData
+     * @return RedirectResponse
+     * @throws TransportExceptionInterface
+     */
     private function processSendingPasswordResetEmail(string $emailFormData): RedirectResponse
     {
         $user = $this->getDoctrine()->getRepository(User::class)->findOneBy(['email' => $emailFormData]);
@@ -135,7 +141,6 @@ class ResetPasswordController extends AbstractController
 
             return $this->redirectToRoute('app_forgot_password_request');
         }
-
         try {
             $resetToken = $this->resetPasswordHelper->generateResetToken($user);
         } catch (ResetPasswordExceptionInterface $e) {

@@ -5,7 +5,11 @@ namespace App\Repository;
 
 use App\Entity\Question;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
+use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
+use Exception;
 
 /**
  * @method Question|null find($id, $lockMode = null, $lockVersion = null)
@@ -15,27 +19,50 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class QuestionRepository extends ServiceEntityRepository
 {
+    /**
+     * QuestionRepository constructor.
+     * @param ManagerRegistry $registry
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Question::class);
     }
 
-    public function saveQuestion(Question $question) :void
+    /**
+     * @param Question $question
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    public function saveQuestion(Question $question): void
     {
         $this->_em->persist($question);
         $this->_em->flush();
     }
 
-    public function getPaginatorQuery()
+    /**
+     * @param string|null $name
+     * @return Query
+     */
+    public function getPaginationQuery(?string $name): Query
     {
-        $dql = "SELECT i FROM App\Entity\Question i";
-
-        return $this->_em->createQuery($dql);
+        return $this->createQueryBuilder('q')
+            ->where('q.name like :name')
+            ->setParameter('name', '%' . $name . '%')
+            ->getQuery();
     }
 
-    public function deleteQuestion(Question $question): void
+    /**
+     * @param Question $question
+     * @return bool
+     */
+    public function deleteQuestion(Question $question): bool
     {
-        $this->_em->remove($question);
-        $this->_em->flush();
+        try {
+            $this->_em->remove($question);
+            $this->_em->flush();
+        } catch (Exception $exception) {
+            return false;
+        }
+        return true;
     }
 }

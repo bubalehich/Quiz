@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Repository\AnswerRepository;
-use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -17,7 +16,7 @@ class Answer
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private int $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="text")
@@ -34,7 +33,7 @@ class Answer
      */
     private Question $question;
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -75,7 +74,7 @@ class Answer
         return $this;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return $this->getName();
     }

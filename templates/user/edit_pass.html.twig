@@ -1,22 +1,20 @@
 {% extends 'base.html.twig' %}
-{% block title %}{{ 'u.pass.title'|trans }}
 
+{% block title %}{{ 'u.pass.title'|trans }}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('form') }}
 {% endblock %}
- {% block stylesheets %}
-     {{ parent() }}
-     {{ encore_entry_link_tags('form') }}
- {% endblock %}
 
 {% block body %}
     {% for err in app.flashes('error') %}
         <div class="alert alert-danger" role="alert">{{ err }}</div>
     {% endfor %}
     <div class="box">
-        <h1>{{'u.pass.title' |trans }}</h1>
+        <h1>{{ 'u.pass.title' |trans }}</h1>
         {{ form_start(form) }}
-        {{ form_widget(form.oldPassword,{'attr': {'placeholder': 'u.pass.old'|trans }}) }}
-        {{ form_widget(form.plainPassword.first, {'attr': {'placeholder': 'u.pass.new'|trans }}) }}
-        {{ form_widget(form.plainPassword.second,{'attr': {'placeholder': 'u.pass.new2'|trans }}) }}
+        {{ form_widget(form) }}
         <input type="submit" name="" value={{ 'u.btn'| trans }}>
         {{ form_end(form) }}
     </div>

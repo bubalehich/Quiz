@@ -1,26 +1,32 @@
 {% extends 'base.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('admin_style') }}
+{% endblock %}
+
 {% block body %}
     <div style="display:flex;">
         <div class="left_bar">
             <div class="link_block">
-                <span class="badge link_level_1">{{'a.quizes'|trans}}</span>
+                <span class="badge link_level_1">{{ 'a.quizes'|trans }}</span>
                 <div class="links" style="display:none;margin-left:1em;">
-                    <a class="badge link_level_2" href="{{ path('app_show_quizes') }}">{{'a.all'|trans}}</a>
-                    <a class="badge link_level_2" href="{{ path('create_quiz_page') }}">{{'a.create'|trans}}</a>
+                    <a class="badge link_level_2" href="{{ path('app_show_quizes') }}">{{ 'a.all'|trans }}</a>
+                    <a class="badge link_level_2" href="{{ path('create_quiz_page') }}">{{ 'a.create'|trans }}</a>
                 </div>
             </div>
             <div class="link_block">
-                <span class="badge link_level_1">{{'a.questions'|trans}}</span>
+                <span class="badge link_level_1">{{ 'a.questions'|trans }}</span>
                 <div class="links" style="display:none;margin-left:1em;">
-                    <a class="badge link_level_2" href="{{ path('app_show_questions') }}">{{'a.all'|trans}}</a>
-                    <a class="badge link_level_2" href="{{ path('app_create_question_page') }}">{{'a.create'|trans}}</a>
+                    <a class="badge link_level_2" href="{{ path('app_show_questions') }}">{{ 'a.all'|trans }}</a>
+                    <a class="badge link_level_2"
+                       href="{{ path('app_create_question_page') }}">{{ 'a.create'|trans }}</a>
                 </div>
             </div>
             <div class="link_block">
-                <span class="badge link_level_1">{{'a.user'|trans}}</span>
+                <span class="badge link_level_1">{{ 'a.users'|trans }}</span>
                 <div class="links" style="display:none;margin-left:1em;">
-                    <a class="badge link_level_2" href="{{ path('app_show_users') }}">{{'a.all'|trans}}</a>
+                    <a class="badge link_level_2" href="{{ path('app_show_users') }}">{{ 'a.all'|trans }}</a>
                 </div>
             </div>
         </div>
@@ -41,6 +47,7 @@
         </div>
     </div>
 {% endblock %}
+
 {% block javascripts %}
     {{ parent() }}
     {{ encore_entry_script_tags('admin') }}

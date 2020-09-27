@@ -4,10 +4,11 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Form\ChangePasswordTypeForm;
+use App\Form\ChangePasswordFormType;
 use App\Form\EditUsernameFormType;
 use App\Repository\ResultRepository;
 use App\Service\UserService;
+use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,22 +28,30 @@ class UserController extends AbstractController
     private UserService $userService;
     private ResultRepository $resultRepository;
     private TranslatorInterface $translator;
+    private UserPasswordEncoderInterface $encoder;
+    private EntityManagerInterface $em;
 
     /**
      * UserController constructor.
      * @param UserService $userService
      * @param ResultRepository $resultRepository
      * @param TranslatorInterface $translator
+     * @param UserPasswordEncoderInterface $encoder
+     * @param EntityManagerInterface $em
      */
     public function __construct(
         UserService $userService,
         ResultRepository $resultRepository,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
+        UserPasswordEncoderInterface $encoder,
+        EntityManagerInterface $em
     )
     {
         $this->userService = $userService;
         $this->resultRepository = $resultRepository;
         $this->translator = $translator;
+        $this->encoder = $encoder;
+        $this->em = $em;
     }
 
     /**
@@ -51,30 +60,30 @@ class UserController extends AbstractController
      */
     public function onUserPage()
     {
-        $results = $this->resultRepository->findByUser($this->getUser());
+        /**@var User $user */
+        $user = $this->getUser();
+        $results = $this->resultRepository->findByUser($user);
         return $this->render('user/profile.html.twig', ['results' => $results]);
     }
 
     /**
      * @Route ("/edit_pass", name="app_profile_edit_pass")
      * @param Request $request
-     * @param UserPasswordEncoderInterface $encoder
      * @return Response
      */
-    public function editPassword(Request $request, UserPasswordEncoderInterface $encoder): Response
+    public function editPassword(Request $request): Response
     {
-        $passwordForm = $this->createForm(ChangePasswordTypeForm::class);
+        $passwordForm = $this->createForm(ChangePasswordFormType::class);
         $passwordForm->handleRequest($request);
         if ($passwordForm->isSubmitted() && $passwordForm->isValid()) {
-            //service
-            $password = $encoder->encodePassword($this->getUser(), ($passwordForm->getData())['oldPassword']);
             /**@var User $user */
             $user = $this->getUser();
+            $password = $this->encoder->encodePassword($user, ($passwordForm->getData())['oldPassword']);
             if ($password === $user->getPassword()) {
                 $user->setPassword($password);
                 $this->addFlash('success', $this->translator->trans('u.edit.pass.suc'));
-                $this->getDoctrine()->getManager()->persist($user);
-                $this->getDoctrine()->getManager()->flush();
+                $this->em->persist($user);
+                $this->em->flush();
 
                 return $this->redirectToRoute('app_profile');
             }
@@ -100,8 +109,8 @@ class UserController extends AbstractController
             /**@var User $user */
             $user = $this->getUser();
             $user->setName(($nameChangeForm->getData())['name']);
-            $this->getDoctrine()->getManager()->persist($user);
-            $this->getDoctrine()->getManager()->flush();
+            $this->em->persist($user);
+            $this->em->flush();
             $this->addFlash('success', $this->translator->trans('u.name.suc'));
 
             return $this->redirectToRoute('app_profile');

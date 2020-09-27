@@ -6,21 +6,23 @@ namespace App\Controller;
 use App\Form\RegistrationFormType;
 use App\Security\EmailManager;
 use App\Service\UserService;
+use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
 class RegistrationController extends AbstractController
 {
-    private EmailManager $emailVerifier;
+    private EmailManager $emailManager;
     private TranslatorInterface $translator;
 
-    public function __construct(EmailManager $emailVerifier, TranslatorInterface $translator)
+    public function __construct(EmailManager $emailManager, TranslatorInterface $translator)
     {
-        $this->emailVerifier = $emailVerifier;
+        $this->emailManager = $emailManager;
         $this->translator = $translator;
     }
 
@@ -29,6 +31,8 @@ class RegistrationController extends AbstractController
      * @param UserService $service
      * @param Request $request
      * @return Response
+     * @throws TransportExceptionInterface
+     * @throws NonUniqueResultException
      */
     public function register(UserService $service, Request $request): Response
     {
@@ -41,7 +45,7 @@ class RegistrationController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $service->register($user = $form->getData());
-            $this->emailVerifier->sendEmailConfirmation($user);
+            $this->emailManager->sendEmailConfirmation($user);
             $this->addFlash('success', $this->translator->trans('f.account.create'));
 
             return $this->redirectToRoute('app_login');
@@ -63,7 +67,7 @@ class RegistrationController extends AbstractController
     public function verifyUserEmail(Request $request): Response
     {
         try {
-            $this->emailVerifier->handleEmailConfirmation($request);
+            $this->emailManager->handleEmailConfirmation($request);
             $this->addFlash('success', $this->translator->trans('f.account.verify'));
             return $this->redirectToRoute('app_login');
         } catch (VerifyEmailExceptionInterface $exception) {

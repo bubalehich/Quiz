@@ -2,11 +2,17 @@
 
 {% block title %}{{ 'rr.title'|trans }}{% endblock %}
 
-{% block body %}
-    <h1>{{ 'rr.title'|trans }}</h1>
+ {% block stylesheets %}
+     {{ parent() }}
+     {{ encore_entry_link_tags('form') }}
+ {% endblock %}
 
-    {{ form_start(resetForm) }}
+{% block body %}
+    <div class="box">
+        <h1>{{ 'rr.title'|trans }}</h1>
+        {{ form_start(resetForm) }}
         {{ form_row(resetForm.plainPassword) }}
-        <button class="btn btn-primary">{{ 'rr.btn'|trans }}</button>
-    {{ form_end(resetForm) }}
+        <input type="submit" name="" value={{ 'rr.btn'|trans }}>
+        {{ form_end(resetForm) }}
+    </div>
 {% endblock %}

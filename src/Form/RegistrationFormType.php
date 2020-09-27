@@ -31,13 +31,18 @@ class RegistrationFormType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('name', TextType::class)
-            ->add('email', EmailType::class)
+        $builder->add('name', TextType::class, [
+            'label' => false,
+            'attr' => ['placeholder' => $this->translator->trans('reg.name')]
+        ])
+            ->add('email', EmailType::class, [
+                'label' => false,
+                'attr' => ['placeholder' => $this->translator->trans('reg.email')]
+            ])
             ->add('password', PasswordType::class, [
+                'label' => false,
+                'attr' => ['placeholder' => $this->translator->trans('reg.password')],
                 'constraints' => [
-                    new NotBlank([
-                        'message' => $this->translator->trans('msg.password'),
-                    ]),
                     new Length([
                         'min' => self::PASSWORD_MIN_LENGTH,
                         'minMessage' => sprintf($this->translator->trans('msg.password.min'), self::PASSWORD_MIN_LENGTH),

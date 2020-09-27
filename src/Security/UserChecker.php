@@ -22,6 +22,9 @@ class UserChecker implements UserCheckerInterface
         $this->translator = $translator;
     }
 
+    /**
+     * @param UserInterface $user
+     */
     public function checkPreAuth(UserInterface $user): void
     {
         if (!$user instanceof AppUser) {
@@ -35,6 +38,9 @@ class UserChecker implements UserCheckerInterface
         }
     }
 
+    /**
+     * @param UserInterface $user
+     */
     public function checkPostAuth(UserInterface $user)
     {
     }

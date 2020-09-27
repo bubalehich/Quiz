@@ -20,7 +20,7 @@ class Result
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private int $id;
+    private ?int $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="results", fetch="EAGER")
@@ -42,7 +42,7 @@ class Result
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private ?DateTimeInterface $endDate;
+    private ?DateTimeInterface $endDate = null;
 
     /**
      * @ORM\Column(type="decimal", precision=4, scale=2, nullable=true)
@@ -60,7 +60,7 @@ class Result
         $this->result=0;
     }
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }

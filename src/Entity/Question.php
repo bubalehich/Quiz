@@ -18,7 +18,7 @@ class Question
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private int $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="text")
@@ -35,7 +35,7 @@ class Question
         $this->answers = new ArrayCollection();
     }
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -74,9 +74,6 @@ class Question
     {
         if ($this->answers->contains($answer)) {
             $this->answers->removeElement($answer);
-            /*if ($answer->getQuestion() === $this) {
-                $answer->setQuestion(null);
-            }*/
         }
 
         return $this;

@@ -5,8 +5,11 @@ namespace App\Repository;
 
 use App\Entity\Quiz;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
+use Exception;
 
 /**
  * @method Quiz|null find($id, $lockMode = null, $lockVersion = null)
@@ -16,37 +19,50 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class QuizRepository extends ServiceEntityRepository
 {
-
+    /**
+     * QuizRepository constructor.
+     * @param ManagerRegistry $registry
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Quiz::class);
     }
 
-    public function findNext(int $page): Query
+    /**
+     * @param string|null $name
+     * @return Query
+     */
+    public function getPaginationQuery(?string $name): Query
     {
-        return $this
-            ->createQueryBuilder('q')
-            ->select()
+        return $this->createQueryBuilder('q')
+            ->where('q.name like :name')
+            ->setParameter('name', '%' . $name . '%')
             ->getQuery();
     }
 
-    public function getPaginatorQuery()
-    {
-        $dql = "SELECT i FROM App\Entity\Quiz i";
-
-        return $this->_em->createQuery($dql);
-    }
-
+    /**
+     * @param Quiz $quiz
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
     public function saveQuiz(Quiz $quiz): void
     {
         $this->_em->persist($quiz);
         $this->_em->flush();
     }
 
-    public function deleteQuiz(Quiz $quiz): void
+    /**
+     * @param Quiz $quiz
+     * @return bool
+     */
+    public function deleteQuiz(Quiz $quiz): bool
     {
-        $this->_em->remove($quiz);
-        $this->_em->flush();
+        try {
+            $this->_em->remove($quiz);
+            $this->_em->flush();
+        } catch (Exception $exception) {
+            return false;
+        }
+        return true;
     }
-
 }

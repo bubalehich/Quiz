@@ -1,0 +1,52 @@
+.co {
+    margin-top: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+    padding: 10px;
+
+    background: rgba(25, 25, 25, 0.9);
+    color: white;
+}
+
+.alert {
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    color: #2ecc71;
+    font-size: 1.2em;
+    background-color: rgba(0, 0, 0, 0);
+    border-color: rgba(0, 0, 0, 0);
+}
+
+h3 {
+    color: #2ecc71;
+}
+
+.form-inline {
+    display: block;
+}
+
+table {
+    margin-top: 5px;
+    width: 100%;
+}
+
+.username {
+    color: #2ecc71;
+}
+
+.send-msg  {
+    margin: auto;
+}
+
+hr {
+    background-color:  #2ecc71;
+
+    margin-top: 5px;
+    margin-bottom: 7px;
+}
+
+.edited{
+    color: #8a8a8a;
+    font-size: 0.9em;
+}

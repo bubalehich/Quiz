@@ -8,6 +8,7 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordToken;
@@ -17,16 +18,12 @@ use Symfony\Component\Mime\Address;
 
 class EmailManager
 {
-    private const EMAIL = 'quiz.sender.bot@gmail.com';
-    private const VERIFY_EMAIL_TEMPLATE = 'app_verify_email';
-    private const RESTORE_PASSWORD_TEMPLATE = 'reset_password/email.html.twig';
-    private const CONFIRMATION_TEMPLATE = 'registration/confirmation_email.html.twig';
-
     private VerifyEmailHelperInterface $verifyEmailHelper;
     private MailerInterface $mailer;
     private EntityManagerInterface $entityManager;
     private TranslatorInterface $translator;
     private UserRepository $repository;
+    private string $email;
 
     /**
      * EmailManager constructor.
@@ -35,6 +32,7 @@ class EmailManager
      * @param EntityManagerInterface $entityManager
      * @param UserRepository $repository
      * @param TranslatorInterface $translator
+     * @param string $email
      */
     public function __construct
     (
@@ -42,7 +40,8 @@ class EmailManager
         MailerInterface $mailer,
         EntityManagerInterface $entityManager,
         UserRepository $repository,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
+        string $email
     )
     {
         $this->verifyEmailHelper = $verifyEmailHelper;
@@ -50,18 +49,23 @@ class EmailManager
         $this->entityManager = $entityManager;
         $this->repository = $repository;
         $this->translator = $translator;
+        $this->email = $email;
     }
 
+    /**
+     * @param User $user
+     * @throws TransportExceptionInterface
+     */
     public function sendEmailConfirmation(User $user): void
     {
         $templatedEmail = (new TemplatedEmail())
-            ->from(new Address(self::EMAIL, $this->translator->trans('bot.author')))
+            ->from(new Address($this->email, $this->translator->trans('bot.author')))
             ->to($user->getEmail())
             ->subject($this->translator->trans('bot.confirm'))
-            ->htmlTemplate(self::CONFIRMATION_TEMPLATE);
+            ->htmlTemplate('registration/confirmation_email.html.twig');
 
         $signatureComponents = $this->verifyEmailHelper->generateSignature(
-            self::VERIFY_EMAIL_TEMPLATE,
+            'app_verify_email',
             (string)$user->getId(),
             $user->getEmail()
         );
@@ -79,7 +83,9 @@ class EmailManager
      */
     public function handleEmailConfirmation(Request $request): void
     {
-        $user = $this->entityManager->getRepository(User::class)
+        $user = $this
+            ->entityManager
+            ->getRepository(User::class)
             ->find($request->get('id'));
         $uri = str_replace
         (
@@ -95,13 +101,19 @@ class EmailManager
         $this->entityManager->flush();
     }
 
+    /**
+     * @param string $email
+     * @param ResetPasswordToken $resetToken
+     * @param int $tokenLifetime
+     * @throws TransportExceptionInterface
+     */
     public function sendEmailRequestForgotPassword(string $email, ResetPasswordToken $resetToken, int $tokenLifetime): void
     {
         $templatedEmail = (new TemplatedEmail())
-            ->from(new Address(self::EMAIL, $this->translator->trans('bot.author')))
+            ->from(new Address($this->email, $this->translator->trans('bot.author')))
             ->to($email)
             ->subject($this->translator->trans('bot.restore'))
-            ->htmlTemplate(self::RESTORE_PASSWORD_TEMPLATE)
+            ->htmlTemplate('reset_password/email.html.twig')
             ->context([
                 'resetToken' => $resetToken,
                 'tokenLifetime' => $tokenLifetime,

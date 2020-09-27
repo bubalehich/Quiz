@@ -1,9 +1,12 @@
 {% extends 'base.html.twig' %}
+
 {% block title %}{{ quiz.name }}{% endblock %}
-  {% block stylesheets %}
-      {{ parent() }}
-      {{ encore_entry_link_tags('quiz_info') }}
-  {% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('quiz_info') }}
+{% endblock %}
+
 {% block body %}
     <div class="container">
         <div class="d-flex justify-content-center">
@@ -16,25 +19,25 @@
                 <div class="d-flex justify-content-center">
                     <h3>{{ 'qi.title'|trans }}</h3>
                 </div>
-                <table width="100%">
+                <table>
                     <tr>
-                        <td>{{ 'qi.created'|trans }}:</td>
-                        <td>{{ quiz.createDate.format( 'quiz.date.format'|trans ) }}</td>
+                        <th>{{ 'qi.created'|trans }}:</th>
+                        <th>{{ quiz.createDate.format( 'quiz.date.format'|trans ) }}</th>
                     </tr>
                     <tr>
-                        <td>{{ 'qi.status'|trans }}:</td>
-                        <td{% if not  quiz.isActive %} style="color: #db7778" {% endif %}
-                                {% if  quiz.isActive %} style="color: #3ac31a" {% endif %} >
+                        <th>{{ 'qi.status'|trans }}:</th>
+                        <th{% if not  quiz.isActive %} class="wrong" {% endif %}
+                                {% if  quiz.isActive %} class="right" {% endif %} >
                             {% if  quiz.isActive %}{{ 'quiz.active'|trans }}{% endif %}
-                            {% if not  quiz.isActive %}{{ 'quiz.close'|trans }}{% endif %}</td>
+                            {% if not  quiz.isActive %}{{ 'quiz.close'|trans }}{% endif %}</th>
                     </tr>
                     <tr>
-                        <td>{{ 'qi.count.questions'|trans }}:</td>
-                        <td>{{ quiz.questions.count }}</td>
+                        <th>{{ 'qi.count.questions'|trans }}:</th>
+                        <th>{{ quiz.questions.count }}</th>
                     </tr>
                     <tr>
-                        <td>{{ 'qi.count.participants'|trans }}:</td>
-                        <td>{{ quiz.results.count }}</td>
+                        <th>{{ 'qi.count.participants'|trans }}:</th>
+                        <th>{{ quiz.results.count }}</th>
                     </tr>
                 </table>
             </div>
@@ -42,12 +45,16 @@
             {# LEADERS #}
             <div class="col-sm quiz-i">
                 <table>
+                    <thead>
                     <tr>
-                        <th colspan="4"><h3><a href="{{ url('app_quiz_leaders', {id:quiz.id}) }}">
-                                    {{ 'qi.leaders'|trans }}
-                                </a>
-                            </h3></th>
+                        <th colspan="4">
+                            <h3>
+                                <a href="{{ url('app_quiz_leaders', {id:quiz.id}) }}"> {{ 'qi.leaders'|trans }}</a>
+                            </h3>
+                        </th>
                     </tr>
+                    </thead>
+                    <tbody>
                     <tr>
                         <th>{{ 'qi.place'|trans }}</th>
                         <th>{{ 'qi.name'|trans }}</th>
@@ -56,12 +63,13 @@
                     </tr>
                     {% for tr in topResults %}
                         <tr>
-                            <td>{{ loop.index }}</td>
-                            <td>{{ tr.user.name }}</td>
-                            <td>{{ tr.result }}</td>
-                            <td>{{ tr.duration.format("%dd:%hh:%im:%ss") }}</td>
+                            <th>{{ loop.index }}</th>
+                            <th>{{ tr.user.name }}</th>
+                            <th>{{ tr.result }}</th>
+                            <th>{{ tr.duration.format("%dd:%hh:%im:%ss") }}</th>
                         </tr>
                     {% endfor %}
+                    </tbody>
                 </table>
             </div>
         </div>
@@ -73,22 +81,27 @@
                     <div class="d-flex justify-content-center">
                         <h3>{{ 'qi.progress'|trans }}:</h3>
                     </div>
-                    <p style="text-align: center; margin: 0">{{ 'qi.status'|trans }}:
+                    <p>{{ 'qi.status'|trans }}:
                         {% if result is null %}{{ 'qi.status.no'|trans }}{% endif %}
                         {% if result is not null %}
                         {% if result.endDate is null %}{{ 'qi.status.in'|trans }}{% endif %}
                         {% if result.endDate is not null %}{{ 'qi.status.off'|trans }}
                     </p>
-                    <p style="text-align: center">{{ 'qi.result'|trans }}: {{ result.result }}
+                    <p>{{ 'qi.result'|trans }}: {{ result.result }}
                         {% endif %}
                         {% endif %}
                     </p>
+                    {% if rate %}
+                        <p>
+                            {{ 'qi.rate'|trans }}: {{ rate }}
+                        </p>
+                    {% endif %}
                     <div class="d-flex justify-content-center">
                         <form action="{{ url('app_quiz',{id:quiz.id}) }}">
                             <button type="submit"
-                                    {% if result is null %}
-                            >{{ 'qi.button.start'|trans }}{% endif %}
-                                {% if result is not null and result.endDate is null %} >{{ 'qi.button.continue'|trans }}{% endif %}
+                                    {% if result is null and quiz.isActive %}>{{ 'qi.button.start'|trans }}{% endif %}
+                                {% if result is null and not quiz.isActive %} disabled>{{ 'qi.button.closed' |trans }}{% endif %}
+                                {% if result is not null and result.endDate is null and quiz.isActive %} >{{ 'qi.button.continue'|trans }}{% endif %}
                                 {% if result is not null and result.endDate is not null %} disabled>{{ 'qi.button.ended'|trans }}{% endif %}
                             </button>
                         </form>
@@ -115,8 +128,8 @@
                         <tbody>
                         <tr>
                             {% for progress in result.progress %}
-                                <th {% if progress.isRight %} class="ans-t">+{% endif %}
-                                    {% if not progress.isRight %} class = "ans-f">-{% endif %}
+                                <th {% if progress.isRight %} class="ans-t">✓{% endif %}
+                                    {% if not progress.isRight %} class = "ans-f">×{% endif %}
                                 </th>
                             {% endfor %}
                         </tr>

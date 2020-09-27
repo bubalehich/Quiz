@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class ChangePasswordTypeForm extends AbstractType
+class ChangePasswordFormType extends AbstractType
 {
     private const PASSWORD_MIN_LENGTH = 6;
     private const PASSWORD_MAX_LENGTH = 100;
@@ -30,10 +30,12 @@ class ChangePasswordTypeForm extends AbstractType
     {
         $builder->add('oldPassword', PasswordType::class, [
             'required' => true,
-            'label' => false
+            'label' => false,
+            'attr' => ['placeholder' => $this->translator->trans('u.pass.old')]
         ])
             ->add('plainPassword', RepeatedType::class, [
                 'label' => false,
+
                 'type' => PasswordType::class,
                 'first_options' => [
                     'constraints' => [
@@ -48,9 +50,11 @@ class ChangePasswordTypeForm extends AbstractType
                         ]),
                     ],
                     'label' => false,
+                    'attr' => ['placeholder' => $this->translator->trans('u.pass.new')],
                 ],
                 'second_options' => [
                     'label' => false,
+                    'attr' => ['placeholder' => $this->translator->trans('u.pass.new2')],
                 ],
                 'invalid_message' => $this->translator->trans('msg.password.match'),
                 'mapped' => false,

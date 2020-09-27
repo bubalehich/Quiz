@@ -34,6 +34,8 @@ quiz.date.format: d.m.Y; H:i
 quiz.participants: Участвует
 quiz.people: человек
 quiz.people.no: Нет участников
+quiz.search: Поиск
+quiz.search.button: Найти
 
 #LEADERBOARD
 lb.count: Общее количество прошедших викторину
@@ -67,11 +69,13 @@ qi.progress: Ваш прогресс
 qi.status.no: Не участвуете
 qi.status.in: Проходится
 qi.status.off: Пройден
+qi.rate: Ваше место
 
 qi.button.start: Начать
 qi.button.continue: Продолжить
 qi.button.ended: Пройден
 qi.answers: Ответы
+qi.button.closed: Закрыта
 
 #CONFIRM EMAIL
 confirm.title: Привет! Пожалуйста, подтвердите Вашу электронную почту!
@@ -168,7 +172,7 @@ a.create.quiz.title: Админ - создание викторины
 a.edit.user.title: Админ - редактирование пользователя
 a.quizes: Викторины
 a.questions: Вопросы
-a.user: Пользователи
+a.users: Пользователи
 a.all: Все
 a.edit: Редактировать
 a.delete: Удалить
@@ -181,9 +185,19 @@ a.users.title: Админ - пользователи
 a.name: Имя
 a.isRight: Верный
 a.isActive: Активный
+a.isVerified: Подтверждена почта
 a.submit: Отправить
 a.block: Заблокировать
 a.unblock: Разблокировать
+a.verified: Подтвержден
+a.role: Роль
+a.admin: Админ
+a.user: Пользователь
+a.active: Активен
+a.inactive: Неактивен
+a.questions_in_quiz: Вопросов в викторине
+a.search: Найти
+a.clear: Сброс
 
 #ADMIN-FLASH
 a.flash.question.notdelete: Этот вопрос не может быть удален!
@@ -196,3 +210,41 @@ a.user.blocked: Статус пользователя изменен!
 a.user.edited: Пользователь изменен!
 a.question.edited: Вопрос изменен!
 a.quiz.edited: Викторина изменена!
+
+#POST PAGE
+post.title: Посты
+post.header: Общее количество
+post.button.edit: Редактировать
+post.button.delete: Удалить
+post.button: Отправить
+post.no.authorized: Извините, но вы не пользователь, поэтому не можете оставлять сообщения:( Войдите
+post.edited: (ред.)
+post.msg.upd: Пост обновлён!
+post.msg.del: Пост удалён!
+post.message: Сообщение
+post.msg.min: Сообщение должно быть как минимум %s символ
+post.msg.max: Сообщение должно быть короче %s символов
+post.msg: Пожалуйста, введите сообщение
+
+#MAIN
+m.title: Гравная
+m.header: Добро пожаловать!
+m.about: О проекте
+m.about.message: Это учебный проект, который создан с целью изучения PHP и крутых фич Symfony.
+m.desc: Какие возможности?
+m.1: Выбирать любую открытую
+m.quiz: викторину
+m.2: Пройти её (или вернуться к ней позже и продолжить)
+m.3: Просмативать результаты, прогресс, счет, занимаемое место в таблице результатов
+m.4: Так же!..Вы всегда можете перейти на свой профиль и увидеть все викторины, в которых принимали участие когда-либо
+m.5: Сменить язык
+m.6: Оставить сообщение на странице
+m.66: постов
+
+m.7: Но для начала Вам нужно
+m.8: создать аккаунт
+m.9: или
+m.10: войти в существующий
+
+m.11: Спасибо
+m.12: за крутые картинки, которые используются в этом проекте

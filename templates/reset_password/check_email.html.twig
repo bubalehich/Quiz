@@ -2,7 +2,14 @@
 
 {% block title %}{{ 'reg.title'|trans }}{% endblock %}
 
+ {% block stylesheets %}
+     {{ parent() }}
+     {{ encore_entry_link_tags('form') }}
+ {% endblock %}
+
 {% block body %}
-    <p>{{ 'restore.msg'|trans}} {{ tokenLifetime|date('g') }} {{ 'confirm.hours'|trans }}.</p>
-    <p>{{ 'restore.msg2'|trans }}<a href="{{ path('app_forgot_password_request') }}">{{ 'restore.msg3'|trans }}</a>.</p>
+    <div class="box" style="color: white">
+        <p>{{ 'restore.msg'|trans }} {{ tokenLifetime|date('g') }} {{ 'confirm.hours'|trans }}.</p>
+        <p>{{ 'restore.msg2'|trans }}<a href="{{ path('app_forgot_password_request') }}"> {{ 'restore.msg3'|trans }}</a>.</p>
+    </div>
 {% endblock %}

@@ -4,14 +4,13 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\Answer;
-use App\Entity\Progress;
 use App\Entity\Quiz;
-use App\Entity\Result;
 use App\Entity\User;
 use App\Form\QuizProcessFormType;
 use App\Service\QuizService;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\NonUniqueResultException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -42,11 +41,14 @@ class QuizController extends AbstractController
      * @Route("/quizes", name="app_quizes")
      * @param Request $request
      * @return Response
+     * @throws NonUniqueResultException
      */
-    public function listAction(Request $request): Response
+    public function onQuizzesPage(Request $request): Response
     {
         $page = $request->query->getInt('page', 1);
-        $pagination = $this->service->getPaginateQuizes($page);
+        $searchCriteria = $request->query->get('search');
+
+        $pagination = $this->service->getPaginationQuizzes($page, $searchCriteria);
         $leaders = $this->service->getLeadersForPage($pagination);
 
         return $this->render
@@ -63,13 +65,17 @@ class QuizController extends AbstractController
      */
     public function quizInfo(Quiz $quiz): Response
     {
-        $result = $this->service->getResult($this->getUser(), $quiz);
-        $topResults = $this->service->getTopLeaders($quiz);
+        /**@var User $user */
+        $user = $this->getUser();
+        $result = $this->service->getResult($user, $quiz);
+        $topResults = $this->service->findTopLeaders($quiz);
+        $rate = $result && $result->getEndDate() ? $this->service->findUserPlace($user, $quiz) : null;
 
         return $this->render('quiz/quiz_info.html.twig', [
             'quiz' => $quiz,
             'topResults' => $topResults,
             'result' => $result,
+            'rate' => $rate,
         ]);
     }
 
@@ -100,47 +106,22 @@ class QuizController extends AbstractController
     {
         /** @var User $user */
         $user = $this->getUser();
-        $result = $this->service->getResult($user, $quiz);
+        $result = $this->service->startParticipate($quiz, $user);
 
-        if (!($quiz->getIsActive()) || ($result) && $result->getEndDate()) {
+        if (!($quiz->getIsActive()) || $result->getEndDate()) {
             return $this->redirectToRoute('app_quiz_info', ['id' => $quiz->getId()]);
         }
 
-        if (!$result) {
-            $result = new Result();
-            $result->setStartDate(new DateTime());
-            $quiz->addResult($result);
-            $user->addResult($result);
-            $this->em->persist($user);
-            $this->em->persist($result);
-            $this->em->persist($quiz);
-            $this->em->flush();
-        }
-
         foreach ($quiz->getQuestions() as $question) {
-            $flag = false;
-            foreach ($result->getProgress() as $progress) {
-                if ($progress->getQuestion() === $question) {
-                    $flag = true;
-                    break;
-                }
-            }
+            if (!$this->service->isProceed($question, $result)) {
 
-            if (!$flag) {
                 $form = $this->createForm(QuizProcessFormType::class, null, ['question' => $question]);
                 $form->handleRequest($request);
 
                 if ($form->isSubmitted() && $form->isValid()) {
                     /** @var Answer $answer */
                     $answer = ($form->getData())['answer'];
-                    $progress = (new Progress())->setQuestion($question)->setIsRight($answer->getIsRight());
-                    if ($answer->getIsRight()) {
-                        $result->setResult($result->getResult() + 1);
-                    }
-                    $result->addProgress($progress);
-                    $this->em->persist($progress);
-                    $this->em->persist($result);
-                    $this->em->flush();
+                    $this->service->createNewProgress($result, $answer);
 
                     $request->getSession()->set('question', $question->getName());
                     $request->getSession()->set('answer', $answer->getName());
@@ -151,18 +132,11 @@ class QuizController extends AbstractController
                         'id' => $quiz->getId(),
                     ]);
                 }
-                foreach ($question->getAnswers() as $ans) {
-                    if ($ans->getIsRight()) {
-                        $rightAnswer = $ans->getId();
-                        break;
-                    }
-                }
 
                 return $this->render('quiz/proceed.html.twig', [
                     'form' => $form->createView(),
                     'quiz' => $quiz,
                     'result' => $result,
-                    'rightAnswer' => $rightAnswer,
                     'question' => $question]);
             }
         }

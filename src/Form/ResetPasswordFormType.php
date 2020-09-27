@@ -43,10 +43,12 @@ class ResetPasswordFormType extends AbstractType
                         'maxMessage' => sprintf($this->translator->trans('msg.password.max'), self::PASSWORD_MAX_LENGTH),
                     ]),
                 ],
-                'label' => $this->translator->trans('l.password.new'),
+                'label' =>false ,
+                'attr'=>['placeholder'=>$this->translator->trans('l.password.new')]
             ],
             'second_options' => [
-                'label' => $this->translator->trans('l.password.repeat'),
+                'label' => false,
+                'attr' => ['placeholder' => $this->translator->trans('l.password.repeat')]
             ],
             'invalid_message' => $this->translator->trans('msg.password.match'),
             'mapped' => false,

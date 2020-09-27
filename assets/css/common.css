@@ -1,7 +1,45 @@
-.co{
+.co {
     margin-top: 10px;
     margin-left: 10px;
     margin-right: 10px;
+    padding: 10px;
 
-    background-color: #1b9448;
+    background: rgba(25, 25, 25, 0.9);
+    color: white;
+}
+
+h1 {
+    color: white;
+}
+
+p {
+    margin-top: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.co img {
+    height: 100px;
+    width: 150px;
+}
+
+hr {
+    background-color: white;
+    margin-right: 30px;
+    margin-left: 30px;
+}
+
+a {
+    margin-right: 5px;
+    margin-left: 5px;
+    text-decoration: none;
+}
+
+a:hover{
+    color: white;
+    text-decoration: none;
+}
+
+h1, h2{
+    color: #2ecc71;
 }

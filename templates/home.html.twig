@@ -1,11 +1,43 @@
 {% extends 'base.html.twig' %}
-{% block title %}Main{% endblock %}
 
+{% block title %}{{ 'm.title'|trans }}{% endblock %}
+
+ {% block stylesheets %}
+     {{ parent() }}
+     {{ encore_entry_link_tags('common') }}
+ {% endblock %}
 
 {% block body %}
-
     <div class="co">
-        sdhfjahsdjkfhk
-    </div>
+        <div class="d-flex justify-content-center">
+            <h1>{{ 'm.header'|trans }}</h1>
+        </div>
 
+        <div class="d-flex justify-content-center">
+            <h2>{{ 'm.about' |trans }}</h2>
+        </div>
+        <div class="d-flex justify-content-center">
+            <p>{{ 'm.about.message'|trans }} </p></div>
+        <div class="d-flex justify-content-center">
+            <h2>{{ 'm.desc'|trans }}</h2></div>
+        <div class="d-flex justify-content-center">
+            <ul>
+                <li>{{ 'm.1' |trans }} <a href="{{ path('app_quizes') }}">{{ 'm.quiz'|trans }}</a></li>
+                <li>{{ 'm.2'|trans }}</li>
+                <li>{{ 'm.3'|trans }}</li>
+                <li>{{ 'm.5'|trans }}</li>
+                <li>{{ 'm.6'|trans }} <a href="{{ url('app_posts') }}">{{ 'm.66'|trans }}</a></li>
+                <li>{{ 'm.4'|trans }}</li>
+            </ul>
+        </div>
+        <div class="d-flex justify-content-center">
+            <h3>{{ 'm.7'|trans }} <a href="{{ path('app_register') }}">{{ 'm.8'|trans }}</a> {{ 'm.9'|trans }}
+                <a href="{{ path('app_login') }}">{{ 'm.10'|trans }}</a></h3>
+        </div>
+        <hr>
+        <div class="d-flex justify-content-center">
+            {{ 'm.11' |trans }} <a href="https://www.instagram.com/mklgustafsson/">
+                Mikael Gustafsson </a> {{ 'm.12'|trans }}
+        </div>
+    </div>
 {% endblock %}

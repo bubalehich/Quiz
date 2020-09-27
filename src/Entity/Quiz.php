@@ -19,7 +19,7 @@ class Quiz
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private int $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="string", length=60)
@@ -52,7 +52,7 @@ class Quiz
         $this->questions = new ArrayCollection();
     }
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }

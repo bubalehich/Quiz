@@ -14,18 +14,18 @@
     color: #3498db;
 }
 
-.quiz-i h3 {
-    color: white;
+h3 {
+    color: #2ecc71;
 }
 
 table a {
     text-decoration: none;
-    color: white;
+    color: #3498db;
 }
 
 table a:hover {
     text-decoration: none;
-    color: #3498db;
+    color: white;
 }
 
 table {
@@ -44,7 +44,6 @@ table {
 }
 
 button {
-    border: 0;
     background: none;
     display: block;
     /*margin: 20px auto;*/
@@ -80,4 +79,21 @@ button:disabled {
 .ans-f {
     font-size: 30px;
     color: #C82829
+}
+
+p {
+    text-align: center;
+    margin: 0;
+}
+
+.right {
+    color: #3ac31a;
+}
+
+.wrong {
+    color: #db7778;
+}
+
+table{
+    color: white;
 }

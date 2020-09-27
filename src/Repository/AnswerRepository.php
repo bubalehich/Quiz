@@ -5,6 +5,8 @@ namespace App\Repository;
 
 use App\Entity\Answer;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -15,17 +17,31 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class AnswerRepository extends ServiceEntityRepository
 {
+    /**
+     * AnswerRepository constructor.
+     * @param ManagerRegistry $registry
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Answer::class);
     }
 
+    /**
+     * @param Answer $answer
+     * @throws OptimisticLockException
+     * @throws ORMException
+     */
     public function saveNewAnswer(Answer $answer):void
     {
         $this->_em->persist($answer);
         $this->_em->flush();
     }
 
+    /**
+     * @param Answer $answer
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
     public function deleteAnswer(Answer $answer): void
     {
         $this->_em->remove($answer);

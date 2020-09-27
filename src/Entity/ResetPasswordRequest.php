@@ -21,7 +21,7 @@ class ResetPasswordRequest implements ResetPasswordRequestInterface
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private int $id;
+    private ?int $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class)

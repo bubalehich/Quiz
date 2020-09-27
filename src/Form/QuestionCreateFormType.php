@@ -12,7 +12,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class QuestionCreateType extends AbstractType
+class QuestionCreateFormType extends AbstractType
 {
     private TranslatorInterface $translator;
 
@@ -26,14 +26,14 @@ class QuestionCreateType extends AbstractType
         $builder->add('name', TextType::class, [
             'label' => $this->translator->trans('a.name')
         ])->add('answers', CollectionType::class, [
-            'entry_type' => AnswerType::class,
+            'entry_type' => AnswerFormType::class,
             'entry_options' => [
                 'label' => false
             ],
             'by_reference' => false,
             'allow_add' => true,
             'allow_delete' => true,
-            'label'=>$this->translator->trans('a.answers')
+            'label' => $this->translator->trans('a.answers')
         ])
             ->add('submit', SubmitType::class, [
                 'attr' => [

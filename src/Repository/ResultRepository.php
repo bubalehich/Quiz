@@ -17,11 +17,19 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class ResultRepository extends ServiceEntityRepository
 {
+    /**
+     * ResultRepository constructor.
+     * @param ManagerRegistry $registry
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Result::class);
     }
 
+    /**
+     * @param Quiz $quiz
+     * @return QueryBuilder
+     */
     public function getLeaders(Quiz $quiz): QueryBuilder
     {
         $qb = $this->createQueryBuilder('r');
