@@ -43,6 +43,7 @@ Encore
     .addStyleEntry('quiz_info', './assets/css/quiz_info.css')
     .addStyleEntry('quiz', './assets/css/quiz.css')
     .addStyleEntry('common', './assets/css/common.css')
+    .addStyleEntry('post_page', './assets/css/app_post.css')
 
     .addEntry('admin', './assets/js/admin.js')
     .addEntry('admin_create_quiz', './assets/js/admin_create_quiz.js')

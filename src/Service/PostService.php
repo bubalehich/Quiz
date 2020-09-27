@@ -10,7 +10,7 @@ use Knp\Component\Pager\PaginatorInterface;
 
 class PostService
 {
-    private const POSTS_PER_PAGE = 5;
+    private const POSTS_PER_PAGE = 10;
     private PostRepository $postRepository;
     private PaginatorInterface $paginator;
 
