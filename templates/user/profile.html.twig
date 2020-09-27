@@ -56,12 +56,6 @@
                                     <a href="{{ url('app_quiz_info',{id:result.quiz.id}) }}"> {{ result.quiz.name }}</a>
                                 </h2>
                                 <table>
-                                    {% if result.endDate %}
-                                        <tr>
-                                            <th> {{ 'qi.rate'|trans }}:</th>
-                                            <th>{{ places[result.quiz.id] }}</th>
-                                        </tr>
-                                    {% endif %}
                                     <tr>
                                         <th>{{ 'userpage.quizes.status'| trans }}:</th>
                                         <th>

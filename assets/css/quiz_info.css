@@ -14,18 +14,18 @@
     color: #3498db;
 }
 
-.quiz-i h3 {
-    color: white;
+h3 {
+    color: #2ecc71;
 }
 
 table a {
     text-decoration: none;
-    color: white;
+    color: #3498db;
 }
 
 table a:hover {
     text-decoration: none;
-    color: #3498db;
+    color: white;
 }
 
 table {
@@ -92,4 +92,8 @@ p {
 
 .wrong {
     color: #db7778;
+}
+
+table{
+    color: white;
 }

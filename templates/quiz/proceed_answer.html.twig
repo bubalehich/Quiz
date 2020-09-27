@@ -12,7 +12,7 @@
         {{ 'qp.question'|trans }} №{{ progress }} {{ 'qp.of'|trans }} {{ quiz.questions|length }}<br>
         <div class="question">{{ question }}</div>
         <p>answer: {{ answer }}</p>
-        <p> {% if isRight %} RIGHT{% else %} WRONG{% endif %}</p>
+        <p> {% if isRight %}{{ 'qp.right'|trans }}{% else %}{{ 'qp.wrong'|trans }}{% endif %}</p>
         <form action="{{ url('app_quiz', {id: quiz.id} ) }}">
             <button type="submit">  {{ 'qp.next'|trans }}</button>
         </form>

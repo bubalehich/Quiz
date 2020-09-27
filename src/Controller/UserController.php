@@ -63,8 +63,7 @@ class UserController extends AbstractController
         /**@var User $user */
         $user = $this->getUser();
         $results = $this->resultRepository->findByUser($user);
-        $places = $this->userService->getAllPlacesForUser($user, $results);
-        return $this->render('user/profile.html.twig', ['results' => $results, 'places' => $places]);
+        return $this->render('user/profile.html.twig', ['results' => $results]);
     }
 
     /**

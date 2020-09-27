@@ -59,15 +59,4 @@ class UserService
         ));
         $this->manager->flush();
     }
-
-    public function getAllPlacesForUser(User $user, array $results)
-    {
-        $places = [];
-        foreach ($results as $result) {
-            if ($result->getEndDate()) {
-                $places[$result->getQuiz()->getId()] = $this->quizService->getUserPlace($user, $result->getQuiz());
-            }
-        }
-        return $places;
-    }
 }
