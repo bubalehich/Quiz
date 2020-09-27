@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        {% for msg in app.flashes('success') %}
+            <div class="alert alert-success " role="alert">{{ msg }}</div>
+        {% endfor %}
+        <div class="tbl">
+            <div class="d-flex justify-content-center">
+                <h3>{{ 'quiz.count'|trans }}: {{ pagination.getTotalItemCount }}</h3>
+                <form class="form-inline" action="{{ url('app_posts') }}">
+                    <input class="form-control mr-sm-2" type="search" placeholder="{{ 'quiz.search'|trans }}"
+                           aria-label="Search" name="search">
+                    <button class="btn btn-outline-success my-2 my-sm-0"
+                            type="submit">{{ 'quiz.search.button'|trans }}</button>
+                </form>
+            </div>
+
+            <div class="d-flex justify-content-center meh">
+                {{ knp_pagination_render(pagination) }}
+            </div>
+
+            <div class="msgs">
+                {% for post in pagination %}
+                    {{ post.user.name }}
+                    {{ post.date.format('quiz.date.format'|trans) }}
+                    {{ post.message }}
+                    {% if post.isModified %} edited{% endif %}
+
+                    {% if app.user and app.user.id == post.user.id %}
+                        <form action="{{ url('app_post_edit', {id: post.id}) }}">
+                            <input type="submit" name="" value='Edit'>
+                        </form>
+                    {% endif %}
+
+                    {% if app.user and app.user.id == post.user.id or is_granted('ROLE_ADMIN') %}
+                        <form action="{{ url('app_post_delete', {id: post.id}) }}">
+                            <input type="submit" name="" value='Delete'>
+                        </form>
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+
+            {% if is_granted('ROLE_USER') %}
+                <div class="add_new_msg">
+                    {{ form_start(form) }}
+                    {{ form_widget(form) }}
+                    <input type="submit" name="" value='Send'>
+                    {{ form_end(form) }}
+                </div>
+            {% else %}
+                You are not authorized. Please, log in for leaving a message here.
+            {% endif %}
+
+        </div>
+    </div>
+
+{% endblock %}

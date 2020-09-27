@@ -4,9 +4,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\Answer;
-use App\Entity\Progress;
 use App\Entity\Quiz;
-use App\Entity\Result;
 use App\Entity\User;
 use App\Form\QuizProcessFormType;
 use App\Service\QuizService;
