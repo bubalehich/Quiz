@@ -1,6 +1,6 @@
 #HEADER
 header.home: Home
-header.quizes: Quizes
+header.quizes: Quizzes
 header.login: Login
 header.logout: Logout
 header.admin: Administrate
@@ -29,7 +29,7 @@ quiz.leader: Leader
 quiz.count: Total count of quizes
 quiz.active: Opened
 quiz.close: Closed
-quiz.es: Quizes
+quiz.es: Quizzes
 quiz.date.format: d F Y; h:i a
 quiz.participants: Participate
 quiz.people: people
@@ -108,7 +108,7 @@ userpage.info: Common info
 userpage.name: Name
 userpage.email: Email
 userpage.edit: Update password
-userpage.quizes: Quizes
+userpage.quizes: Quizzes
 userpage.quizes.name: Name
 userpage.quizes.status: Status
 userpage.quizes.progress: Progress
@@ -225,3 +225,26 @@ post.message: Message
 post.msg.min: Message should be at least %s character
 post.msg.max: Message should be shorter than %s characters
 post.msg: Please enter message
+
+#MAIN
+m.title: Main
+m.header: Welcome to Quiz!
+m.about: About
+m.about.message: This is a tutorial project. It was made for the purpose of learning PHP language and Symfony features.
+m.desc: What y can do?
+m.1: Choose any open
+m.quiz: quiz
+m.2: Pass it (or return later and continue from the same place)
+m.3: View your result, progress, score, place in leaderboard
+m.4: Also!.. You always can go to profile page and view all your quiz which you have ever participated in
+m.5: Change language
+m.6: Leave a message on
+m.66: post page
+
+m.7: But at first you need to
+m.8: create an account
+m.9: or
+m.10: login
+
+m.11: Thanks
+m.12: for amazing pictures

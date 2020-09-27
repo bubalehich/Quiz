@@ -32,4 +32,14 @@ hr {
 a {
     margin-right: 5px;
     margin-left: 5px;
+    text-decoration: none;
+}
+
+a:hover{
+    color: white;
+    text-decoration: none;
+}
+
+h1, h2{
+    color: #2ecc71;
 }
