@@ -14,9 +14,9 @@
     <table class="table table-dark table-striped">
         <thead>
         <tr>
-            <th>{{ knp_pagination_sortable(quizes,'id','i.id') }}</th>
-            <th>{{ knp_pagination_sortable(quizes,'a.name'|trans,'i.name') }}</th>
-            <th>{{ knp_pagination_sortable(quizes,'a.isActive'|trans,'i.isActive') }}</th>
+            <th>{{ knp_pagination_sortable(quizes,'id','q.id') }}</th>
+            <th>{{ knp_pagination_sortable(quizes,'a.name'|trans,'q.name') }}</th>
+            <th>{{ knp_pagination_sortable(quizes,'a.isActive'|trans,'q.isActive') }}</th>
             <th>{{ 'a.questions'|trans }}</th>
         </tr>
         </thead>
