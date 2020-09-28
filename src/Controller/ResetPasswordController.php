@@ -48,6 +48,7 @@ class ResetPasswordController extends AbstractController
      * @Route("", name="app_forgot_password_request")
      * @param Request $request
      * @return Response
+     * @throws TransportExceptionInterface
      */
     public function sendForgotPasswordRequest(Request $request): Response
     {

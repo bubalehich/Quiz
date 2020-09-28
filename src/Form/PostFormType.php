@@ -14,8 +14,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class PostFormType extends AbstractType
 {
-    const MSG_MIN_LENGTH = 1;
-    const MSG_MAX_LENGTH = 100;
+    private const MSG_MIN_LENGTH = 1;
+    private const MSG_MAX_LENGTH = 100;
     private TranslatorInterface $translator;
 
     /**

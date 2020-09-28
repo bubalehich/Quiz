@@ -98,3 +98,10 @@ input[type="radio"]:disabled + label::before {
 label {
     padding: 10px 30px;
 }
+.right {
+    color: #3ac31a;
+}
+
+.wrong {
+    color: #db7778;
+}
