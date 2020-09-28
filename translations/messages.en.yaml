@@ -92,7 +92,7 @@ restore.msg2: If you don't receive an email please check your spam folder or
 restore.msg3: try again
 
 #RESTORE PASS EMAIL
-restore.hi: Привет!
+restore.hi: Hello!
 restore.reset: To reset your password, please visit here
 restore.expire: This link will expire in
 
@@ -225,6 +225,7 @@ post.message: Message
 post.msg.min: Message should be at least %s character
 post.msg.max: Message should be shorter than %s characters
 post.msg: Please enter message
+post.edit: Edit message
 
 #MAIN
 m.title: Main

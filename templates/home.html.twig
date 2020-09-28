@@ -30,10 +30,12 @@
                 <li>{{ 'm.4'|trans }}</li>
             </ul>
         </div>
+        {% if not is_granted('ROLE_USER') %}
         <div class="d-flex justify-content-center">
             <h3>{{ 'm.7'|trans }} <a href="{{ path('app_register') }}">{{ 'm.8'|trans }}</a> {{ 'm.9'|trans }}
                 <a href="{{ path('app_login') }}">{{ 'm.10'|trans }}</a></h3>
         </div>
+        {% endif %}
         <hr>
         <div class="d-flex justify-content-center">
             {{ 'm.11' |trans }} <a href="https://www.instagram.com/mklgustafsson/">

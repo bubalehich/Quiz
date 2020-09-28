@@ -9,6 +9,8 @@ use App\Form\UserEditFormType;
 use App\Repository\QuestionRepository;
 use App\Repository\QuizRepository;
 use App\Repository\UserRepository;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Exception;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -32,6 +34,14 @@ class AdminController extends AbstractController
     private TranslatorInterface $translator;
     private QuizRepository $quizRepository;
 
+    /**
+     * AdminController constructor.
+     * @param AdminService $adminService
+     * @param QuestionRepository $questionRepository
+     * @param UserRepository $userRepository
+     * @param QuizRepository $quizRepository
+     * @param TranslatorInterface $translator
+     */
     public function __construct(
         AdminService $adminService,
         QuestionRepository $questionRepository,
@@ -47,8 +57,8 @@ class AdminController extends AbstractController
         $this->translator = $translator;
     }
 
-    /*main method, which redirects to quiz page*/
     /**
+     * Main method, which redirects to quiz page
      * @Route ("/", name = "admin_page")
      */
     public function onAdmin(): Response
@@ -56,8 +66,8 @@ class AdminController extends AbstractController
         return new RedirectResponse($this->generateUrl('app_show_quizes'));
     }
 
-    /*method which shows all quizes with filter,sort and edit possibility*/
     /**
+     * Method which shows all quizzes with filter,sort and edit possibility
      * @Route ("/show_quizes", name = "app_show_quizes")
      * @param PaginatorInterface $paginator
      * @param Request $request
@@ -71,11 +81,13 @@ class AdminController extends AbstractController
         return $this->render('admin/admin_show_quizes.html.twig', ["quizes" => $quizes]);
     }
 
-    /*method which gives possibility to create new quiz*/
     /**
+     * Method which gives possibility to create new quiz
      * @Route ("/create_quiz", name = "create_quiz_page")
      * @param Request $request
      * @return Response
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function onAdminQuizCreate(Request $request): Response
     {
@@ -96,11 +108,13 @@ class AdminController extends AbstractController
         ]);
     }
 
-    /*method which gives possibility tot edit existing quiz*/
     /**
+     * Method which gives possibility tot edit existing quiz
      * @Route ("/edit_quiz/{id}", name = "app_edit_quiz_page")
      * @param Request $request
      * @return Response
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function onAdminQuizEdit(Request $request): Response
     {
@@ -123,8 +137,8 @@ class AdminController extends AbstractController
         ]);
     }
 
-    /*method which gives possibility to delete quiz*/
     /**
+     * Method which gives possibility to delete quiz
      * @Route ("/delete_quiz/{id}", name = "app_delete_quiz")
      * @param Request $request
      * @return Response
@@ -144,11 +158,13 @@ class AdminController extends AbstractController
         return new RedirectResponse($this->generateUrl('app_show_quizes'));
     }
 
-    /*method which gives possibility to create new question*/
     /**
+     * Method which gives possibility to create new question
      * @Route ("/create_question", name = "app_create_question_page")
      * @param Request $request
      * @return Response
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function onAdminQuestionCreate(Request $request): Response
     {
@@ -170,11 +186,13 @@ class AdminController extends AbstractController
         ]);
     }
 
-    /*method which gives possibility to edit qustion*/
     /**
+     * Method which gives possibility to edit qustion
      * @Route ("/edit_question/{id}", name = "app_edit_question_page")
      * @param Request $request
      * @return Response
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function onAdminQuestionEdit(Request $request): Response
     {
@@ -195,8 +213,8 @@ class AdminController extends AbstractController
         ]);
     }
 
-    /*method which gives possibility to delete question*/
     /**
+     * Method which gives possibility to delete question
      * @Route ("/delete_question/{id}", name = "app_delete_question")
      * @param Request $request
      * @return Response
@@ -215,8 +233,8 @@ class AdminController extends AbstractController
         return new RedirectResponse($this->generateUrl('app_show_questions'));
     }
 
-    /*method which shows all users with sort,filter,edit possibilities*/
     /**
+     * Method which shows all users with sort,filter,edit possibilities
      * @Route ("/users", name = "app_show_users")
      * @param Request $request
      * @param PaginatorInterface $paginator
@@ -234,8 +252,8 @@ class AdminController extends AbstractController
         return $this->render('admin/admin_show_users.html.twig', ['users' => $users]);
     }
 
-    /*method which shows all questions with sort,filter,edit possibilities*/
     /**
+     * Method which shows all questions with sort,filter,edit possibilities
      * @Route ("/questions", name = "app_show_questions")
      * @param Request $request
      * @param PaginatorInterface $paginator
@@ -251,12 +269,13 @@ class AdminController extends AbstractController
         return $this->render('admin/admin_show_questions.html.twig', ['questions' => $questions]);
     }
 
-    /*method which gives possibility to block or unblock user*/
-
     /**
+     * Method which gives possibility to block or unblock user
      * @Route ("/block_user/{id}/{flag}", name = "app_block_user")
      * @param Request $request
      * @return RedirectResponse
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function onAdminBlockUser(Request $request)
     {
@@ -266,11 +285,13 @@ class AdminController extends AbstractController
         return new RedirectResponse($request->headers->get('referer'));
     }
 
-    /*method which gives possibility to edit user*/
     /**
+     * Method which gives possibility to edit user
      * @Route ("/edit_user/{id}", name = "app_edit_user")
      * @param Request $request
      * @return Response
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function onAdminEditUser(Request $request): Response
     {

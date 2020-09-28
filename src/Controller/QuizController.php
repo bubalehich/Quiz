@@ -114,7 +114,6 @@ class QuizController extends AbstractController
 
         foreach ($quiz->getQuestions() as $question) {
             if (!$this->service->isProceed($question, $result)) {
-
                 $form = $this->createForm(QuizProcessFormType::class, null, ['question' => $question]);
                 $form->handleRequest($request);
 

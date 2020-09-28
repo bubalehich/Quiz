@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{% endblock %}
+{% block title %}{{ 'post.edit'|trans }}{% endblock %}
 
 {% block stylesheets %}
     {{ parent() }}
@@ -9,7 +9,7 @@
 
 {% block body %}
     <div class="box">
-        <h1>{{ 'u.name.title'|trans }}</h1>
+        <h1>{{ 'post.edit'|trans }}</h1>
         {{ form_start(form) }}
         {{ form_widget(form)}}
         <input type="submit" name="" value={{ 'u.btn'| trans }}>
