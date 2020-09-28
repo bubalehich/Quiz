@@ -100,9 +100,8 @@
                         <form action="{{ url('app_quiz',{id:quiz.id}) }}">
                             <button type="submit"
                                     {% if result is null and quiz.isActive %}>{{ 'qi.button.start'|trans }}{% endif %}
-                                {% if result is null and not quiz.isActive %} hidden>{{ 'qi.button.closed' |trans }}{% endif %}
+                                {% if not quiz.isActive or result and result.endDate %} hidden>{% endif %}
                                 {% if result is not null and result.endDate is null and quiz.isActive %} >{{ 'qi.button.continue'|trans }}{% endif %}
-                                {% if result is not null and result.endDate is not null %} hidden>{{ 'qi.button.ended'|trans }}{% endif %}
                             </button>
                         </form>
                     </div>
