@@ -42,7 +42,7 @@ class Quiz
     private Collection $results;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Question::class)
+     * @ORM\ManyToMany(targetEntity=Question::class, fetch="EAGER")
      */
     private Collection $questions;
 
