@@ -143,7 +143,7 @@ ex.no.reset.link: No reset password token found in the URL or in the session.
 
 #FLASHES
 f.account.create: Account has been created. Check your email and confirm it
-f.account.exists: Account with this email already exist
+f.account.exists: Invalid data, check it and try again
 f.account.verify: Your email address has been verified
 f.validate.error: There was a problem validating your reset request - %s
 f.password.update: Password has been updated!

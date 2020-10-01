@@ -61,3 +61,8 @@ body {
 .cb {
     color: #3498db;
 }
+
+.box li {
+    color: #2ecc71;
+    list-style-type: none;
+}
